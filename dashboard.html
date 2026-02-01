@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAMV Agent Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #FAFAF8;
+            --bg-card: #FFFFFF;
+            --bg-elevated: #F0EFEB;
+            --border-subtle: #E5E2DC;
+            --border-accent: #D0CCC4;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a5568;
+            --text-muted: #8892a4;
+            --accent-blue: #2b7de9;
+            --accent-cyan: #0d8aba;
+            --accent-indigo: #5b5fcf;
+            --accent-amber: #c67a08;
+            --accent-emerald: #0f8a5f;
+            --accent-rose: #c4163a;
+            --accent-purple: #7c3aed;
+            --gradient-main: linear-gradient(135deg, #2b7de9 0%, #5b5fcf 50%, #7c3aed 100%);
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html, body { 
+            height: 100%; 
+            font-family: var(--font-body);
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; }
+
+        .gradient-text {
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Layout */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            grid-template-rows: auto 1fr;
+            height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 24px;
+        }
+
+        .header-stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-stat .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .header-stat .value {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .header-stat .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-btn:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .header-btn.primary {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: white;
+        }
+
+        .header-btn.primary:hover {
+            background: #2065c7;
+        }
+
+        /* Sidebar - Agents */
+        .sidebar {
+            background: var(--bg-card);
+            border-right: 1px solid var(--border-subtle);
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .agent-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .agent-card {
+            padding: 14px;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .agent-card:hover {
+            background: var(--bg-card);
+            border-color: var(--border-accent);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .agent-card.selected {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 2px rgba(43,125,233,0.1);
+        }
+
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .agent-card.status-active::before { background: var(--accent-emerald); }
+        .agent-card.status-idle::before { background: var(--accent-amber); }
+        .agent-card.status-error::before { background: var(--accent-rose); }
+
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .agent-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .agent-avatar-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .agent-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .agent-role {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--accent-blue);
+        }
+
+        .agent-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .status-dot.active { background: var(--accent-emerald); }
+        .status-dot.idle { background: var(--accent-amber); }
+        .status-dot.error { background: var(--accent-rose); }
+
+        /* Main - Kanban */
+        .main {
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .kanban-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px 16px;
+        }
+
+        .kanban-title {
+            font-size: 1.1rem;
+        }
+
+        .kanban-filters {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+            background: rgba(43,125,233,0.05);
+        }
+
+        .kanban-board {
+            flex: 1;
+            display: flex;
+            gap: 16px;
+            padding: 0 24px 24px;
+            overflow-x: auto;
+        }
+
+        .kanban-column {
+            min-width: 280px;
+            width: 280px;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            max-height: 100%;
+        }
+
+        .column-header {
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .column-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .column-count {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            background: var(--bg-card);
+            border-radius: 4px;
+            color: var(--text-muted);
+        }
+
+        .column-tasks {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Task Cards */
+        .task-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .task-card:hover {
+            border-color: var(--border-accent);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .task-card.has-context {
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        .task-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .task-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .task-agent {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .task-agent img {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+        }
+
+        .task-priority {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .task-priority.p0 { background: rgba(196,22,58,0.1); color: var(--accent-rose); }
+        .task-priority.p1 { background: rgba(198,122,8,0.1); color: var(--accent-amber); }
+        .task-priority.p2 { background: rgba(43,125,233,0.1); color: var(--accent-blue); }
+
+        .task-actions {
+            display: flex;
+            gap: 6px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .task-card:hover .task-actions {
+            opacity: 1;
+        }
+
+        .task-action {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+        }
+
+        .task-action:hover {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .task-action.context {
+            background: rgba(43,125,233,0.1);
+            color: var(--accent-blue);
+        }
+
+        .task-context-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            color: var(--accent-blue);
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed var(--border-subtle);
+        }
+
+        /* Add Task Button */
+        .add-task-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px;
+            border: 1px dashed var(--border-accent);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-task-btn:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+            background: rgba(43,125,233,0.05);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 28px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            animation: modalIn 0.2s ease;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .modal-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .modal-field {
+            margin-bottom: 16px;
+        }
+
+        .modal-field label {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .modal-field textarea,
+        .modal-field input,
+        .modal-field select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+
+        .modal-field textarea:focus,
+        .modal-field input:focus,
+        .modal-field select:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .modal-field textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .modal-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 20px;
+            background: var(--bg-elevated);
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .modal-tab {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            background: transparent;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .modal-tab.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-weight: 500;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .modal-btn.secondary {
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+        }
+
+        .modal-btn.primary {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .modal-btn.primary:hover {
+            background: #2065c7;
+        }
+
+        /* Context Preview */
+        .context-preview {
+            background: rgba(43,125,233,0.05);
+            border: 1px solid rgba(43,125,233,0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+
+        .context-preview-title {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin-bottom: 6px;
+        }
+
+        .context-preview-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .context-preview-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Links */
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-blue);
+        }
+
+        @media (max-width: 900px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none;
+            }
+            .kanban-board {
+                padding: 0 16px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo"><span class="gradient-text">MAMV</span> Agent Dashboard</div>
+                <div class="header-stats">
+                    <div class="header-stat">
+                        <span class="dot" style="background:var(--accent-emerald);"></span>
+                        <span class="value">6/7</span>
+                        <span class="label">Online</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="value">12</span>
+                        <span class="label">Tasks Today</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="value" style="color:var(--accent-amber);">$0.47</span>
+                        <span class="label">Cost Today</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <a href="analytics.html" class="header-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h.01M7 20v-4M12 20v-8M17 20V8M22 4v16"/></svg>
+                    Analytics
+                </a>
+                <a href="index.html" class="header-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    Deck
+                </a>
+                <button class="header-btn primary" onclick="openNewTask()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    New Task
+                </button>
+            </div>
+        </header>
+
+        <!-- Sidebar - Agents -->
+        <aside class="sidebar">
+            <div class="sidebar-title">Agents (7)</div>
+            <div class="agent-list">
+                <div class="agent-card status-active" onclick="filterByAgent('wordsmith')">
+                    <div class="agent-header">
+                        <img class="agent-avatar" src="avatars/pixel.png" alt="Wordsmith">
+                        <div>
+                            <div class="agent-name">Wordsmith</div>
+                            <div class="agent-role">CONTENT</div>
+                        </div>
+                    </div>
+                    <div class="agent-status">
+                        <span class="status-dot active"></span>
+                        Active · 3 tasks
+                    </div>
+                </div>
+
+                <div class="agent-card status-active" onclick="filterByAgent('networker')">
+                    <div class="agent-header">
+                        <img class="agent-avatar" src="avatars/forge.png" alt="Networker">
+                        <div>
+                            <div class="agent-name">Networker</div>
+                            <div class="agent-role">OUTREACH</div>
+                        </div>
+                    </div>
+                    <div class="agent-status">
+                        <span class="status-dot active"></span>
+                        Active · 2 tasks
+                    </div>
+                </div>
+
+                <div class="agent-card status-idle" onclick="filterByAgent('architect')">
+                    <div class="agent-header">
+                        <img class="agent-avatar" src="avatars/atlas.png" alt="Architect">
+                        <div>
+                            <div class="agent-name">Architect</div>
+                            <div class="agent-role">BUILDER</div>
+                        </div>
+                    </div>
+                    <div class="agent-status">
+                        <span class="status-dot idle"></span>
+                        Idle · 0 tasks
+                    </div>
+                </div>
+
+                <div class="agent-card status-active" onclick="filterByAgent('beacon')">
+                    <div class="agent-header">
+                        <img class="agent-avatar" src="avatars/beacon.png" alt="Beacon">
+                        <div>
+                            <div class="agent-name">Beacon</div>
+                            <div class="agent-role">SALES INTEL</div>
+                        </div>
+                    </div>
+                    <div class="agent-status">
+                        <span class="status-dot active"></span>
+                        Active · 2 tasks
+                    </div>
+                </div>
+
+                <div class="agent-card status-active" onclick="filterByAgent('dispatch')">
+                    <div class="agent-header">
+                        <img class="agent-avatar" src="avatars/radar.png" alt="Dispatch">
+                        <div>
+                            <div class="agent-name">Dispatch</div>
+                            <div class="agent-role">OPS</div>
+                        </div>
+                    </div>
+                    <div class="agent-status">
+                        <span class="status-dot active"></span>
+                        Active · 4 tasks
+                    </div>
+                </div>
+
+                <div class="agent-card status-active" onclick="filterByAgent('analyst')">
+                    <div class="agent-header">
+                        <img class="agent-avatar" src="avatars/cass.png" alt="Analyst">
+                        <div>
+                            <div class="agent-name">Analyst</div>
+                            <div class="agent-role">RESEARCH</div>
+                        </div>
+                    </div>
+                    <div class="agent-status">
+                        <span class="status-dot active"></span>
+                        Active · 1 task
+                    </div>
+                </div>
+
+                <div class="agent-card status-error" onclick="filterByAgent('ledger')">
+                    <div class="agent-header">
+                        <div class="agent-avatar-icon" style="background:rgba(198,122,8,0.1);color:var(--accent-amber);">💰</div>
+                        <div>
+                            <div class="agent-name">Ledger</div>
+                            <div class="agent-role">FINANCE</div>
+                        </div>
+                    </div>
+                    <div class="agent-status">
+                        <span class="status-dot error"></span>
+                        Offline · 1 queued
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main - Kanban -->
+        <main class="main">
+            <div class="kanban-header">
+                <h2 class="kanban-title">Task Board</h2>
+                <div class="kanban-filters">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">My Context</button>
+                    <button class="filter-btn">Blocked</button>
+                </div>
+            </div>
+
+            <div class="kanban-board">
+                <!-- P0 Column -->
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <div class="column-title">
+                            <span style="color:var(--accent-rose);">🔥</span> P0 — Today
+                            <span class="column-count">2</span>
+                        </div>
+                    </div>
+                    <div class="column-tasks">
+                        <div class="task-card has-context" onclick="openTaskModal('task1')">
+                            <div class="task-title">Sedgwick research brief — URGENT</div>
+                            <div class="task-meta">
+                                <div class="task-agent">
+                                    <img src="avatars/beacon.png" alt="Beacon">
+                                    Beacon
+                                </div>
+                                <span class="task-priority p0">P0</span>
+                            </div>
+                            <div class="task-actions">
+                                <button class="task-action context" onclick="event.stopPropagation(); openContextModal('task1')">+ Context</button>
+                                <button class="task-action" onclick="event.stopPropagation(); openMessageModal('Beacon')">Message</button>
+                            </div>
+                            <div class="task-context-indicator">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                1 note from Mike
+                            </div>
+                        </div>
+
+                        <div class="task-card" onclick="openTaskModal('task2')">
+                            <div class="task-title">Monday calendar prep + meeting briefs</div>
+                            <div class="task-meta">
+                                <div class="task-agent">
+                                    <img src="avatars/radar.png" alt="Dispatch">
+                                    Dispatch
+                                </div>
+                                <span class="task-priority p0">P0</span>
+                            </div>
+                            <div class="task-actions">
+                                <button class="task-action context" onclick="event.stopPropagation(); openContextModal('task2')">+ Context</button>
+                                <button class="task-action" onclick="event.stopPropagation(); openMessageModal('Dispatch')">Message</button>
+                            </div>
+                        </div>
+
+                        <button class="add-task-btn" onclick="openNewTask('p0')">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add Task
+                        </button>
+                    </div>
+                </div>
+
+                <!-- P1 Column -->
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <div class="column-title">
+                            <span style="color:var(--accent-amber);">⚡</span> P1 — This Week
+                            <span class="column-count">4</span>
+                        </div>
+                    </div>
+                    <div class="column-tasks">
+                        <div class="task-card" onclick="openTaskModal('task3')">
+                            <div class="task-title">HireLoki email sequence draft</div>
+                            <div class="task-meta">
+                                <div class="task-agent">
+                                    <img src="avatars/forge.png" alt="Networker">
+                                    Networker
+                                </div>
+                                <span class="task-priority p1">P1</span>
+                            </div>
+                            <div class="task-actions">
+                                <button class="task-action context" onclick="event.stopPropagation(); openContextModal('task3')">+ Context</button>
+                                <button class="task-action" onclick="event.stopPropagation(); openMessageModal('Networker')">Message</button>
+                            </div>
+                        </div>
+
+                        <div class="task-card has-context" onclick="openTaskModal('task4')">
+                            <div class="task-title">DME acquisition market map</div>
+                            <div class="task-meta">
+                                <div class="task-agent">
+                                    <img src="avatars/cass.png" alt="Analyst">
+                                    Analyst
+                                </div>
+                                <span class="task-priority p1">P1</span>
+                            </div>
+                            <div class="task-actions">
+                                <button class="task-action context" onclick="event.stopPropagation(); openContextModal('task4')">+ Context</button>
+                                <button class="task-action" onclick="event.stopPropagation(); openMessageModal('Analyst')">Message</button>
+                            </div>
+                            <div class="task-context-indicator">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                1 note from Mike
+                            </div>
+                        </div>
+
+                        <div class="task-card" onclick="openTaskModal('task5')">
+                            <div class="task-title">pSEO pages for EmailKits (batch 2)</div>
+                            <div class="task-meta">
+                                <div class="task-agent">
+                                    <img src="avatars/pixel.png" alt="Wordsmith">
+                                    Wordsmith
+                                </div>
+                                <span class="task-priority p1">P1</span>
+                            </div>
+                            <div class="task-actions">
+                                <button class="task-action context" onclick="event.stopPropagation(); openContextModal('task5')">+ Context</button>
+                                <button class="task-action" onclick="event.stopPropagation(); openMessageModal('Wordsmith')">Message</button>
+                            </div>
+                        </div>
+
+                        <div class="task-card" onclick="openTaskModal('task6')">
+                            <div class="task-title">Optum follow-up email draft</div>
+                            <div class="task-meta">
+                                <div class="task-agent">
+                                    <img src="avatars/beacon.png" alt="Beacon">
+                                    Beacon
+                                </div>
+                                <span class="task-priority p1">P1</span>
+                            </div>
+                            <div class="task-actions">
+                                <button class="task-action context" onclick="event.stopPropagation(); openContextModal('task6')">+ Context</button>
+                                <button class="task-action" onclick="event.stopPropagation(); openMessageModal('Beacon')">Message</button>
+                            </div>
+                        </div>
+
+                        <button class="add-task-btn" onclick="openNewTask('p1')">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add Task
+                        </button>
+                    </div>
+                </div>
+
+                <!-- In Progress Column -->
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <div class="column-title">
+                            <span style="color:var(--accent-blue);">🔄</span> In Progress
+                            <span class="column-count">3</span>
+                        </div>
+                    </div>
+                    <div class="column-tasks">
+                        <div class="task-card" onclick="openTaskModal('task7')">
+                            <div class="task-title">Blog post: "5 Signs You Need PA Automation"</div>
+                            <div class="task-meta">
+                                <div class="task-agent">
+                                    <img src="avatars/pixel.png" alt="Wordsmith">
+                                    Wordsmith
+                                </div>
+                                <span class="task-priority p1">P1</span>
+                            </div>
+                            <div class="task-actions">
+                                <button class="task-action context" onclick="event.stopPropagation(); openContextModal('task7')">+ Context</button>
+                                <button class="task-action" onclick="event.stopPropagation(); openMessageModal('Wordsmith')">Message</button>
+                            </div>
+                        </div>
+
+                        <div class="task-card" onclick="openTaskModal('task8')">
+                            <div class="task-title">Social content calendar for Feb</div>
+                            <div class="task-meta">
+                                <div class="task-agent">
+                                    <img src="avatars/forge.png" alt="Networker">
+                                    Networker
+                                </div>
+                                <span class="task-priority p2">P2</span>
+                            </div>
+                            <div class="task-actions">
+                                <button class="task-action context" onclick="event.stopPropagation(); openContextModal('task8')">+ Context</button>
+                                <button class="task-action" onclick="event.stopPropagation(); openMessageModal('Networker')">Message</button>
+                            </div>
+                        </div>
+
+                        <div class="task-card" onclick="openTaskModal('task9')">
+                            <div class="task-title">Weekly email digest setup</div>
+                            <div class="task-meta">
+                                <div class="task-agent">
+                                    <img src="avatars/radar.png" alt="Dispatch">
+                                    Dispatch
+                                </div>
+                                <span class="task-priority p2">P2</span>
+                            </div>
+                            <div class="task-actions">
+                                <button class="task-action context" onclick="event.stopPropagation(); openContextModal('task9')">+ Context</button>
+                                <button class="task-action" onclick="event.stopPropagation(); openMessageModal('Dispatch')">Message</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Done Column -->
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <div class="column-title">
+                            <span style="color:var(--accent-emerald);">✓</span> Done Today
+                            <span class="column-count">4</span>
+                        </div>
+                    </div>
+                    <div class="column-tasks">
+                        <div class="task-card" style="opacity:0.7;">
+                            <div class="task-title" style="text-decoration:line-through;">Morning calendar brief</div>
+                            <div class="task-meta">
+                                <div class="task-agent">
+                                    <img src="avatars/radar.png" alt="Dispatch">
+                                    Dispatch
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="task-card" style="opacity:0.7;">
+                            <div class="task-title" style="text-decoration:line-through;">pSEO pages for HTMLDecks (batch 3)</div>
+                            <div class="task-meta">
+                                <div class="task-agent">
+                                    <img src="avatars/pixel.png" alt="Wordsmith">
+                                    Wordsmith
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="task-card" style="opacity:0.7;">
+                            <div class="task-title" style="text-decoration:line-through;">Healthfirst RFP research</div>
+                            <div class="task-meta">
+                                <div class="task-agent">
+                                    <img src="avatars/beacon.png" alt="Beacon">
+                                    Beacon
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="task-card" style="opacity:0.7;">
+                            <div class="task-title" style="text-decoration:line-through;">Email inbox triage</div>
+                            <div class="task-meta">
+                                <div class="task-agent">
+                                    <img src="avatars/radar.png" alt="Dispatch">
+                                    Dispatch
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Context Modal -->
+    <div class="modal-overlay" id="contextModal">
+        <div class="modal">
+            <h3>Add Context</h3>
+            <p class="modal-subtitle" id="contextTaskName">Sedgwick research brief — URGENT</p>
+            
+            <div class="context-preview" id="existingContext" style="display:none;">
+                <div class="context-preview-title">Existing Context</div>
+                <div class="context-preview-text">"Focus on their workers' comp division. They handle claims for Fortune 500 companies."</div>
+                <div class="context-preview-meta">Added by Mike · 2h ago</div>
+            </div>
+            
+            <div class="modal-field">
+                <label>Add Context / Instructions</label>
+                <textarea id="contextInput" placeholder="Add context, clarification, or specific instructions for the agent..."></textarea>
+            </div>
+            
+            <div class="modal-field">
+                <label>Priority</label>
+                <select id="prioritySelect">
+                    <option value="">No change</option>
+                    <option value="p0">🔥 P0 — Today</option>
+                    <option value="p1">⚡ P1 — This Week</option>
+                    <option value="p2">📋 P2 — Backlog</option>
+                </select>
+            </div>
+            
+            <div class="modal-field">
+                <label>Notify Agent</label>
+                <select id="notifySelect">
+                    <option value="next">On next heartbeat (recommended)</option>
+                    <option value="immediate">Immediately (wake agent now)</option>
+                </select>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeModal('contextModal')">Cancel</button>
+                <button class="modal-btn primary" onclick="saveContext()">Save Context</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Modal -->
+    <div class="modal-overlay" id="messageModal">
+        <div class="modal">
+            <h3>Message Agent</h3>
+            <p class="modal-subtitle" id="messageAgentName">Direct message to: Beacon</p>
+            
+            <div class="modal-field">
+                <label>Message</label>
+                <textarea id="messageInput" placeholder="Type your message to the agent..."></textarea>
+            </div>
+            
+            <div class="modal-field">
+                <label>Delivery</label>
+                <select>
+                    <option value="next">On next heartbeat</option>
+                    <option value="immediate">Immediately (wake agent)</option>
+                </select>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeModal('messageModal')">Cancel</button>
+                <button class="modal-btn primary" onclick="sendMessage()">Send Message</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Task Modal -->
+    <div class="modal-overlay" id="newTaskModal">
+        <div class="modal">
+            <h3>New Task</h3>
+            
+            <div class="modal-field">
+                <label>Task Title</label>
+                <input type="text" id="taskTitle" placeholder="What needs to be done?">
+            </div>
+            
+            <div class="modal-field">
+                <label>Assign To</label>
+                <select id="assignTo">
+                    <option value="">Auto-assign (Loki decides)</option>
+                    <option value="wordsmith">Wordsmith (Content)</option>
+                    <option value="networker">Networker (Outreach)</option>
+                    <option value="architect">Architect (Builder)</option>
+                    <option value="beacon">Beacon (Sales Intel)</option>
+                    <option value="dispatch">Dispatch (Ops)</option>
+                    <option value="analyst">Analyst (Research)</option>
+                </select>
+            </div>
+            
+            <div class="modal-field">
+                <label>Priority</label>
+                <select id="newTaskPriority">
+                    <option value="p1">⚡ P1 — This Week</option>
+                    <option value="p0">🔥 P0 — Today</option>
+                    <option value="p2">📋 P2 — Backlog</option>
+                </select>
+            </div>
+            
+            <div class="modal-field">
+                <label>Context (optional)</label>
+                <textarea id="newTaskContext" placeholder="Add any context or instructions..."></textarea>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeModal('newTaskModal')">Cancel</button>
+                <button class="modal-btn primary" onclick="createTask()">Create Task</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const taskData = {
+            'task1': { title: 'Sedgwick research brief — URGENT', agent: 'Beacon', hasContext: true, context: 'Focus on their workers\' comp division. They handle claims for Fortune 500 companies.' },
+            'task2': { title: 'Monday calendar prep + meeting briefs', agent: 'Dispatch', hasContext: false },
+            'task3': { title: 'HireLoki email sequence draft', agent: 'Networker', hasContext: false },
+            'task4': { title: 'DME acquisition market map', agent: 'Analyst', hasContext: true, context: 'Focus on Southeast region. Dad mentioned interest in FL/GA markets specifically.' },
+            'task5': { title: 'pSEO pages for EmailKits (batch 2)', agent: 'Wordsmith', hasContext: false },
+            'task6': { title: 'Optum follow-up email draft', agent: 'Beacon', hasContext: false },
+            'task7': { title: 'Blog post: "5 Signs You Need PA Automation"', agent: 'Wordsmith', hasContext: false },
+            'task8': { title: 'Social content calendar for Feb', agent: 'Networker', hasContext: false },
+            'task9': { title: 'Weekly email digest setup', agent: 'Dispatch', hasContext: false }
+        };
+
+        function openTaskModal(taskId) {
+            openContextModal(taskId);
+        }
+
+        function openContextModal(taskId) {
+            const task = taskData[taskId];
+            document.getElementById('contextTaskName').textContent = task.title;
+            
+            const existingContext = document.getElementById('existingContext');
+            if (task.hasContext) {
+                existingContext.style.display = 'block';
+                existingContext.querySelector('.context-preview-text').textContent = '"' + task.context + '"';
+            } else {
+                existingContext.style.display = 'none';
+            }
+            
+            document.getElementById('contextInput').value = '';
+            document.getElementById('contextModal').classList.add('active');
+        }
+
+        function openMessageModal(agentName) {
+            document.getElementById('messageAgentName').textContent = 'Direct message to: ' + agentName;
+            document.getElementById('messageInput').value = '';
+            document.getElementById('messageModal').classList.add('active');
+        }
+
+        function openNewTask(priority) {
+            if (priority) {
+                document.getElementById('newTaskPriority').value = priority;
+            }
+            document.getElementById('taskTitle').value = '';
+            document.getElementById('newTaskContext').value = '';
+            document.getElementById('newTaskModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function saveContext() {
+            const context = document.getElementById('contextInput').value;
+            if (context.trim()) {
+                alert('✓ Context saved! Agent will see this on next heartbeat.');
+            }
+            closeModal('contextModal');
+        }
+
+        function sendMessage() {
+            const message = document.getElementById('messageInput').value;
+            if (message.trim()) {
+                alert('✓ Message sent! Agent will receive on next heartbeat.');
+            }
+            closeModal('messageModal');
+        }
+
+        function createTask() {
+            const title = document.getElementById('taskTitle').value;
+            if (title.trim()) {
+                alert('✓ Task created and assigned!');
+            }
+            closeModal('newTaskModal');
+        }
+
+        function filterByAgent(agent) {
+            document.querySelectorAll('.agent-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            // Would filter tasks here in real implementation
+        }
+
+        // Close modals
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) overlay.classList.remove('active');
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+            }
+        });
+    </script>
+</body>
+</html>
