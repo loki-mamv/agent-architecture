@@ -10,47 +10,43 @@
     <style>
         /* ============================================
            MAMV Agent Architecture — Presentation CSS
-           Theme: Midnight Luxe / Deep Space
+           Theme: Light Mode — Warm & Sophisticated
+           v2: Feb 2026
            ============================================ */
 
         :root {
-            --bg-deep: #060910;
-            --bg-primary: #0a0e1a;
-            --bg-card: #0f1628;
-            --bg-card-hover: #141d35;
-            --bg-elevated: #1a2340;
-            --border-subtle: #1e293b;
-            --border-accent: #2a3a5c;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --accent-blue: #38bdf8;
-            --accent-cyan: #22d3ee;
-            --accent-indigo: #818cf8;
-            --accent-amber: #fbbf24;
-            --accent-emerald: #34d399;
-            --accent-rose: #fb7185;
-            --accent-purple: #a78bfa;
-            --gradient-main: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #a78bfa 100%);
-            --gradient-subtle: linear-gradient(135deg, rgba(56,189,248,0.1) 0%, rgba(129,140,248,0.1) 100%);
-            --gradient-card: linear-gradient(145deg, rgba(15,22,40,0.8) 0%, rgba(10,14,26,0.9) 100%);
+            --bg-deep: #FAFAF8;
+            --bg-primary: #F5F4F0;
+            --bg-card: #FFFFFF;
+            --bg-card-hover: #F8F7F4;
+            --bg-elevated: #F0EFEB;
+            --border-subtle: #E5E2DC;
+            --border-accent: #D0CCC4;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a5568;
+            --text-muted: #8892a4;
+            --accent-blue: #2b7de9;
+            --accent-cyan: #0d8aba;
+            --accent-indigo: #5b5fcf;
+            --accent-amber: #c67a08;
+            --accent-emerald: #0f8a5f;
+            --accent-rose: #c4163a;
+            --accent-purple: #7c3aed;
+            --gradient-main: linear-gradient(135deg, #2b7de9 0%, #5b5fcf 50%, #7c3aed 100%);
+            --gradient-subtle: linear-gradient(135deg, rgba(43,125,233,0.06) 0%, rgba(91,95,207,0.06) 100%);
+            --gradient-card: linear-gradient(145deg, #FFFFFF 0%, #FDFCFA 100%);
             --font-display: 'Space Grotesk', sans-serif;
             --font-body: 'DM Sans', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
             --slide-transition: 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
         }
 
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        html {
-            font-size: 16px;
-            scroll-behavior: smooth;
-            background: var(--bg-deep);
-        }
+        html { font-size: 16px; scroll-behavior: smooth; background: var(--bg-deep); }
 
         body {
             font-family: var(--font-body);
@@ -61,7 +57,6 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* ---- Global Typography ---- */
         h1, h2, h3, h4 {
             font-family: var(--font-display);
             font-weight: 700;
@@ -77,334 +72,162 @@
         }
 
         /* ---- Slide Container ---- */
-        .slides-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-        }
+        .slides-container { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
 
         .slide {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            position: absolute; top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            display: flex; flex-direction: column; justify-content: center;
             padding: 60px 80px;
-            opacity: 0;
-            transform: translateX(60px);
+            opacity: 0; transform: translateX(60px);
             transition: opacity var(--slide-transition), transform var(--slide-transition);
-            pointer-events: none;
-            overflow-y: auto;
+            pointer-events: none; overflow-y: auto;
             background: var(--bg-deep);
         }
 
-        .slide.active {
-            opacity: 1;
-            transform: translateX(0);
-            pointer-events: auto;
-            z-index: 10;
-        }
+        .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; z-index: 10; }
+        .slide.prev { opacity: 0; transform: translateX(-60px); }
 
-        .slide.prev {
-            opacity: 0;
-            transform: translateX(-60px);
-        }
-
-        /* ---- Background Effects ---- */
         .slide::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: 
-                radial-gradient(ellipse 80% 50% at 20% 40%, rgba(56,189,248,0.03) 0%, transparent 50%),
-                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(129,140,248,0.03) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(ellipse 80% 50% at 20% 40%, rgba(43,125,233,0.03) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(91,95,207,0.03) 0%, transparent 50%);
+            pointer-events: none; z-index: 0;
         }
 
-        .slide > * {
-            position: relative;
-            z-index: 1;
-        }
+        .slide > * { position: relative; z-index: 1; }
 
         /* ---- Reveal Animations ---- */
         .reveal {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
-                        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0; transform: translateY(24px);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
-        .slide.active .reveal {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .reveal-d1 { transition-delay: 0.1s; }
-        .reveal-d2 { transition-delay: 0.2s; }
-        .reveal-d3 { transition-delay: 0.3s; }
-        .reveal-d4 { transition-delay: 0.4s; }
-        .reveal-d5 { transition-delay: 0.5s; }
-        .reveal-d6 { transition-delay: 0.6s; }
-        .reveal-d7 { transition-delay: 0.7s; }
-        .reveal-d8 { transition-delay: 0.8s; }
-        .reveal-d9 { transition-delay: 0.9s; }
-        .reveal-d10 { transition-delay: 1.0s; }
+        .slide.active .reveal { opacity: 1; transform: translateY(0); }
+        .reveal-d1 { transition-delay: 0.1s; } .reveal-d2 { transition-delay: 0.2s; }
+        .reveal-d3 { transition-delay: 0.3s; } .reveal-d4 { transition-delay: 0.4s; }
+        .reveal-d5 { transition-delay: 0.5s; } .reveal-d6 { transition-delay: 0.6s; }
+        .reveal-d7 { transition-delay: 0.7s; } .reveal-d8 { transition-delay: 0.8s; }
 
         /* ---- Progress Bar ---- */
         .progress-bar {
-            position: fixed;
-            top: 0; left: 0;
-            height: 3px;
+            position: fixed; top: 0; left: 0; height: 3px;
             background: var(--gradient-main);
-            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 1000;
+            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1000;
         }
 
         /* ---- Navigation Dots ---- */
         .nav-dots {
-            position: fixed;
-            right: 30px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            z-index: 1000;
+            position: fixed; right: 30px; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 6px; z-index: 1000;
         }
-
         .nav-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--border-accent);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            padding: 0;
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--border-accent); cursor: pointer;
+            transition: all 0.3s ease; border: none; padding: 0;
         }
-
-        .nav-dot:hover {
-            background: var(--text-muted);
-            transform: scale(1.3);
-        }
-
+        .nav-dot:hover { background: var(--text-muted); transform: scale(1.3); }
         .nav-dot.active {
             background: var(--accent-blue);
-            box-shadow: 0 0 8px rgba(56,189,248,0.4);
+            box-shadow: 0 0 8px rgba(43,125,233,0.3);
             transform: scale(1.3);
         }
 
         /* ---- Slide Counter ---- */
         .slide-counter {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            z-index: 1000;
-            letter-spacing: 0.05em;
+            position: fixed; bottom: 30px; right: 30px;
+            font-family: var(--font-mono); font-size: 0.8rem;
+            color: var(--text-muted); z-index: 1000; letter-spacing: 0.05em;
         }
-
-        .slide-counter .current {
-            color: var(--accent-blue);
-            font-weight: 600;
-        }
+        .slide-counter .current { color: var(--accent-blue); font-weight: 600; }
 
         /* ---- Section Labels ---- */
         .section-label {
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--accent-blue);
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-family: var(--font-mono); font-size: 0.7rem;
+            text-transform: uppercase; letter-spacing: 0.2em;
+            color: var(--accent-blue); margin-bottom: 16px;
+            display: flex; align-items: center; gap: 10px;
         }
-
         .section-label::before {
-            content: '';
-            display: inline-block;
-            width: 24px;
-            height: 1px;
+            content: ''; display: inline-block; width: 24px; height: 1px;
             background: var(--accent-blue);
         }
 
-        /* ---- Slide Title ---- */
-        .slide-title {
-            font-size: clamp(2rem, 4vw, 3.2rem);
-            margin-bottom: 12px;
-            color: var(--text-primary);
-        }
-
+        /* ---- Slide Titles ---- */
+        .slide-title { font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 12px; color: var(--text-primary); }
         .slide-subtitle {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            font-weight: 400;
-            margin-bottom: 40px;
-            max-width: 700px;
-            line-height: 1.6;
+            font-size: 1.1rem; color: var(--text-secondary); font-weight: 400;
+            margin-bottom: 40px; max-width: 700px; line-height: 1.6;
         }
 
         /* ---- Content Helpers ---- */
-        .content-grid {
-            display: grid;
-            gap: 20px;
-        }
-
+        .content-grid { display: grid; gap: 20px; }
         .two-col { grid-template-columns: 1fr 1fr; }
         .three-col { grid-template-columns: 1fr 1fr 1fr; }
+        .four-col { grid-template-columns: 1fr 1fr 1fr 1fr; }
         .sidebar-layout { grid-template-columns: 1fr 1.5fr; gap: 40px; }
         .sidebar-layout-r { grid-template-columns: 1.5fr 1fr; gap: 40px; }
 
         /* ---- Cards ---- */
         .card {
-            background: var(--gradient-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 28px;
-            backdrop-filter: blur(20px);
-            transition: border-color 0.3s ease, transform 0.3s ease;
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 12px; padding: 28px;
+            box-shadow: var(--shadow-sm);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-
-        .card:hover {
-            border-color: var(--border-accent);
-        }
+        .card:hover { border-color: var(--border-accent); box-shadow: var(--shadow-md); }
 
         .card-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-            font-size: 1.2rem;
+            width: 40px; height: 40px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 16px; font-size: 1.2rem;
         }
+        .card-icon.blue { background: rgba(43,125,233,0.08); color: var(--accent-blue); }
+        .card-icon.cyan { background: rgba(13,138,186,0.08); color: var(--accent-cyan); }
+        .card-icon.indigo { background: rgba(91,95,207,0.08); color: var(--accent-indigo); }
+        .card-icon.amber { background: rgba(198,122,8,0.08); color: var(--accent-amber); }
+        .card-icon.emerald { background: rgba(15,138,95,0.08); color: var(--accent-emerald); }
+        .card-icon.rose { background: rgba(196,22,58,0.08); color: var(--accent-rose); }
+        .card-icon.purple { background: rgba(124,58,237,0.08); color: var(--accent-purple); }
 
-        .card-icon.blue { background: rgba(56,189,248,0.12); color: var(--accent-blue); }
-        .card-icon.cyan { background: rgba(34,211,238,0.12); color: var(--accent-cyan); }
-        .card-icon.indigo { background: rgba(129,140,248,0.12); color: var(--accent-indigo); }
-        .card-icon.amber { background: rgba(251,191,36,0.12); color: var(--accent-amber); }
-        .card-icon.emerald { background: rgba(52,211,153,0.12); color: var(--accent-emerald); }
-        .card-icon.rose { background: rgba(251,113,133,0.12); color: var(--accent-rose); }
-        .card-icon.purple { background: rgba(167,139,250,0.12); color: var(--accent-purple); }
-
-        .card h3 {
-            font-size: 1.05rem;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .card p, .card ul {
-            font-size: 0.88rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        .card ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .card ul li {
-            padding: 3px 0;
-            padding-left: 16px;
-            position: relative;
-        }
-
+        .card h3 { font-size: 1.05rem; margin-bottom: 8px; font-weight: 600; }
+        .card p, .card ul { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; }
+        .card ul { list-style: none; padding: 0; }
+        .card ul li { padding: 3px 0; padding-left: 16px; position: relative; }
         .card ul li::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 11px;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--border-accent);
+            content: ''; position: absolute; left: 0; top: 11px;
+            width: 6px; height: 6px; border-radius: 50%; background: var(--border-accent);
         }
 
         /* ---- Lists ---- */
-        .feature-list {
-            list-style: none;
-            padding: 0;
-        }
-
+        .feature-list { list-style: none; padding: 0; }
         .feature-list li {
-            padding: 10px 0;
-            padding-left: 28px;
-            position: relative;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.5;
-            border-bottom: 1px solid rgba(30,41,59,0.5);
+            padding: 10px 0; padding-left: 28px; position: relative;
+            color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5;
+            border-bottom: 1px solid var(--border-subtle);
         }
-
         .feature-list li:last-child { border-bottom: none; }
-
         .feature-list li::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 15px;
-            width: 10px;
-            height: 10px;
-            border-radius: 3px;
+            content: ''; position: absolute; left: 0; top: 15px;
+            width: 10px; height: 10px; border-radius: 3px;
             border: 2px solid var(--accent-blue);
         }
-
-        .feature-list li strong {
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        .check-list li::before {
-            content: '';
-            width: 10px;
-            height: 10px;
-            border: none;
-            border-radius: 50%;
-            background: var(--accent-emerald);
-        }
-
-        .warn-list li::before {
-            background: var(--accent-rose);
-            border: none;
-            border-radius: 50%;
-            width: 10px;
-            height: 10px;
-        }
+        .feature-list li strong { color: var(--text-primary); font-weight: 600; }
+        .check-list li::before { border: none; border-radius: 50%; background: var(--accent-emerald); width: 10px; height: 10px; }
+        .warn-list li::before { background: var(--accent-rose); border: none; border-radius: 50%; width: 10px; height: 10px; }
 
         /* ---- Code Blocks ---- */
         .code-block {
-            background: #0c1020;
-            border: 1px solid var(--border-subtle);
-            border-radius: 10px;
-            padding: 24px;
-            font-family: var(--font-mono);
-            font-size: 0.82rem;
-            line-height: 1.7;
-            color: var(--text-secondary);
-            overflow-x: auto;
-            position: relative;
+            background: #F0EFEB; border: 1px solid var(--border-subtle);
+            border-radius: 10px; padding: 24px;
+            font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.7;
+            color: var(--text-secondary); overflow-x: auto; position: relative;
         }
-
         .code-block .code-label {
-            position: absolute;
-            top: 8px;
-            right: 12px;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
+            position: absolute; top: 8px; right: 12px;
+            font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em;
             color: var(--text-muted);
         }
-
         .code-block .keyword { color: var(--accent-indigo); }
         .code-block .string { color: var(--accent-emerald); }
         .code-block .comment { color: var(--text-muted); font-style: italic; }
@@ -413,528 +236,277 @@
 
         /* ---- Agent Roster Cards ---- */
         .agent-card {
-            background: var(--gradient-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: 14px;
-            padding: 24px;
-            backdrop-filter: blur(20px);
-            position: relative;
-            overflow: hidden;
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 14px; padding: 24px; box-shadow: var(--shadow-sm);
+            position: relative; overflow: hidden;
         }
-
-        .agent-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 3px;
-        }
-
+        .agent-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
         .agent-card.tier-1::before { background: var(--gradient-main); }
         .agent-card.tier-2::before { background: linear-gradient(90deg, var(--accent-amber), var(--accent-emerald)); }
         .agent-card.tier-3::before { background: linear-gradient(90deg, var(--accent-purple), var(--accent-rose)); }
 
-        .agent-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 14px;
-        }
-
+        .agent-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
         .agent-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            flex-shrink: 0;
+            width: 44px; height: 44px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; flex-shrink: 0;
         }
-
-        .agent-name {
-            font-family: var(--font-display);
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-
-        .agent-codename {
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            color: var(--accent-blue);
-            letter-spacing: 0.05em;
-        }
-
-        .agent-role {
-            font-size: 0.82rem;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-            line-height: 1.5;
-        }
-
-        .agent-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
+        .agent-name { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; }
+        .agent-codename { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-blue); letter-spacing: 0.05em; }
+        .agent-role { font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5; }
+        .agent-meta { display: flex; flex-wrap: wrap; gap: 6px; }
         .agent-tag {
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            padding: 3px 8px;
-            border-radius: 4px;
-            background: rgba(56,189,248,0.08);
-            color: var(--accent-blue);
-            letter-spacing: 0.03em;
+            font-family: var(--font-mono); font-size: 0.68rem; padding: 3px 8px;
+            border-radius: 4px; background: rgba(43,125,233,0.06);
+            color: var(--accent-blue); letter-spacing: 0.03em;
         }
 
         /* ---- Architecture Diagram ---- */
-        .arch-diagram {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0;
-            padding: 20px 0;
-        }
-
-        .arch-tier {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            position: relative;
-        }
-
+        .arch-diagram { display: flex; flex-direction: column; align-items: center; gap: 0; padding: 20px 0; }
+        .arch-tier { display: flex; justify-content: center; gap: 20px; position: relative; }
         .arch-node {
-            text-align: center;
-            padding: 16px 28px;
-            border-radius: 12px;
-            border: 1px solid var(--border-subtle);
-            background: var(--bg-card);
-            min-width: 160px;
-            position: relative;
+            text-align: center; padding: 16px 28px; border-radius: 12px;
+            border: 1px solid var(--border-subtle); background: var(--bg-card);
+            min-width: 160px; position: relative; box-shadow: var(--shadow-sm);
         }
-
-        .arch-node.primary {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 20px rgba(56,189,248,0.1);
-        }
-
-        .arch-node.secondary {
-            border-color: var(--accent-indigo);
-            box-shadow: 0 0 20px rgba(129,140,248,0.08);
-        }
-
-        .arch-node .node-label {
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 0.95rem;
-            margin-bottom: 4px;
-        }
-
-        .arch-node .node-sub {
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-        }
-
-        .arch-connector {
-            width: 2px;
-            height: 28px;
-            background: linear-gradient(to bottom, var(--border-accent), transparent);
-            margin: 0 auto;
-        }
-
-        .arch-connector-h {
-            height: 2px;
-            flex: 1;
-            background: var(--border-accent);
-            align-self: center;
-            max-width: 40px;
-        }
+        .arch-node.primary { border-color: var(--accent-blue); box-shadow: 0 0 20px rgba(43,125,233,0.08); }
+        .arch-node.secondary { border-color: var(--accent-indigo); box-shadow: 0 0 20px rgba(91,95,207,0.06); }
+        .arch-node .node-label { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+        .arch-node .node-sub { font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono); }
+        .arch-connector { width: 2px; height: 28px; background: linear-gradient(to bottom, var(--border-accent), transparent); margin: 0 auto; }
 
         /* ---- Timeline ---- */
-        .timeline {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            padding-left: 24px;
-            border-left: 2px solid var(--border-subtle);
-        }
-
-        .timeline-item {
-            padding: 16px 0 16px 28px;
-            position: relative;
-        }
-
+        .timeline { display: flex; flex-direction: column; gap: 0; padding-left: 24px; border-left: 2px solid var(--border-subtle); }
+        .timeline-item { padding: 16px 0 16px 28px; position: relative; }
         .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -8px;
-            top: 22px;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: var(--bg-deep);
-            border: 2px solid var(--accent-blue);
+            content: ''; position: absolute; left: -8px; top: 22px;
+            width: 14px; height: 14px; border-radius: 50%;
+            background: var(--bg-deep); border: 2px solid var(--accent-blue);
         }
-
-        .timeline-item.done::before {
-            background: var(--accent-emerald);
-            border-color: var(--accent-emerald);
-        }
-
-        .timeline-label {
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            color: var(--accent-blue);
-            letter-spacing: 0.05em;
-            margin-bottom: 6px;
-        }
-
-        .timeline-text {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        .timeline-text strong {
-            color: var(--text-primary);
-        }
+        .timeline-item.done::before { background: var(--accent-emerald); border-color: var(--accent-emerald); }
+        .timeline-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-blue); letter-spacing: 0.05em; margin-bottom: 6px; }
+        .timeline-text { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+        .timeline-text strong { color: var(--text-primary); }
 
         /* ---- Stats Row ---- */
-        .stats-row {
-            display: flex;
-            gap: 20px;
-        }
-
+        .stats-row { display: flex; gap: 20px; }
         .stat-item {
-            text-align: center;
-            padding: 20px;
-            flex: 1;
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
+            text-align: center; padding: 20px; flex: 1;
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 12px; box-shadow: var(--shadow-sm);
         }
-
-        .stat-value {
-            font-family: var(--font-display);
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .stat-label {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
+        .stat-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; margin-bottom: 4px; }
+        .stat-label { font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; }
 
         /* ---- Bar Chart ---- */
-        .bar-chart {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .bar-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .bar-label {
-            font-size: 0.82rem;
-            color: var(--text-secondary);
-            min-width: 120px;
-            text-align: right;
-            font-family: var(--font-mono);
-        }
-
-        .bar-track {
-            flex: 1;
-            height: 28px;
-            background: var(--bg-card);
-            border-radius: 6px;
-            overflow: hidden;
-            position: relative;
-        }
-
+        .bar-chart { display: flex; flex-direction: column; gap: 14px; }
+        .bar-item { display: flex; align-items: center; gap: 14px; }
+        .bar-label { font-size: 0.82rem; color: var(--text-secondary); min-width: 120px; text-align: right; font-family: var(--font-mono); }
+        .bar-track { flex: 1; height: 28px; background: var(--bg-elevated); border-radius: 6px; overflow: hidden; position: relative; }
         .bar-fill {
-            height: 100%;
-            border-radius: 6px;
+            height: 100%; border-radius: 6px;
             transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex;
-            align-items: center;
-            padding: 0 12px;
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: var(--bg-deep);
+            display: flex; align-items: center; padding: 0 12px;
+            font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600; color: #fff;
         }
-
         .slide:not(.active) .bar-fill { width: 0 !important; }
-
         .bar-fill.blue { background: var(--accent-blue); }
         .bar-fill.indigo { background: var(--accent-indigo); }
         .bar-fill.amber { background: var(--accent-amber); }
         .bar-fill.emerald { background: var(--accent-emerald); }
         .bar-fill.rose { background: var(--accent-rose); }
 
-        /* ---- Heartbeat Pulse ---- */
-        .heartbeat-schedule {
-            display: grid;
-            grid-template-columns: 60px 1fr;
-            gap: 8px 16px;
-            align-items: center;
-        }
-
-        .hb-time {
-            font-family: var(--font-mono);
-            font-size: 0.82rem;
-            color: var(--accent-cyan);
-            text-align: right;
-        }
-
+        /* ---- Heartbeat ---- */
+        .heartbeat-schedule { display: grid; grid-template-columns: 60px 1fr; gap: 8px 16px; align-items: center; }
+        .hb-time { font-family: var(--font-mono); font-size: 0.82rem; color: var(--accent-cyan); text-align: right; }
         .hb-agent {
-            font-size: 0.88rem;
-            color: var(--text-secondary);
-            padding: 8px 14px;
-            background: var(--bg-card);
-            border-radius: 8px;
+            font-size: 0.88rem; color: var(--text-secondary); padding: 8px 14px;
+            background: var(--bg-card); border-radius: 8px;
             border-left: 3px solid var(--accent-cyan);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            display: flex; align-items: center; gap: 10px;
+            box-shadow: var(--shadow-sm);
         }
-
         .hb-pulse {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--accent-emerald);
-            animation: pulse 2s ease-in-out infinite;
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--accent-emerald); animation: pulse 2s ease-in-out infinite;
         }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.4; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-
-        /* ---- Flywheel Diagram ---- */
-        .flywheel {
-            width: 380px;
-            height: 380px;
-            position: relative;
-            margin: 0 auto;
-        }
-
+        /* ---- Flywheel ---- */
+        .flywheel { width: 380px; height: 380px; position: relative; margin: 0 auto; }
         .flywheel-ring {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 340px; height: 340px;
-            margin: -170px 0 0 -170px;
-            border-radius: 50%;
-            border: 2px solid var(--border-subtle);
+            position: absolute; top: 50%; left: 50%;
+            width: 340px; height: 340px; margin: -170px 0 0 -170px;
+            border-radius: 50%; border: 2px solid var(--border-subtle);
         }
-
-        .flywheel-center {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            width: 120px;
-        }
-
-        .flywheel-center .fw-label {
-            font-family: var(--font-display);
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .flywheel-center .fw-sub {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
-
-        .fw-node {
-            position: absolute;
-            width: 100px;
-            text-align: center;
-            font-size: 0.72rem;
-            color: var(--text-secondary);
-            line-height: 1.3;
-        }
-
-        .fw-node strong {
-            display: block;
-            color: var(--text-primary);
-            font-size: 0.78rem;
-            margin-bottom: 2px;
-        }
-
-        .fw-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin: 0 auto 6px;
-        }
+        .flywheel-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 120px; }
+        .flywheel-center .fw-label { font-family: var(--font-display); font-size: 1rem; font-weight: 700; }
+        .flywheel-center .fw-sub { font-size: 0.7rem; color: var(--text-muted); }
+        .fw-node { position: absolute; width: 100px; text-align: center; font-size: 0.72rem; color: var(--text-secondary); line-height: 1.3; }
+        .fw-node strong { display: block; color: var(--text-primary); font-size: 0.78rem; margin-bottom: 2px; }
+        .fw-dot { width: 10px; height: 10px; border-radius: 50%; margin: 0 auto 6px; }
 
         /* ---- Action Items ---- */
-        .action-list {
-            list-style: none;
-            padding: 0;
-            counter-reset: action;
-        }
-
+        .action-list { list-style: none; padding: 0; counter-reset: action; }
         .action-list li {
-            counter-increment: action;
-            padding: 16px 0 16px 56px;
-            position: relative;
-            border-bottom: 1px solid rgba(30,41,59,0.5);
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
+            counter-increment: action; padding: 16px 0 16px 56px; position: relative;
+            border-bottom: 1px solid var(--border-subtle);
+            font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5;
         }
-
         .action-list li:last-child { border-bottom: none; }
-
         .action-list li::before {
-            content: counter(action);
-            position: absolute;
-            left: 0;
-            top: 14px;
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: rgba(56,189,248,0.1);
-            color: var(--accent-blue);
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            content: counter(action); position: absolute; left: 0; top: 14px;
+            width: 36px; height: 36px; border-radius: 10px;
+            background: rgba(43,125,233,0.08); color: var(--accent-blue);
+            font-family: var(--font-display); font-weight: 700; font-size: 1rem;
+            display: flex; align-items: center; justify-content: center;
         }
+        .action-list li strong { color: var(--text-primary); }
 
-        .action-list li strong {
-            color: var(--text-primary);
-        }
+        .icon-svg { width: 20px; height: 20px; display: inline-block; vertical-align: middle; }
 
-        /* ---- SVG Icons inline ---- */
-        .icon-svg {
-            width: 20px;
-            height: 20px;
-            display: inline-block;
-            vertical-align: middle;
-        }
+        .divider { width: 60px; height: 3px; background: var(--gradient-main); border-radius: 2px; margin: 16px 0; }
 
-        /* ---- Divider ---- */
-        .divider {
-            width: 60px;
-            height: 3px;
-            background: var(--gradient-main);
-            border-radius: 2px;
-            margin: 16px 0;
-        }
-
-        /* ---- Tier Badge ---- */
         .tier-badge {
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            padding: 4px 10px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-bottom: 16px;
+            font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em;
+            text-transform: uppercase; padding: 4px 10px; border-radius: 4px; display: inline-block; margin-bottom: 16px;
         }
+        .tier-badge.t1 { background: rgba(43,125,233,0.08); color: var(--accent-blue); }
+        .tier-badge.t2 { background: rgba(198,122,8,0.08); color: var(--accent-amber); }
+        .tier-badge.t3 { background: rgba(124,58,237,0.08); color: var(--accent-purple); }
 
-        .tier-badge.t1 { background: rgba(56,189,248,0.12); color: var(--accent-blue); }
-        .tier-badge.t2 { background: rgba(251,191,36,0.12); color: var(--accent-amber); }
-        .tier-badge.t3 { background: rgba(167,139,250,0.12); color: var(--accent-purple); }
-
-        /* ---- Monitoring Grid ---- */
-        .monitor-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
+        /* ---- Monitor Grid ---- */
+        .monitor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .monitor-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            padding: 12px;
-            background: var(--bg-card);
-            border-radius: 8px;
-            border: 1px solid var(--border-subtle);
-            font-size: 0.82rem;
-            color: var(--text-secondary);
-            line-height: 1.4;
+            display: flex; align-items: flex-start; gap: 10px; padding: 12px;
+            background: var(--bg-card); border-radius: 8px;
+            border: 1px solid var(--border-subtle); font-size: 0.82rem;
+            color: var(--text-secondary); line-height: 1.4;
+            box-shadow: var(--shadow-sm);
         }
+        .monitor-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
 
-        .monitor-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            flex-shrink: 0;
-            margin-top: 4px;
-        }
-
-        /* ---- Closing Slide ---- */
+        /* ---- Closing ---- */
         .closing-quote {
-            font-family: var(--font-display);
-            font-size: clamp(1.6rem, 3vw, 2.4rem);
-            font-weight: 600;
-            line-height: 1.3;
-            max-width: 700px;
-            margin-bottom: 32px;
+            font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.4rem);
+            font-weight: 600; line-height: 1.3; max-width: 700px; margin-bottom: 32px;
         }
-
-        .closing-meta {
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            letter-spacing: 0.1em;
-        }
+        .closing-meta { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.1em; }
 
         /* ---- Keyboard Hint ---- */
         .kb-hint {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            z-index: 1000;
-            opacity: 0.6;
-            transition: opacity 2s ease;
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);
+            z-index: 1000; opacity: 0.6; transition: opacity 2s ease;
         }
-
         .kb-hint.hidden { opacity: 0; pointer-events: none; }
-
         kbd {
-            display: inline-block;
-            padding: 2px 6px;
-            border: 1px solid var(--border-accent);
-            border-radius: 4px;
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            background: var(--bg-card);
+            display: inline-block; padding: 2px 6px;
+            border: 1px solid var(--border-accent); border-radius: 4px;
+            font-family: var(--font-mono); font-size: 0.7rem; background: var(--bg-card);
         }
+
+        /* ---- Title Slide ---- */
+        .title-slide { justify-content: center; align-items: center; text-align: center; }
+        .title-slide::before {
+            background:
+                radial-gradient(ellipse 60% 50% at 50% 50%, rgba(43,125,233,0.04) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 30% at 30% 70%, rgba(91,95,207,0.03) 0%, transparent 50%),
+                radial-gradient(ellipse 40% 30% at 70% 30%, rgba(124,58,237,0.03) 0%, transparent 50%);
+        }
+        .title-main { font-size: clamp(3rem, 6vw, 5rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 12px; }
+        .title-sub { font-size: clamp(1.1rem, 2vw, 1.5rem); color: var(--text-secondary); font-weight: 300; margin-bottom: 40px; }
+        .title-meta { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.15em; text-transform: uppercase; }
+
+        .grid-bg {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 60px 60px; pointer-events: none; opacity: 0.5; z-index: 0;
+        }
+
+        .card-sm { padding: 18px; }
+        .card-sm h3 { font-size: 0.92rem; }
+        .card-sm p { font-size: 0.8rem; }
+
+        .hl { color: var(--accent-blue); font-weight: 600; }
+        .hl-amber { color: var(--accent-amber); font-weight: 600; }
+        .hl-emerald { color: var(--accent-emerald); font-weight: 600; }
+        .hl-rose { color: var(--accent-rose); font-weight: 600; }
+        .hl-purple { color: var(--accent-purple); font-weight: 600; }
+
+        /* ---- Soul Block ---- */
+        .soul-block {
+            background: #F0EFEB; border: 1px solid var(--border-subtle);
+            border-radius: 12px; padding: 28px;
+            font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.8;
+            color: var(--text-secondary); position: relative; overflow: hidden;
+        }
+        .soul-block::before {
+            content: 'SOUL.MD'; position: absolute; top: 10px; right: 14px;
+            font-size: 0.6rem; letter-spacing: 0.15em; color: var(--text-muted);
+        }
+        .soul-heading { color: var(--accent-indigo); font-weight: 600; }
+        .soul-key { color: var(--accent-cyan); }
+        .soul-val { color: var(--accent-amber); }
+        .soul-comment { color: var(--text-muted); font-style: italic; }
+        .soul-section { color: var(--accent-emerald); font-weight: 600; }
+
+        /* ---- Shared Resources Grid ---- */
+        .resource-item {
+            display: flex; align-items: flex-start; gap: 12px; padding: 14px;
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 10px; box-shadow: var(--shadow-sm);
+        }
+        .resource-icon {
+            width: 36px; height: 36px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .resource-item h4 { font-size: 0.88rem; margin-bottom: 2px; }
+        .resource-item p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
+
+        /* ---- Audit Schedule ---- */
+        .audit-time {
+            display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 8px; font-family: var(--font-mono); font-size: 0.82rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .audit-time .time-badge {
+            background: rgba(43,125,233,0.08); color: var(--accent-blue);
+            padding: 2px 8px; border-radius: 4px; font-weight: 600;
+        }
+
+        /* ---- Dashboard Preview ---- */
+        .dash-preview {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 14px; padding: 20px; box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+        .dash-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding-bottom: 14px; border-bottom: 1px solid var(--border-subtle); margin-bottom: 14px;
+        }
+        .dash-mini-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .dash-mini-card {
+            padding: 10px; border-radius: 8px; background: var(--bg-elevated);
+            text-align: center;
+        }
+        .dash-mini-card .mini-val { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; }
+        .dash-mini-card .mini-label { font-size: 0.65rem; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
 
         /* ---- Responsive ---- */
         @media (max-width: 900px) {
             .slide { padding: 40px 32px; }
-            .two-col, .three-col { grid-template-columns: 1fr; }
+            .two-col, .three-col, .four-col { grid-template-columns: 1fr; }
             .sidebar-layout, .sidebar-layout-r { grid-template-columns: 1fr; }
             .stats-row { flex-wrap: wrap; }
             .stat-item { min-width: 45%; }
             .nav-dots { display: none; }
             .monitor-grid { grid-template-columns: 1fr; }
+            .dash-mini-cards { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -942,134 +514,16 @@
             .slide { transition: none; }
             .hb-pulse { animation: none; opacity: 1; }
         }
-
-        /* ---- Title Slide Special ---- */
-        .title-slide {
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .title-slide::before {
-            background: 
-                radial-gradient(ellipse 60% 50% at 50% 50%, rgba(56,189,248,0.06) 0%, transparent 60%),
-                radial-gradient(ellipse 40% 30% at 30% 70%, rgba(129,140,248,0.04) 0%, transparent 50%),
-                radial-gradient(ellipse 40% 30% at 70% 30%, rgba(167,139,250,0.04) 0%, transparent 50%);
-        }
-
-        .title-main {
-            font-size: clamp(3rem, 6vw, 5rem);
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            margin-bottom: 12px;
-        }
-
-        .title-sub {
-            font-size: clamp(1.1rem, 2vw, 1.5rem);
-            color: var(--text-secondary);
-            font-weight: 300;
-            margin-bottom: 40px;
-        }
-
-        .title-meta {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-        }
-
-        /* ---- Grid Lines Background ---- */
-        .grid-bg {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                linear-gradient(rgba(30,41,59,0.2) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(30,41,59,0.2) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none;
-            opacity: 0.3;
-            z-index: 0;
-        }
-
-        /* ---- Compact Card Variant ---- */
-        .card-sm {
-            padding: 18px;
-        }
-
-        .card-sm h3 {
-            font-size: 0.92rem;
-        }
-
-        .card-sm p {
-            font-size: 0.8rem;
-        }
-
-        /* ---- Inline Highlight ---- */
-        .hl {
-            color: var(--accent-blue);
-            font-weight: 600;
-        }
-
-        .hl-amber { color: var(--accent-amber); font-weight: 600; }
-        .hl-emerald { color: var(--accent-emerald); font-weight: 600; }
-        .hl-rose { color: var(--accent-rose); font-weight: 600; }
-        .hl-purple { color: var(--accent-purple); font-weight: 600; }
-
-        /* Soul template special styling */
-        .soul-block {
-            background: #0c1020;
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 28px 28px 28px 28px;
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            line-height: 1.8;
-            color: var(--text-secondary);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .soul-block::before {
-            content: 'SOUL.MD';
-            position: absolute;
-            top: 10px;
-            right: 14px;
-            font-size: 0.6rem;
-            letter-spacing: 0.15em;
-            color: var(--text-muted);
-        }
-
-        .soul-heading { color: var(--accent-indigo); font-weight: 600; }
-        .soul-key { color: var(--accent-cyan); }
-        .soul-val { color: var(--accent-amber); }
-        .soul-comment { color: var(--text-muted); font-style: italic; }
-        .soul-section { color: var(--accent-emerald); font-weight: 600; }
     </style>
 </head>
 <body>
 
-    <!-- Progress Bar -->
     <div class="progress-bar" id="progressBar"></div>
-
-    <!-- Navigation Dots -->
     <div class="nav-dots" id="navDots"></div>
-
-    <!-- Slide Counter -->
     <div class="slide-counter">
-        <span class="current" id="currentSlide">01</span>
-        <span>/</span>
-        <span id="totalSlides">18</span>
+        <span class="current" id="currentSlide">01</span><span>/</span><span id="totalSlides">23</span>
     </div>
-
-    <!-- Keyboard Hint -->
-    <div class="kb-hint" id="kbHint">
-        <kbd>&larr;</kbd> <kbd>&rarr;</kbd> or <kbd>Space</kbd> to navigate
-    </div>
-
-    <!-- ============================================ -->
-    <!-- SLIDES -->
-    <!-- ============================================ -->
+    <div class="kb-hint" id="kbHint"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> or <kbd>Space</kbd> to navigate</div>
 
     <div class="slides-container" id="slidesContainer">
 
@@ -1077,12 +531,10 @@
         <section class="slide title-slide" data-slide="0">
             <div class="grid-bg"></div>
             <div class="section-label reveal">MAMV Ventures / Internal Strategy</div>
-            <h1 class="title-main reveal reveal-d1">
-                <span class="gradient-text">MAMV Agent</span><br>Architecture
-            </h1>
+            <h1 class="title-main reveal reveal-d1"><span class="gradient-text">MAMV Agent</span><br>Architecture</h1>
             <p class="title-sub reveal reveal-d2">Building an AI Workforce</p>
             <div class="divider reveal reveal-d3" style="margin: 0 auto 24px;"></div>
-            <p class="title-meta reveal reveal-d4">Loki + Mike Maseda &nbsp;&middot;&nbsp; MAMV Ventures &nbsp;&middot;&nbsp; February 2026</p>
+            <p class="title-meta reveal reveal-d4">Loki + Mike Maseda &middot; MAMV Ventures &middot; February 2026</p>
         </section>
 
         <!-- ======== SLIDE 2: The Vision ======== -->
@@ -1090,7 +542,6 @@
             <div class="section-label reveal">01 / Vision</div>
             <h2 class="slide-title reveal reveal-d1">The Vision</h2>
             <p class="slide-subtitle reveal reveal-d2">An AI company within a company.</p>
-
             <div class="content-grid two-col reveal reveal-d3">
                 <div>
                     <ul class="feature-list">
@@ -1124,9 +575,7 @@
             <div class="section-label reveal">02 / Architecture</div>
             <h2 class="slide-title reveal reveal-d1">Architecture Overview</h2>
             <p class="slide-subtitle reveal reveal-d2">Three tiers. Clean separation. Full visibility.</p>
-
             <div class="arch-diagram reveal reveal-d3">
-                <!-- Top Tier: Leadership -->
                 <div class="arch-tier" style="gap: 40px;">
                     <div class="arch-node primary">
                         <div class="node-label" style="color: var(--accent-amber);">
@@ -1144,76 +593,32 @@
                     </div>
                 </div>
                 <div class="arch-connector"></div>
-
-                <!-- Middle Tier: Agents -->
                 <div style="text-align:center;margin-bottom:6px;">
                     <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-muted);letter-spacing:0.15em;text-transform:uppercase;">Specialized Agents / Kimi 2.5 via OpenRouter</span>
                 </div>
                 <div class="arch-tier" style="flex-wrap: wrap; gap: 10px; justify-content: center;">
-                    <div class="arch-node secondary" style="min-width:120px;padding:10px 18px;">
-                        <div class="node-label" style="font-size:0.82rem;">Wordsmith</div>
-                        <div class="node-sub">Content</div>
-                    </div>
-                    <div class="arch-node secondary" style="min-width:120px;padding:10px 18px;">
-                        <div class="node-label" style="font-size:0.82rem;">Networker</div>
-                        <div class="node-sub">Outreach</div>
-                    </div>
-                    <div class="arch-node secondary" style="min-width:120px;padding:10px 18px;">
-                        <div class="node-label" style="font-size:0.82rem;">Architect</div>
-                        <div class="node-sub">Builder</div>
-                    </div>
-                    <div class="arch-node secondary" style="min-width:120px;padding:10px 18px;">
-                        <div class="node-label" style="font-size:0.82rem;">Scout</div>
-                        <div class="node-sub">Sales Intel</div>
-                    </div>
-                    <div class="arch-node secondary" style="min-width:120px;padding:10px 18px;">
-                        <div class="node-label" style="font-size:0.82rem;">Dispatch</div>
-                        <div class="node-sub">Ops</div>
-                    </div>
-                    <div class="arch-node secondary" style="min-width:120px;padding:10px 18px;">
-                        <div class="node-label" style="font-size:0.82rem;">Analyst</div>
-                        <div class="node-sub">Research</div>
-                    </div>
+                    <div class="arch-node secondary" style="min-width:120px;padding:10px 18px;"><div class="node-label" style="font-size:0.82rem;">Wordsmith</div><div class="node-sub">Content</div></div>
+                    <div class="arch-node secondary" style="min-width:120px;padding:10px 18px;"><div class="node-label" style="font-size:0.82rem;">Networker</div><div class="node-sub">Outreach</div></div>
+                    <div class="arch-node secondary" style="min-width:120px;padding:10px 18px;"><div class="node-label" style="font-size:0.82rem;">Architect</div><div class="node-sub">Builder</div></div>
+                    <div class="arch-node secondary" style="min-width:120px;padding:10px 18px;"><div class="node-label" style="font-size:0.82rem;">Scout</div><div class="node-sub">Sales Intel</div></div>
+                    <div class="arch-node secondary" style="min-width:120px;padding:10px 18px;"><div class="node-label" style="font-size:0.82rem;">Dispatch</div><div class="node-sub">Ops</div></div>
+                    <div class="arch-node secondary" style="min-width:120px;padding:10px 18px;"><div class="node-label" style="font-size:0.82rem;">Analyst</div><div class="node-sub">Research</div></div>
                 </div>
                 <div class="arch-connector"></div>
-
-                <!-- Bottom Tier: Infrastructure -->
                 <div style="text-align:center;margin-bottom:6px;">
                     <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-muted);letter-spacing:0.15em;text-transform:uppercase;">Shared Infrastructure</span>
                 </div>
                 <div class="arch-tier" style="gap: 10px; flex-wrap: wrap; justify-content: center;">
-                    <div class="arch-node" style="min-width:110px;padding:10px 18px;background:var(--bg-elevated);">
-                        <div class="node-label" style="font-size:0.8rem;color:var(--accent-emerald);">Kanban</div>
-                        <div class="node-sub">Task Board</div>
-                    </div>
-                    <div class="arch-node" style="min-width:110px;padding:10px 18px;background:var(--bg-elevated);">
-                        <div class="node-label" style="font-size:0.8rem;color:var(--accent-emerald);">Memory</div>
-                        <div class="node-sub">Shared Files</div>
-                    </div>
-                    <div class="arch-node" style="min-width:110px;padding:10px 18px;background:var(--bg-elevated);">
-                        <div class="node-label" style="font-size:0.8rem;color:var(--accent-emerald);">GitHub</div>
-                        <div class="node-sub">Git Repos</div>
-                    </div>
-                    <div class="arch-node" style="min-width:110px;padding:10px 18px;background:var(--bg-elevated);">
-                        <div class="node-label" style="font-size:0.8rem;color:var(--accent-emerald);">OpenClaw</div>
-                        <div class="node-sub">Platform</div>
-                    </div>
+                    <div class="arch-node" style="min-width:110px;padding:10px 18px;background:var(--bg-elevated);"><div class="node-label" style="font-size:0.8rem;color:var(--accent-emerald);">Kanban</div><div class="node-sub">Task Board</div></div>
+                    <div class="arch-node" style="min-width:110px;padding:10px 18px;background:var(--bg-elevated);"><div class="node-label" style="font-size:0.8rem;color:var(--accent-emerald);">Memory</div><div class="node-sub">Shared Files</div></div>
+                    <div class="arch-node" style="min-width:110px;padding:10px 18px;background:var(--bg-elevated);"><div class="node-label" style="font-size:0.8rem;color:var(--accent-emerald);">GitHub</div><div class="node-sub">Git Repos</div></div>
+                    <div class="arch-node" style="min-width:110px;padding:10px 18px;background:var(--bg-elevated);"><div class="node-label" style="font-size:0.8rem;color:var(--accent-emerald);">OpenClaw</div><div class="node-sub">Platform</div></div>
                 </div>
             </div>
-
             <div class="content-grid three-col reveal reveal-d5" style="margin-top: 24px;">
-                <div class="card card-sm" style="text-align:center;">
-                    <h3 style="color:var(--accent-amber);">SOUL.md</h3>
-                    <p>Identity + values per agent</p>
-                </div>
-                <div class="card card-sm" style="text-align:center;">
-                    <h3 style="color:var(--accent-blue);">AGENTS.md</h3>
-                    <p>Workspace rules + behavior</p>
-                </div>
-                <div class="card card-sm" style="text-align:center;">
-                    <h3 style="color:var(--accent-emerald);">Heartbeat Cron</h3>
-                    <p>30-min wake cycle per agent</p>
-                </div>
+                <div class="card card-sm" style="text-align:center;"><h3 style="color:var(--accent-amber);">SOUL.md</h3><p>Identity + values per agent</p></div>
+                <div class="card card-sm" style="text-align:center;"><h3 style="color:var(--accent-blue);">AGENTS.md</h3><p>Workspace rules + behavior</p></div>
+                <div class="card card-sm" style="text-align:center;"><h3 style="color:var(--accent-emerald);">Heartbeat Cron</h3><p>30-min wake cycle per agent</p></div>
             </div>
         </section>
 
@@ -1222,22 +627,15 @@
             <div class="section-label reveal">03 / Heartbeat</div>
             <h2 class="slide-title reveal reveal-d1">The Heartbeat System</h2>
             <p class="slide-subtitle reveal reveal-d2">Agents aren't always-on. They wake, work, and sleep. Saves tokens. Creates natural interaction windows.</p>
-
             <div class="content-grid sidebar-layout">
                 <div class="reveal reveal-d3">
                     <div class="heartbeat-schedule">
-                        <div class="hb-time">:00</div>
-                        <div class="hb-agent"><span class="hb-pulse"></span> <strong>Wordsmith</strong>&ensp;Content Agent</div>
-                        <div class="hb-time">:05</div>
-                        <div class="hb-agent"><span class="hb-pulse" style="animation-delay:0.3s"></span> <strong>Networker</strong>&ensp;Outreach Agent</div>
-                        <div class="hb-time">:10</div>
-                        <div class="hb-agent"><span class="hb-pulse" style="animation-delay:0.6s"></span> <strong>Architect</strong>&ensp;Builder Agent</div>
-                        <div class="hb-time">:15</div>
-                        <div class="hb-agent"><span class="hb-pulse" style="animation-delay:0.9s"></span> <strong>Scout</strong>&ensp;Sales Intel Agent</div>
-                        <div class="hb-time">:20</div>
-                        <div class="hb-agent"><span class="hb-pulse" style="animation-delay:1.2s"></span> <strong>Dispatch</strong>&ensp;Ops Agent</div>
-                        <div class="hb-time">:25</div>
-                        <div class="hb-agent"><span class="hb-pulse" style="animation-delay:1.5s"></span> <strong>Analyst</strong>&ensp;Research Agent</div>
+                        <div class="hb-time">:00</div><div class="hb-agent"><span class="hb-pulse"></span> <strong>Wordsmith</strong>&ensp;Content Agent</div>
+                        <div class="hb-time">:05</div><div class="hb-agent"><span class="hb-pulse" style="animation-delay:0.3s"></span> <strong>Networker</strong>&ensp;Outreach Agent</div>
+                        <div class="hb-time">:10</div><div class="hb-agent"><span class="hb-pulse" style="animation-delay:0.6s"></span> <strong>Architect</strong>&ensp;Builder Agent</div>
+                        <div class="hb-time">:15</div><div class="hb-agent"><span class="hb-pulse" style="animation-delay:0.9s"></span> <strong>Scout</strong>&ensp;Sales Intel Agent</div>
+                        <div class="hb-time">:20</div><div class="hb-agent"><span class="hb-pulse" style="animation-delay:1.2s"></span> <strong>Dispatch</strong>&ensp;Ops Agent</div>
+                        <div class="hb-time">:25</div><div class="hb-agent"><span class="hb-pulse" style="animation-delay:1.5s"></span> <strong>Analyst</strong>&ensp;Research Agent</div>
                     </div>
                 </div>
                 <div class="reveal reveal-d4">
@@ -1269,55 +667,134 @@
             <div class="section-label reveal">04 / Coordination</div>
             <h2 class="slide-title reveal reveal-d1">Communication &amp; Coordination</h2>
             <p class="slide-subtitle reveal reveal-d2">Shared infrastructure. No silos. Full transparency.</p>
-
             <div class="content-grid three-col reveal reveal-d3">
                 <div class="card">
-                    <div class="card-icon cyan">
-                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-                    </div>
+                    <div class="card-icon cyan"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
                     <h3>Shared Kanban</h3>
                     <p>All agents see the same task board at localhost:18790. Tasks move from Capture through P0-P2 priorities to Done. One source of truth.</p>
                 </div>
                 <div class="card">
-                    <div class="card-icon emerald">
-                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    </div>
+                    <div class="card-icon emerald"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
                     <h3>Memory Files</h3>
                     <p>Agents read and write to shared workspace files. Context persists across sessions. Each agent's output is visible to every other agent.</p>
                 </div>
                 <div class="card">
-                    <div class="card-icon indigo">
-                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                    </div>
+                    <div class="card-icon indigo"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
                     <h3>Direct Messaging</h3>
                     <p><span style="font-family:var(--font-mono);font-size:0.82rem;">sessions_send</span> for agent-to-agent comms. Loki can message any agent. Agents can flag questions up the chain.</p>
                 </div>
             </div>
-
             <div class="content-grid two-col reveal reveal-d5" style="margin-top: 20px;">
                 <div class="card">
-                    <div class="card-icon amber">
-                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    </div>
+                    <div class="card-icon amber"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
                     <h3>Daily Standup</h3>
                     <p>Loki auto-compiles agent activity into a daily standup summary. Sent to Mike each morning. Who did what, what's blocked, what's next.</p>
                 </div>
                 <div class="card">
-                    <div class="card-icon rose">
-                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    </div>
+                    <div class="card-icon rose"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
                     <h3>External Comms: Locked</h3>
                     <p>No agent can send emails, post on social, or message externally. Only Loki holds those keys. Everything stays internal until Loki approves.</p>
                 </div>
             </div>
         </section>
 
-        <!-- ======== SLIDE 6: Security Model ======== -->
+        <!-- ======== SLIDE 6: Shared Resources (NEW) ======== -->
         <section class="slide" data-slide="5">
-            <div class="section-label reveal">05 / Security</div>
+            <div class="section-label reveal">05 / Resources</div>
+            <h2 class="slide-title reveal reveal-d1">Shared Resources</h2>
+            <p class="slide-subtitle reveal reveal-d2">Every agent taps into the same infrastructure. Controlled access, no duplication.</p>
+            <div class="content-grid three-col reveal reveal-d3">
+                <div class="resource-item">
+                    <div class="resource-icon" style="background:rgba(15,138,95,0.08);color:var(--accent-emerald);">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    </div>
+                    <div><h4>Google Sheets API</h4><p>Lead tracking, feedback collection, reporting dashboards</p></div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-icon" style="background:rgba(91,95,207,0.08);color:var(--accent-indigo);">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <div><h4>Brand Kit</h4><p>Logos, colors, fonts, voice guide — consistent output across all agents</p></div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-icon" style="background:rgba(198,122,8,0.08);color:var(--accent-amber);">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    </div>
+                    <div><h4>Product Knowledge Base</h4><p>Pricing, features, FAQs — agents always have current product info</p></div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-icon" style="background:rgba(43,125,233,0.08);color:var(--accent-blue);">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    </div>
+                    <div><h4>Analytics (Read-Only)</h4><p>GA, Search Console, Gumroad — data in, no admin access</p></div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-icon" style="background:rgba(124,58,237,0.08);color:var(--accent-purple);">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    </div>
+                    <div><h4>Shared Memory Directory</h4><p>Cross-agent context, handoff files, shared state</p></div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-icon" style="background:rgba(13,138,186,0.08);color:var(--accent-cyan);">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                    </div>
+                    <div><h4>GitHub Tokens</h4><p>Scoped per-agent, mostly read-only. Minimal blast radius.</p></div>
+                </div>
+            </div>
+            <div class="reveal reveal-d5" style="margin-top: 20px;">
+                <div class="card" style="border-left: 3px solid var(--accent-rose);">
+                    <p style="font-size:0.88rem;">
+                        <svg style="width:16px;height:16px;vertical-align:middle;margin-right:6px;color:var(--accent-rose);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <strong style="color:var(--accent-rose);">No raw SMTP access for sub-agents.</strong> Only Loki sends email. Agents queue drafts, Loki reviews and sends. Zero chance of rogue outbound messages.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== SLIDE 7: Task Management via Lokiban (NEW) ======== -->
+        <section class="slide" data-slide="6">
+            <div class="section-label reveal">06 / Tasks</div>
+            <h2 class="slide-title reveal reveal-d1">Task Management via Lokiban</h2>
+            <p class="slide-subtitle reveal reveal-d2">One board. Every agent. Full visibility from assignment to completion.</p>
+            <div class="content-grid sidebar-layout-r">
+                <div class="reveal reveal-d3">
+                    <ul class="feature-list check-list">
+                        <li><strong>Loki assigns tasks to agents</strong> — or they pick up recurring ones from their queue. No guessing about who owns what.</li>
+                        <li><strong>Agents update status as they work.</strong> In Progress, Blocked, Done. Real-time task flow visible to everyone.</li>
+                        <li><strong>Each agent gets a tag.</strong> <span style="font-family:var(--font-mono);font-size:0.82rem;">#agent/copywriter</span>, <span style="font-family:var(--font-mono);font-size:0.82rem;">#agent/seo</span>, etc. Makes filtering instant.</li>
+                        <li><strong>Loki spot-checks completed work.</strong> Quality gate before anything ships. Catch drift early.</li>
+                        <li><strong>Mike can filter by agent</strong> with multi-select dropdown. See all of Scout's work, or just Pixel's blog posts.</li>
+                    </ul>
+                </div>
+                <div class="reveal reveal-d4">
+                    <div class="card" style="margin-bottom: 16px;">
+                        <h3>
+                            <svg style="width:16px;height:16px;vertical-align:middle;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                            Lokiban Board
+                        </h3>
+                        <p style="margin-bottom: 12px;">Same Kanban board that's already running at <span style="font-family:var(--font-mono);font-size:0.82rem;">localhost:18790</span>. Agents just get their own swim lanes.</p>
+                        <p>Lanes: Capture &rarr; P2 &rarr; P1 &rarr; P0 &rarr; In Progress &rarr; Done</p>
+                    </div>
+                    <div class="card">
+                        <h3>Task Capture API</h3>
+                        <div class="code-block" style="margin-top:12px;padding:16px;">
+<span class="property">POST</span> <span class="string">/api/capture</span>
+{
+  <span class="property">"text"</span>: <span class="string">"Write 5 blog posts for HTMLDecks"</span>,
+  <span class="property">"tags"</span>: [<span class="string">"#agent/copywriter"</span>],
+  <span class="property">"lane"</span>: <span class="string">"p1"</span>
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== SLIDE 8: Security Model ======== -->
+        <section class="slide" data-slide="7">
+            <div class="section-label reveal">07 / Security</div>
             <h2 class="slide-title reveal reveal-d1">Locked Down by Design</h2>
             <p class="slide-subtitle reveal reveal-d2">Trust is earned, not assumed. Every agent operates within strict boundaries.</p>
-
             <div class="content-grid sidebar-layout-r">
                 <div class="reveal reveal-d3">
                     <ul class="feature-list warn-list">
@@ -1351,116 +828,104 @@
             </div>
         </section>
 
-        <!-- ======== SLIDE 7: Tech Stack ======== -->
-        <section class="slide" data-slide="6">
-            <div class="section-label reveal">06 / Stack</div>
+        <!-- ======== SLIDE 9: Tech Stack ======== -->
+        <section class="slide" data-slide="8">
+            <div class="section-label reveal">08 / Stack</div>
             <h2 class="slide-title reveal reveal-d1">The Tech Stack</h2>
             <p class="slide-subtitle reveal reveal-d2">Open source platform. Best-in-class models. Cost-optimized hierarchy.</p>
-
             <div class="content-grid three-col reveal reveal-d3">
                 <div class="card">
-                    <div class="card-icon blue">
-                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                    </div>
+                    <div class="card-icon blue"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
                     <h3>OpenClaw</h3>
                     <p>Open-source agent platform. Runs on your Mac Mini. Sessions, tools, heartbeats, file access — all built in.</p>
                 </div>
                 <div class="card">
-                    <div class="card-icon amber">
-                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
-                    </div>
+                    <div class="card-icon amber"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg></div>
                     <h3>Claude Opus (Loki)</h3>
                     <p>Orchestrator model. Handles judgment calls, external comms, agent supervision, and strategic decisions. The brain.</p>
                 </div>
                 <div class="card">
-                    <div class="card-icon emerald">
-                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                    </div>
+                    <div class="card-icon emerald"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
                     <h3>Kimi K2.5 (Agents)</h3>
                     <p>Via OpenRouter. Capable model at a fraction of Opus cost. Handles grunt work: writing, research, coding, outreach.</p>
                 </div>
             </div>
-
             <div class="content-grid two-col reveal reveal-d5" style="margin-top: 20px;">
                 <div class="card">
-                    <h3>
-                        <svg style="width:16px;height:16px;vertical-align:middle;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                        Why OpenRouter?
-                    </h3>
+                    <h3><svg style="width:16px;height:16px;vertical-align:middle;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Why OpenRouter?</h3>
                     <p>US-based proxy. Configure privacy settings to route through US/EU providers only (Together AI, Fireworks). Data never touches Chinese servers. Full control over data routing.</p>
                 </div>
                 <div class="card">
-                    <h3>
-                        <svg style="width:16px;height:16px;vertical-align:middle;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                        Cost Logic
-                    </h3>
+                    <h3><svg style="width:16px;height:16px;vertical-align:middle;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Cost Logic</h3>
                     <p>Kimi 2.5 is significantly cheaper than Opus. Agents handle volume work. Loki handles judgment. This hierarchy keeps total cost low while maintaining quality where it matters.</p>
                 </div>
             </div>
+        </section>
 
-            <div class="reveal reveal-d6" style="margin-top: 20px;">
-                <div class="stats-row">
-                    <div class="stat-item">
-                        <div class="stat-value" style="color: var(--accent-blue);">
-                            <svg style="width:20px;height:20px;vertical-align:middle;margin-right:4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-                            GitHub
+        <!-- ======== SLIDE 10: Model Swapping (NEW) ======== -->
+        <section class="slide" data-slide="9">
+            <div class="section-label reveal">09 / Models</div>
+            <h2 class="slide-title reveal reveal-d1">Model Swapping</h2>
+            <p class="slide-subtitle reveal reveal-d2">New models drop constantly. The architecture is ready.</p>
+            <div class="content-grid sidebar-layout">
+                <div class="reveal reveal-d3">
+                    <div class="card" style="margin-bottom: 16px;">
+                        <div class="card-icon blue">
+                            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
                         </div>
-                        <div class="stat-label">Repos</div>
+                        <h3>OpenRouter Abstracts the Provider Layer</h3>
+                        <p>Swap models without touching infrastructure. OpenRouter handles routing, failover, and rate limiting. You just change a string.</p>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-value" style="color: var(--accent-emerald);">
-                            <svg style="width:20px;height:20px;vertical-align:middle;margin-right:4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-                            Kanban
+                    <div class="card" style="margin-bottom: 16px;">
+                        <div class="card-icon emerald">
+                            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                         </div>
-                        <div class="stat-label">Tasks</div>
+                        <h3>One Config Change</h3>
+                        <p>Each agent config has a <span style="font-family:var(--font-mono);">model</span> field. Swap Kimi 2.5 for GPT-4o, Claude Haiku, or whatever drops next. No code changes needed.</p>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-value" style="color: var(--accent-amber);">
-                            <svg style="width:20px;height:20px;vertical-align:middle;margin-right:4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                            Sheets
+                    <div class="card">
+                        <div class="card-icon purple">
+                            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></svg>
                         </div>
-                        <div class="stat-label">Data</div>
+                        <h3>A/B Test Models</h3>
+                        <p>Run two agents on different models, compare output quality and cost. Data-driven model selection, not guesswork.</p>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-value" style="color: var(--accent-indigo);">
-                            <svg style="width:20px;height:20px;vertical-align:middle;margin-right:4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                            FS
-                        </div>
-                        <div class="stat-label">Files</div>
+                </div>
+                <div class="reveal reveal-d4">
+                    <div class="code-block" style="margin-bottom: 16px;">
+                        <span class="code-label">Agent Config</span>
+<span class="comment"># Current</span>
+<span class="property">model:</span> <span class="string">moonshotai/kimi-k2.5</span>
+
+<span class="comment"># Swap to GPT-4o</span>
+<span class="property">model:</span> <span class="string">openai/gpt-4o</span>
+
+<span class="comment"># Swap to Claude Haiku</span>
+<span class="property">model:</span> <span class="string">anthropic/claude-3.5-haiku</span>
+
+<span class="comment"># That's it. No other changes.</span>
+                    </div>
+                    <div class="card" style="border-left: 3px solid var(--accent-emerald);">
+                        <h3 style="color:var(--accent-emerald);">Why This Matters</h3>
+                        <p>AI models improve every few weeks. Being locked to one provider is a liability. This architecture lets you ride the wave — always on the best model for the price.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ======== SLIDE 8: Kimi 2.5 Setup ======== -->
-        <section class="slide" data-slide="7">
-            <div class="section-label reveal">07 / Setup</div>
+        <!-- ======== SLIDE 11: Kimi 2.5 Setup ======== -->
+        <section class="slide" data-slide="10">
+            <div class="section-label reveal">10 / Setup</div>
             <h2 class="slide-title reveal reveal-d1">Kimi 2.5 Setup</h2>
             <p class="slide-subtitle reveal reveal-d2">Five steps from zero to running agent.</p>
-
             <div class="content-grid sidebar-layout reveal reveal-d3">
                 <div>
                     <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-label">Step 1</div>
-                            <div class="timeline-text"><strong>Get OpenRouter API key</strong><br>Sign up at openrouter.ai, generate key</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-label">Step 2</div>
-                            <div class="timeline-text"><strong>Configure Privacy</strong><br>Settings &rarr; Privacy &rarr; Disable "Moonshot AI" as provider. US/EU routing only.</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-label">Step 3</div>
-                            <div class="timeline-text"><strong>Add to OpenClaw config</strong><br>Provider, model, API key (see right)</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-label">Step 4</div>
-                            <div class="timeline-text"><strong>Create agent session</strong><br>Write specialized SOUL.md, boot session</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-label">Step 5</div>
-                            <div class="timeline-text"><strong>Set up heartbeat cron</strong><br>30-minute intervals, staggered schedule</div>
-                        </div>
+                        <div class="timeline-item"><div class="timeline-label">Step 1</div><div class="timeline-text"><strong>Get OpenRouter API key</strong><br>Sign up at openrouter.ai, generate key</div></div>
+                        <div class="timeline-item"><div class="timeline-label">Step 2</div><div class="timeline-text"><strong>Configure Privacy</strong><br>Settings &rarr; Privacy &rarr; Disable "Moonshot AI" as provider. US/EU routing only.</div></div>
+                        <div class="timeline-item"><div class="timeline-label">Step 3</div><div class="timeline-text"><strong>Add to OpenClaw config</strong><br>Provider, model, API key (see right)</div></div>
+                        <div class="timeline-item"><div class="timeline-label">Step 4</div><div class="timeline-text"><strong>Create agent session</strong><br>Write specialized SOUL.md, boot session</div></div>
+                        <div class="timeline-item"><div class="timeline-label">Step 5</div><div class="timeline-text"><strong>Set up heartbeat cron</strong><br>30-minute intervals, staggered schedule</div></div>
                     </div>
                 </div>
                 <div>
@@ -1483,208 +948,108 @@
             </div>
         </section>
 
-        <!-- ======== SLIDE 9: Roster Tier 1 ======== -->
-        <section class="slide" data-slide="8">
-            <div class="section-label reveal">08 / Roster</div>
-            <h2 class="slide-title reveal reveal-d1">Tier 1 &mdash; First Three Hires</h2>
+        <!-- ======== SLIDE 12: Roster Tier 1 ======== -->
+        <section class="slide" data-slide="11">
+            <div class="section-label reveal">11 / Roster</div>
+            <h2 class="slide-title reveal reveal-d1">Tier 1 — First Three Hires</h2>
             <div class="tier-badge t1 reveal reveal-d1">Build Now / MAMV Products</div>
             <p class="slide-subtitle reveal reveal-d2">These three cover content, outreach, and product development across the full portfolio.</p>
-
             <div class="content-grid three-col">
                 <div class="agent-card tier-1 reveal reveal-d3">
                     <div class="agent-header">
-                        <div class="agent-avatar" style="background:rgba(56,189,248,0.12);color:var(--accent-blue);">
-                            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                        </div>
-                        <div>
-                            <div class="agent-name">Content Agent</div>
-                            <div class="agent-codename">WORDSMITH</div>
-                        </div>
+                        <div class="agent-avatar" style="background:rgba(43,125,233,0.08);color:var(--accent-blue);"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+                        <div><div class="agent-name">Content Agent</div><div class="agent-codename">WORDSMITH</div></div>
                     </div>
                     <div class="agent-role">pSEO pages, blog posts, LLM optimization, copywriting. Serves HTML Decks, PageBuilderHQ, EmailKits, HireLoki.</div>
-                    <div class="agent-meta">
-                        <span class="agent-tag">SEO</span>
-                        <span class="agent-tag">Content</span>
-                        <span class="agent-tag">Keywords</span>
-                        <span class="agent-tag">llms.txt</span>
-                    </div>
+                    <div class="agent-meta"><span class="agent-tag">SEO</span><span class="agent-tag">Content</span><span class="agent-tag">Keywords</span><span class="agent-tag">llms.txt</span></div>
                     <p style="font-size:0.78rem;color:var(--text-muted);margin-top:12px;">Output: 63+ pSEO pages per site, blog content, optimization files</p>
                 </div>
-
                 <div class="agent-card tier-1 reveal reveal-d4">
                     <div class="agent-header">
-                        <div class="agent-avatar" style="background:rgba(129,140,248,0.12);color:var(--accent-indigo);">
-                            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                        </div>
-                        <div>
-                            <div class="agent-name">Outreach Agent</div>
-                            <div class="agent-codename">NETWORKER</div>
-                        </div>
+                        <div class="agent-avatar" style="background:rgba(91,95,207,0.08);color:var(--accent-indigo);"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                        <div><div class="agent-name">Outreach Agent</div><div class="agent-codename">NETWORKER</div></div>
                     </div>
                     <div class="agent-role">Email sequences, social posting, lead nurture. Serves all products + HireLoki agency pipeline.</div>
-                    <div class="agent-meta">
-                        <span class="agent-tag">Cold Email</span>
-                        <span class="agent-tag">Drip</span>
-                        <span class="agent-tag">Social</span>
-                        <span class="agent-tag">Nurture</span>
-                    </div>
+                    <div class="agent-meta"><span class="agent-tag">Cold Email</span><span class="agent-tag">Drip</span><span class="agent-tag">Social</span><span class="agent-tag">Nurture</span></div>
                     <p style="font-size:0.78rem;color:var(--text-muted);margin-top:12px;">Output: Email sequences, follow-ups, social calendar</p>
                 </div>
-
                 <div class="agent-card tier-1 reveal reveal-d5">
                     <div class="agent-header">
-                        <div class="agent-avatar" style="background:rgba(52,211,153,0.12);color:var(--accent-emerald);">
-                            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></svg>
-                        </div>
-                        <div>
-                            <div class="agent-name">Builder Agent</div>
-                            <div class="agent-codename">ARCHITECT</div>
-                        </div>
+                        <div class="agent-avatar" style="background:rgba(15,138,95,0.08);color:var(--accent-emerald);"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></svg></div>
+                        <div><div class="agent-name">Builder Agent</div><div class="agent-codename">ARCHITECT</div></div>
                     </div>
                     <div class="agent-role">Product features, template creation, site updates. Serves all product sites across the portfolio.</div>
-                    <div class="agent-meta">
-                        <span class="agent-tag">HTML/CSS/JS</span>
-                        <span class="agent-tag">Templates</span>
-                        <span class="agent-tag">Product</span>
-                    </div>
+                    <div class="agent-meta"><span class="agent-tag">HTML/CSS/JS</span><span class="agent-tag">Templates</span><span class="agent-tag">Product</span></div>
                     <p style="font-size:0.78rem;color:var(--text-muted);margin-top:12px;">Output: New templates, features, bug fixes</p>
                 </div>
             </div>
         </section>
 
-        <!-- ======== SLIDE 10: Roster Tier 2 ======== -->
-        <section class="slide" data-slide="9">
-            <div class="section-label reveal">09 / Roster</div>
-            <h2 class="slide-title reveal reveal-d1">Tier 2 &mdash; GenHealth Support</h2>
+        <!-- ======== SLIDE 13: Roster Tier 2 ======== -->
+        <section class="slide" data-slide="12">
+            <div class="section-label reveal">12 / Roster</div>
+            <h2 class="slide-title reveal reveal-d1">Tier 2 — GenHealth Support</h2>
             <div class="tier-badge t2 reveal reveal-d1">Build Soon</div>
             <p class="slide-subtitle reveal reveal-d2">Sales intelligence and operational support for the day job.</p>
-
             <div class="content-grid two-col">
                 <div class="agent-card tier-2 reveal reveal-d3">
                     <div class="agent-header">
-                        <div class="agent-avatar" style="background:rgba(251,191,36,0.12);color:var(--accent-amber);">
-                            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                        </div>
-                        <div>
-                            <div class="agent-name">Sales Intel Agent</div>
-                            <div class="agent-codename">SCOUT</div>
-                        </div>
+                        <div class="agent-avatar" style="background:rgba(198,122,8,0.08);color:var(--accent-amber);"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                        <div><div class="agent-name">Sales Intel Agent</div><div class="agent-codename">SCOUT</div></div>
                     </div>
                     <div class="agent-role">Deal research, competitor monitoring, conference prep, CRM updates. Serves GenHealth sales pipeline.</div>
-                    <div style="margin: 12px 0;">
-                        <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;">
-                            <strong style="color:var(--text-primary);">Context:</strong> Optum, Sedgwick, Healthfirst deals. Medtrade, AHIP, and HIMSS conference prep. Pre-meeting briefs, competitor updates, deal summaries.
-                        </p>
-                    </div>
-                    <div class="agent-meta">
-                        <span class="agent-tag">Research</span>
-                        <span class="agent-tag">Competitive Intel</span>
-                        <span class="agent-tag">CRM</span>
-                        <span class="agent-tag">Briefs</span>
-                    </div>
+                    <div style="margin: 12px 0;"><p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;"><strong style="color:var(--text-primary);">Context:</strong> Optum, Sedgwick, Healthfirst deals. Medtrade, AHIP, and HIMSS conference prep.</p></div>
+                    <div class="agent-meta"><span class="agent-tag">Research</span><span class="agent-tag">Competitive Intel</span><span class="agent-tag">CRM</span><span class="agent-tag">Briefs</span></div>
                 </div>
-
                 <div class="agent-card tier-2 reveal reveal-d4">
                     <div class="agent-header">
-                        <div class="agent-avatar" style="background:rgba(251,113,133,0.12);color:var(--accent-rose);">
-                            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                        </div>
-                        <div>
-                            <div class="agent-name">Ops Agent</div>
-                            <div class="agent-codename">DISPATCH</div>
-                        </div>
+                        <div class="agent-avatar" style="background:rgba(196,22,58,0.08);color:var(--accent-rose);"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+                        <div><div class="agent-name">Ops Agent</div><div class="agent-codename">DISPATCH</div></div>
                     </div>
                     <div class="agent-role">Email triage, calendar prep, meeting follow-ups, task grooming. Serves Mike's daily workflow.</div>
-                    <div style="margin: 12px 0;">
-                        <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;">
-                            <strong style="color:var(--text-primary);">Outputs:</strong> Morning briefs, meeting summaries, follow-up reminders, action item extraction. Keeps the gears turning while Mike focuses on high-leverage work.
-                        </p>
-                    </div>
-                    <div class="agent-meta">
-                        <span class="agent-tag">Email</span>
-                        <span class="agent-tag">Calendar</span>
-                        <span class="agent-tag">Scheduling</span>
-                        <span class="agent-tag">Tasks</span>
-                    </div>
+                    <div style="margin: 12px 0;"><p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;"><strong style="color:var(--text-primary);">Outputs:</strong> Morning briefs, meeting summaries, follow-up reminders, action item extraction.</p></div>
+                    <div class="agent-meta"><span class="agent-tag">Email</span><span class="agent-tag">Calendar</span><span class="agent-tag">Scheduling</span><span class="agent-tag">Tasks</span></div>
                 </div>
             </div>
         </section>
 
-        <!-- ======== SLIDE 11: Roster Tier 3 ======== -->
-        <section class="slide" data-slide="10">
-            <div class="section-label reveal">10 / Roster</div>
-            <h2 class="slide-title reveal reveal-d1">Tier 3 &mdash; Scaling Up</h2>
+        <!-- ======== SLIDE 14: Roster Tier 3 ======== -->
+        <section class="slide" data-slide="13">
+            <div class="section-label reveal">13 / Roster</div>
+            <h2 class="slide-title reveal reveal-d1">Tier 3 — Scaling Up</h2>
             <div class="tier-badge t3 reveal reveal-d1">Build Later</div>
             <p class="slide-subtitle reveal reveal-d2">Deep research and financial oversight. Deploy when Tiers 1-2 are proven.</p>
-
             <div class="content-grid two-col">
                 <div class="agent-card tier-3 reveal reveal-d3">
                     <div class="agent-header">
-                        <div class="agent-avatar" style="background:rgba(167,139,250,0.12);color:var(--accent-purple);">
-                            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                        </div>
-                        <div>
-                            <div class="agent-name">Research Agent</div>
-                            <div class="agent-codename">ANALYST</div>
-                        </div>
+                        <div class="agent-avatar" style="background:rgba(124,58,237,0.08);color:var(--accent-purple);"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+                        <div><div class="agent-name">Research Agent</div><div class="agent-codename">ANALYST</div></div>
                     </div>
                     <div class="agent-role">Due diligence for acquisitions, market research, industry deep-dives. Serves DME acquisitions and new venture evaluation.</div>
-                    <div style="margin: 12px 0;">
-                        <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;">
-                            <strong style="color:var(--text-primary);">Skills:</strong> Financial analysis, market sizing, competitive landscapes
-                        </p>
-                        <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;">
-                            <strong style="color:var(--text-primary);">Output:</strong> Research reports, investment memos, market maps
-                        </p>
-                    </div>
-                    <div class="agent-meta">
-                        <span class="agent-tag">Due Diligence</span>
-                        <span class="agent-tag">Market Research</span>
-                        <span class="agent-tag">Analysis</span>
-                    </div>
+                    <div style="margin: 12px 0;"><p style="font-size:0.82rem;color:var(--text-secondary);"><strong style="color:var(--text-primary);">Output:</strong> Research reports, investment memos, market maps</p></div>
+                    <div class="agent-meta"><span class="agent-tag">Due Diligence</span><span class="agent-tag">Market Research</span><span class="agent-tag">Analysis</span></div>
                 </div>
-
                 <div class="agent-card tier-3 reveal reveal-d4">
                     <div class="agent-header">
-                        <div class="agent-avatar" style="background:rgba(251,191,36,0.12);color:var(--accent-amber);">
-                            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                        </div>
-                        <div>
-                            <div class="agent-name">Finance Agent</div>
-                            <div class="agent-codename">LEDGER</div>
-                        </div>
+                        <div class="agent-avatar" style="background:rgba(198,122,8,0.08);color:var(--accent-amber);"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                        <div><div class="agent-name">Finance Agent</div><div class="agent-codename">LEDGER</div></div>
                     </div>
                     <div class="agent-role">Expense monitoring, invoice tracking, financial reporting. Serves MAMV Ventures and GenHealth.</div>
-                    <div style="margin: 12px 0;">
-                        <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;">
-                            <strong style="color:var(--text-primary);">Skills:</strong> Transaction categorization, budget tracking, alerts
-                        </p>
-                        <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;">
-                            <strong style="color:var(--text-primary);">Output:</strong> Weekly spend reports, anomaly alerts, financial summaries
-                        </p>
-                    </div>
-                    <div class="agent-meta">
-                        <span class="agent-tag">Expenses</span>
-                        <span class="agent-tag">Invoices</span>
-                        <span class="agent-tag">Budget</span>
-                        <span class="agent-tag">Alerts</span>
-                    </div>
+                    <div style="margin: 12px 0;"><p style="font-size:0.82rem;color:var(--text-secondary);"><strong style="color:var(--text-primary);">Output:</strong> Weekly spend reports, anomaly alerts, financial summaries</p></div>
+                    <div class="agent-meta"><span class="agent-tag">Expenses</span><span class="agent-tag">Invoices</span><span class="agent-tag">Budget</span><span class="agent-tag">Alerts</span></div>
                 </div>
             </div>
         </section>
 
-        <!-- ======== SLIDE 12: SOUL Template ======== -->
-        <section class="slide" data-slide="11">
-            <div class="section-label reveal">11 / Template</div>
+        <!-- ======== SLIDE 15: SOUL Template (UPDATED) ======== -->
+        <section class="slide" data-slide="14">
+            <div class="section-label reveal">14 / Template</div>
             <h2 class="slide-title reveal reveal-d1">Agent SOUL Template</h2>
-            <p class="slide-subtitle reveal reveal-d2">Every agent gets a SOUL.md. Identity, values, specialization, and boundaries. Here's what Wordsmith's looks like.</p>
-
+            <p class="slide-subtitle reveal reveal-d2">Every agent gets a SOUL.md. Identity, values, specialization, and hard boundaries.</p>
             <div class="content-grid sidebar-layout reveal reveal-d3">
                 <div>
                     <div class="card" style="margin-bottom: 16px;">
-                        <div class="card-icon blue">
-                            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                        </div>
+                        <div class="card-icon blue"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
                         <h3>What SOUL.md Contains</h3>
                         <ul>
                             <li>Agent name and codename</li>
@@ -1722,118 +1087,175 @@
   its place.
 
 <span class="soul-section">## Boundaries</span>
-<span style="color:var(--accent-rose);">- NO external publishing without Loki's approval</span>
+<span style="color:var(--accent-rose);">- No external publishing. No emails, posts,
+  tweets, or messages to anyone outside the
+  system. All output stays internal until
+  explicitly approved by the operator.</span>
 <span style="color:var(--accent-rose);">- Write to workspace files only</span>
 <span style="color:var(--accent-rose);">- Flag questions to Loki, not Mike directly</span>
+<span class="soul-comment">  # Strict default. Can be loosened per-agent.</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ======== SLIDE 13: Health Monitoring ======== -->
-        <section class="slide" data-slide="12">
-            <div class="section-label reveal">12 / Monitoring</div>
+        <!-- ======== SLIDE 16: Health Monitoring ======== -->
+        <section class="slide" data-slide="15">
+            <div class="section-label reveal">15 / Monitoring</div>
             <h2 class="slide-title reveal reveal-d1">Health Monitoring</h2>
             <p class="slide-subtitle reveal reveal-d2">Loki watches everything. Every heartbeat, every token, every anomaly.</p>
-
             <div class="content-grid sidebar-layout-r">
                 <div class="reveal reveal-d3">
                     <h3 style="font-size:0.9rem;margin-bottom:16px;color:var(--text-secondary);">Per-Agent Metrics</h3>
                     <div class="monitor-grid">
-                        <div class="monitor-item">
-                            <div class="monitor-dot" style="background:var(--accent-emerald);"></div>
-                            <div><strong style="color:var(--text-primary);">Last Heartbeat</strong><br>Timestamp of last successful wake</div>
-                        </div>
-                        <div class="monitor-item">
-                            <div class="monitor-dot" style="background:var(--accent-blue);"></div>
-                            <div><strong style="color:var(--text-primary);">Tasks / Week</strong><br>Completed items from Kanban</div>
-                        </div>
-                        <div class="monitor-item">
-                            <div class="monitor-dot" style="background:var(--accent-amber);"></div>
-                            <div><strong style="color:var(--text-primary);">Token Burn</strong><br>Daily and weekly consumption</div>
-                        </div>
-                        <div class="monitor-item">
-                            <div class="monitor-dot" style="background:var(--accent-rose);"></div>
-                            <div><strong style="color:var(--text-primary);">Error Rate</strong><br>Failed tool calls percentage</div>
-                        </div>
-                        <div class="monitor-item">
-                            <div class="monitor-dot" style="background:var(--accent-indigo);"></div>
-                            <div><strong style="color:var(--text-primary);">Drift Score</strong><br>Staying on task? Relevant output?</div>
-                        </div>
-                        <div class="monitor-item">
-                            <div class="monitor-dot" style="background:var(--accent-cyan);"></div>
-                            <div><strong style="color:var(--text-primary);">File Access</strong><br>Unusual read/write patterns</div>
-                        </div>
+                        <div class="monitor-item"><div class="monitor-dot" style="background:var(--accent-emerald);"></div><div><strong style="color:var(--text-primary);">Last Heartbeat</strong><br>Timestamp of last successful wake</div></div>
+                        <div class="monitor-item"><div class="monitor-dot" style="background:var(--accent-blue);"></div><div><strong style="color:var(--text-primary);">Tasks / Week</strong><br>Completed items from Kanban</div></div>
+                        <div class="monitor-item"><div class="monitor-dot" style="background:var(--accent-amber);"></div><div><strong style="color:var(--text-primary);">Token Burn</strong><br>Daily and weekly consumption</div></div>
+                        <div class="monitor-item"><div class="monitor-dot" style="background:var(--accent-rose);"></div><div><strong style="color:var(--text-primary);">Error Rate</strong><br>Failed tool calls percentage</div></div>
+                        <div class="monitor-item"><div class="monitor-dot" style="background:var(--accent-indigo);"></div><div><strong style="color:var(--text-primary);">Drift Score</strong><br>Staying on task? Relevant output?</div></div>
+                        <div class="monitor-item"><div class="monitor-dot" style="background:var(--accent-cyan);"></div><div><strong style="color:var(--text-primary);">File Access</strong><br>Unusual read/write patterns</div></div>
                     </div>
                 </div>
                 <div class="reveal reveal-d4">
                     <h3 style="font-size:0.9rem;margin-bottom:16px;color:var(--text-secondary);">Alert Triggers</h3>
-                    <div class="card" style="margin-bottom: 12px; border-left: 3px solid var(--accent-rose);">
-                        <p style="font-size:0.85rem;"><strong style="color:var(--accent-rose);">Missed 2+ heartbeats</strong><br>Investigate immediately. Agent may be stuck or crashed.</p>
-                    </div>
-                    <div class="card" style="margin-bottom: 12px; border-left: 3px solid var(--accent-amber);">
-                        <p style="font-size:0.85rem;"><strong style="color:var(--accent-amber);">Token burn > 2x average</strong><br>Throttle. Agent may be in a loop or processing excessive input.</p>
-                    </div>
-                    <div class="card" style="margin-bottom: 12px; border-left: 3px solid var(--accent-indigo);">
-                        <p style="font-size:0.85rem;"><strong style="color:var(--accent-indigo);">Repeated errors</strong><br>Pause and review. Something in the toolchain may be broken.</p>
-                    </div>
-                    <div class="card" style="border-left: 3px solid var(--accent-purple);">
-                        <p style="font-size:0.85rem;"><strong style="color:var(--accent-purple);">Unusual file access</strong><br>Flag for review. Agent may have drifted outside its scope.</p>
-                    </div>
-                    <p style="font-size:0.78rem;color:var(--text-muted);margin-top:16px;font-family:var(--font-mono);">Weekly health report auto-sent to Mike.</p>
+                    <div class="card" style="margin-bottom: 12px; border-left: 3px solid var(--accent-rose);"><p style="font-size:0.85rem;"><strong style="color:var(--accent-rose);">Missed 2+ heartbeats</strong><br>Investigate immediately. Agent may be stuck or crashed.</p></div>
+                    <div class="card" style="margin-bottom: 12px; border-left: 3px solid var(--accent-amber);"><p style="font-size:0.85rem;"><strong style="color:var(--accent-amber);">Token burn > 2x average</strong><br>Throttle. Agent may be in a loop or processing excessive input.</p></div>
+                    <div class="card" style="margin-bottom: 12px; border-left: 3px solid var(--accent-indigo);"><p style="font-size:0.85rem;"><strong style="color:var(--accent-indigo);">Repeated errors</strong><br>Pause and review. Something in the toolchain may be broken.</p></div>
+                    <div class="card" style="border-left: 3px solid var(--accent-purple);"><p style="font-size:0.85rem;"><strong style="color:var(--accent-purple);">Unusual file access</strong><br>Flag for review. Agent may have drifted outside its scope.</p></div>
                 </div>
             </div>
         </section>
 
-        <!-- ======== SLIDE 14: Cost Projections ======== -->
-        <section class="slide" data-slide="13">
-            <div class="section-label reveal">13 / Cost</div>
+        <!-- ======== SLIDE 17: Daily Agent Audit (NEW) ======== -->
+        <section class="slide" data-slide="16">
+            <div class="section-label reveal">16 / Audit</div>
+            <h2 class="slide-title reveal reveal-d1">Daily Agent Audit</h2>
+            <p class="slide-subtitle reveal reveal-d2">Added to Loki's heartbeat. Three checks per day, full transparency.</p>
+            <div class="content-grid sidebar-layout-r">
+                <div class="reveal reveal-d3">
+                    <div class="content-grid two-col" style="margin-bottom: 20px;">
+                        <div class="card card-sm">
+                            <div class="card-icon amber"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                            <h3>Token Usage per Agent</h3>
+                            <p>Cost tracking by agent and by day. Spot anomalies before they become expensive.</p>
+                        </div>
+                        <div class="card card-sm">
+                            <div class="card-icon cyan"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+                            <h3>External API Calls</h3>
+                            <p>What, where, how many. Every outbound call logged and reviewed.</p>
+                        </div>
+                        <div class="card card-sm">
+                            <div class="card-icon rose"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
+                            <h3>Failed/Blocked Actions</h3>
+                            <p>What didn't work and why. Patterns here reveal infrastructure issues early.</p>
+                        </div>
+                        <div class="card card-sm">
+                            <div class="card-icon indigo"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+                            <h3>Output Spot Check</h3>
+                            <p>Loki samples agent output for quality. Catches drift before it compounds.</p>
+                        </div>
+                    </div>
+                    <div class="card card-sm">
+                        <div class="card-icon purple"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+                        <h3>Model Version Monitoring</h3>
+                        <p>Track which model version each agent is running. Detect provider-side changes before they impact output.</p>
+                    </div>
+                </div>
+                <div class="reveal reveal-d4">
+                    <div class="card" style="margin-bottom: 16px; border-left: 3px solid var(--accent-blue);">
+                        <h3>Audit Schedule</h3>
+                        <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px;">
+                            <div class="audit-time"><span class="time-badge">8:00 AM</span> Morning sweep — overnight activity review</div>
+                            <div class="audit-time"><span class="time-badge">12:00 PM</span> Midday check — active work validation</div>
+                            <div class="audit-time"><span class="time-badge">4:00 PM</span> Afternoon wrap — daily summary compiled</div>
+                        </div>
+                    </div>
+                    <div class="card" style="border-left: 3px solid var(--accent-emerald);">
+                        <h3 style="color:var(--accent-emerald);">Loki Reports to Mike</h3>
+                        <p>Every audit cycle, Loki compiles findings into a summary. Anomalies get flagged. Green lights mean all good. Mike gets full visibility without needing to check anything manually.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== SLIDE 18: Agent Dashboard (NEW) ======== -->
+        <section class="slide" data-slide="17">
+            <div class="section-label reveal">17 / Dashboard</div>
+            <h2 class="slide-title reveal reveal-d1">Agent Dashboard</h2>
+            <p class="slide-subtitle reveal reveal-d2">Mike's window into the system. Green lights = all good. Red = dig in.</p>
+            <div class="content-grid sidebar-layout-r">
+                <div class="reveal reveal-d3">
+                    <!-- Mini dashboard preview -->
+                    <div class="dash-preview">
+                        <div class="dash-header">
+                            <div>
+                                <div style="font-family:var(--font-display);font-weight:700;font-size:0.9rem;">MAMV Agent Dashboard</div>
+                                <div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-muted);">Live Overview</div>
+                            </div>
+                            <div style="display:flex;gap:6px;">
+                                <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-emerald);"></span>
+                                <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-emerald);"></span>
+                                <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-amber);"></span>
+                                <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-emerald);"></span>
+                                <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-rose);"></span>
+                            </div>
+                        </div>
+                        <div class="dash-mini-cards">
+                            <div class="dash-mini-card"><div class="mini-val" style="color:var(--accent-blue);">7</div><div class="mini-label">Agents</div></div>
+                            <div class="dash-mini-card"><div class="mini-val" style="color:var(--accent-emerald);">12</div><div class="mini-label">Tasks Done</div></div>
+                            <div class="dash-mini-card"><div class="mini-val" style="color:var(--accent-amber);">470K</div><div class="mini-label">Tokens</div></div>
+                            <div class="dash-mini-card"><div class="mini-val" style="color:var(--accent-indigo);">$0.40</div><div class="mini-label">Cost</div></div>
+                        </div>
+                    </div>
+                    <ul class="feature-list check-list" style="margin-top: 20px;">
+                        <li><strong>Agent roster with status</strong> — active, idle, error at a glance</li>
+                        <li><strong>Tasks in progress</strong> — what's being worked on right now</li>
+                        <li><strong>Daily output summary</strong> — pages, emails, posts, total output</li>
+                        <li><strong>Token/cost per agent</strong> — who's using what</li>
+                    </ul>
+                </div>
+                <div class="reveal reveal-d4">
+                    <div class="card" style="margin-bottom: 16px;">
+                        <h3>
+                            <svg style="width:16px;height:16px;vertical-align:middle;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                            Web App on Mac Mini
+                        </h3>
+                        <p>Same local-first approach as Lokiban. Runs on the Mac Mini, accessible via Tailscale. No cloud dependency.</p>
+                    </div>
+                    <div class="card" style="margin-bottom: 16px;">
+                        <h3>What It Shows</h3>
+                        <ul>
+                            <li>Agent roster + real-time status</li>
+                            <li>Last heartbeat per agent</li>
+                            <li>Alert log (errors, rate limits, flags)</li>
+                            <li>Activity feed — who did what, when</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-left: 3px solid var(--accent-blue);">
+                        <p style="font-size:0.88rem;"><strong>Built alongside first agent hire.</strong> Dashboard and agents ship together. From day one, you see everything the system does.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== SLIDE 19: Cost Projections ======== -->
+        <section class="slide" data-slide="18">
+            <div class="section-label reveal">18 / Cost</div>
             <h2 class="slide-title reveal reveal-d1">What This Costs</h2>
             <p class="slide-subtitle reveal reveal-d2">Cheaper than a single hire. By a lot.</p>
-
             <div class="content-grid sidebar-layout-r">
                 <div class="reveal reveal-d3">
                     <div class="bar-chart">
-                        <div class="bar-item">
-                            <div class="bar-label">3 Agents</div>
-                            <div class="bar-track">
-                                <div class="bar-fill blue" style="width: 6%;">$150-300/mo</div>
-                            </div>
-                        </div>
-                        <div class="bar-item">
-                            <div class="bar-label">5 Agents</div>
-                            <div class="bar-track">
-                                <div class="bar-fill indigo" style="width: 9%;">$300-450/mo</div>
-                            </div>
-                        </div>
-                        <div class="bar-item">
-                            <div class="bar-label">7 Agents</div>
-                            <div class="bar-track">
-                                <div class="bar-fill amber" style="width: 12%;">$450-750/mo</div>
-                            </div>
-                        </div>
-                        <div class="bar-item">
-                            <div class="bar-label" style="color:var(--accent-rose);">1 Human</div>
-                            <div class="bar-track">
-                                <div class="bar-fill rose" style="width: 100%;">$4,000-8,000/mo</div>
-                            </div>
-                        </div>
+                        <div class="bar-item"><div class="bar-label">3 Agents</div><div class="bar-track"><div class="bar-fill blue" style="width: 6%;">$150-300/mo</div></div></div>
+                        <div class="bar-item"><div class="bar-label">5 Agents</div><div class="bar-track"><div class="bar-fill indigo" style="width: 9%;">$300-450/mo</div></div></div>
+                        <div class="bar-item"><div class="bar-label">7 Agents</div><div class="bar-track"><div class="bar-fill amber" style="width: 12%;">$450-750/mo</div></div></div>
+                        <div class="bar-item"><div class="bar-label" style="color:var(--accent-rose);">1 Human</div><div class="bar-track"><div class="bar-fill rose" style="width: 100%;">$4,000-8,000/mo</div></div></div>
                     </div>
-
                     <div style="margin-top: 24px;">
                         <div class="stats-row" style="gap:12px;">
-                            <div class="stat-item" style="padding:14px;">
-                                <div class="stat-value" style="font-size:1.4rem;color:var(--accent-blue);">48</div>
-                                <div class="stat-label">Wakes / Day</div>
-                            </div>
-                            <div class="stat-item" style="padding:14px;">
-                                <div class="stat-value" style="font-size:1.4rem;color:var(--accent-cyan);">~2K</div>
-                                <div class="stat-label">Tokens / Wake</div>
-                            </div>
-                            <div class="stat-item" style="padding:14px;">
-                                <div class="stat-value" style="font-size:1.4rem;color:var(--accent-emerald);">~96K</div>
-                                <div class="stat-label">Tokens / Day</div>
-                            </div>
+                            <div class="stat-item" style="padding:14px;"><div class="stat-value" style="font-size:1.4rem;color:var(--accent-blue);">48</div><div class="stat-label">Wakes / Day</div></div>
+                            <div class="stat-item" style="padding:14px;"><div class="stat-value" style="font-size:1.4rem;color:var(--accent-cyan);">~2K</div><div class="stat-label">Tokens / Wake</div></div>
+                            <div class="stat-item" style="padding:14px;"><div class="stat-value" style="font-size:1.4rem;color:var(--accent-emerald);">~96K</div><div class="stat-label">Tokens / Day</div></div>
                         </div>
                     </div>
                 </div>
@@ -1847,61 +1269,29 @@
                         </ul>
                     </div>
                     <div class="card" style="border-color: var(--accent-emerald);">
-                        <h3 style="color: var(--accent-emerald);">
-                            <svg style="width:16px;height:16px;vertical-align:middle;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                            ROI
-                        </h3>
+                        <h3 style="color: var(--accent-emerald);"><svg style="width:16px;height:16px;vertical-align:middle;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>ROI</h3>
                         <p>If agents produce even <strong style="color:var(--accent-emerald);">10%</strong> of a human's output, they're <strong style="color:var(--accent-emerald);">10x cheaper</strong>. And they run 24/7. No PTO. No ramp-up. No turnover.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ======== SLIDE 15: The Flywheel ======== -->
-        <section class="slide" data-slide="14">
-            <div class="section-label reveal">14 / Growth</div>
+        <!-- ======== SLIDE 20: The Flywheel ======== -->
+        <section class="slide" data-slide="19">
+            <div class="section-label reveal">19 / Growth</div>
             <h2 class="slide-title reveal reveal-d1">The Flywheel</h2>
             <p class="slide-subtitle reveal reveal-d2">Compound growth. Each cycle strengthens the whole system.</p>
-
             <div class="content-grid sidebar-layout reveal reveal-d3" style="align-items: center;">
                 <div>
                     <div class="flywheel" style="width:320px;height:320px;">
                         <div class="flywheel-ring" style="width:290px;height:290px;margin:-145px 0 0 -145px;"></div>
-                        <div class="flywheel-center">
-                            <div class="fw-label gradient-text">MAMV</div>
-                            <div class="fw-sub">Growth Engine</div>
-                        </div>
-                        <!-- Nodes positioned around the circle -->
-                        <div class="fw-node" style="top:-10px;left:50%;transform:translateX(-50%);">
-                            <div class="fw-dot" style="background:var(--accent-blue);"></div>
-                            <strong>Products</strong>
-                            Generate leads
-                        </div>
-                        <div class="fw-node" style="top:45px;right:-30px;">
-                            <div class="fw-dot" style="background:var(--accent-cyan);"></div>
-                            <strong>Content</strong>
-                            Drives traffic
-                        </div>
-                        <div class="fw-node" style="bottom:45px;right:-30px;">
-                            <div class="fw-dot" style="background:var(--accent-indigo);"></div>
-                            <strong>Outreach</strong>
-                            Nurtures leads
-                        </div>
-                        <div class="fw-node" style="bottom:-10px;left:50%;transform:translateX(-50%);">
-                            <div class="fw-dot" style="background:var(--accent-emerald);"></div>
-                            <strong>Revenue</strong>
-                            Funds growth
-                        </div>
-                        <div class="fw-node" style="bottom:45px;left:-30px;">
-                            <div class="fw-dot" style="background:var(--accent-amber);"></div>
-                            <strong>Builder</strong>
-                            Improves products
-                        </div>
-                        <div class="fw-node" style="top:45px;left:-30px;">
-                            <div class="fw-dot" style="background:var(--accent-purple);"></div>
-                            <strong>HireLoki</strong>
-                            Agency revenue
-                        </div>
+                        <div class="flywheel-center"><div class="fw-label gradient-text">MAMV</div><div class="fw-sub">Growth Engine</div></div>
+                        <div class="fw-node" style="top:-10px;left:50%;transform:translateX(-50%);"><div class="fw-dot" style="background:var(--accent-blue);"></div><strong>Products</strong>Generate leads</div>
+                        <div class="fw-node" style="top:45px;right:-30px;"><div class="fw-dot" style="background:var(--accent-cyan);"></div><strong>Content</strong>Drives traffic</div>
+                        <div class="fw-node" style="bottom:45px;right:-30px;"><div class="fw-dot" style="background:var(--accent-indigo);"></div><strong>Outreach</strong>Nurtures leads</div>
+                        <div class="fw-node" style="bottom:-10px;left:50%;transform:translateX(-50%);"><div class="fw-dot" style="background:var(--accent-emerald);"></div><strong>Revenue</strong>Funds growth</div>
+                        <div class="fw-node" style="bottom:45px;left:-30px;"><div class="fw-dot" style="background:var(--accent-amber);"></div><strong>Builder</strong>Improves products</div>
+                        <div class="fw-node" style="top:45px;left:-30px;"><div class="fw-dot" style="background:var(--accent-purple);"></div><strong>HireLoki</strong>Agency revenue</div>
                     </div>
                 </div>
                 <div>
@@ -1911,53 +1301,31 @@
                         <li><strong>Networker</strong> nurtures leads into paying customers through email sequences and social.</li>
                         <li><strong>Revenue</strong> funds more agents, better models, expanded capacity.</li>
                         <li><strong>Architect</strong> improves products &rarr; more traffic &rarr; more leads &rarr; faster spin.</li>
-                        <li><strong>HireLoki</strong> converts overflow demand into agency revenue. The whole system reinforces itself.</li>
+                        <li><strong>HireLoki</strong> converts overflow demand into agency revenue.</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <!-- ======== SLIDE 16: Rollout Plan ======== -->
-        <section class="slide" data-slide="15">
-            <div class="section-label reveal">15 / Plan</div>
+        <!-- ======== SLIDE 21: Rollout Plan ======== -->
+        <section class="slide" data-slide="20">
+            <div class="section-label reveal">20 / Plan</div>
             <h2 class="slide-title reveal reveal-d1">Rollout Plan</h2>
             <p class="slide-subtitle reveal reveal-d2">Incremental. Prove it works at each step before adding complexity.</p>
-
             <div class="content-grid sidebar-layout reveal reveal-d3">
                 <div>
                     <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-label">Week 1</div>
-                            <div class="timeline-text"><strong>Set up OpenRouter + Kimi 2.5</strong><br>Deploy Content Agent (Wordsmith). Start generating pSEO pages for HTML Decks.</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-label">Week 2</div>
-                            <div class="timeline-text"><strong>Deploy Outreach Agent (Networker)</strong><br>Start email sequences. Build social content pipeline. Connect to product launches.</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-label">Week 3</div>
-                            <div class="timeline-text"><strong>Deploy Builder Agent (Architect)</strong><br>Build product features. Create new templates. Ship site updates.</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-label">Week 4</div>
-                            <div class="timeline-text"><strong>Review, tune, measure</strong><br>Assess Tier 1 performance. Fix issues. Add Sales Intel (Scout) if working well.</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-label">Month 2</div>
-                            <div class="timeline-text"><strong>Add Ops Agent (Dispatch)</strong><br>Refine monitoring. Build daily standup automation. Tune heartbeat schedules.</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-label">Month 3</div>
-                            <div class="timeline-text"><strong>Evaluate full roster</strong><br>Add Research and Finance agents if demand warrants. Scale what works.</div>
-                        </div>
+                        <div class="timeline-item"><div class="timeline-label">Week 1</div><div class="timeline-text"><strong>Set up OpenRouter + Kimi 2.5</strong><br>Deploy Content Agent (Wordsmith). Start generating pSEO pages for HTML Decks.</div></div>
+                        <div class="timeline-item"><div class="timeline-label">Week 2</div><div class="timeline-text"><strong>Deploy Outreach Agent (Networker)</strong><br>Start email sequences. Build social content pipeline.</div></div>
+                        <div class="timeline-item"><div class="timeline-label">Week 3</div><div class="timeline-text"><strong>Deploy Builder Agent (Architect)</strong><br>Build product features. Create new templates.</div></div>
+                        <div class="timeline-item"><div class="timeline-label">Week 4</div><div class="timeline-text"><strong>Review, tune, measure</strong><br>Assess Tier 1 performance. Fix issues. Add Scout if working well.</div></div>
+                        <div class="timeline-item"><div class="timeline-label">Month 2</div><div class="timeline-text"><strong>Add Ops Agent (Dispatch)</strong><br>Refine monitoring. Build daily standup automation.</div></div>
+                        <div class="timeline-item"><div class="timeline-label">Month 3</div><div class="timeline-text"><strong>Evaluate full roster</strong><br>Add Research and Finance agents if demand warrants.</div></div>
                     </div>
                 </div>
                 <div>
                     <div class="card" style="margin-bottom: 16px;">
-                        <h3>
-                            <svg style="width:16px;height:16px;vertical-align:middle;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                            Principles
-                        </h3>
+                        <h3><svg style="width:16px;height:16px;vertical-align:middle;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Principles</h3>
                         <ul>
                             <li>Start small, prove value before scaling</li>
                             <li>Each agent must justify its token cost</li>
@@ -1966,26 +1334,22 @@
                         </ul>
                     </div>
                     <div class="card">
-                        <h3>
-                            <svg style="width:16px;height:16px;vertical-align:middle;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                            Key Risk
-                        </h3>
+                        <h3><svg style="width:16px;height:16px;vertical-align:middle;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Key Risk</h3>
                         <p>Agent quality depends on prompt engineering. If output quality drops, the whole system produces noise instead of signal. That's why Loki monitors everything and we iterate fast.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ======== SLIDE 17: Action Items ======== -->
-        <section class="slide" data-slide="16">
-            <div class="section-label reveal">16 / Action</div>
+        <!-- ======== SLIDE 22: Action Items ======== -->
+        <section class="slide" data-slide="21">
+            <div class="section-label reveal">21 / Action</div>
             <h2 class="slide-title reveal reveal-d1">What You Need To Do</h2>
             <p class="slide-subtitle reveal reveal-d2">Five items. Most take under 10 minutes.</p>
-
             <div class="content-grid sidebar-layout-r reveal reveal-d3">
                 <div>
                     <ol class="action-list">
-                        <li><strong>Buy domains</strong><br>pagebuilderhq.com + emailkits.com (+ hireloki.com if not done). These are needed before agents start building product pages.</li>
+                        <li><strong>Buy domains</strong><br>pagebuilderhq.com + emailkits.com (+ hireloki.com if not done). Needed before agents start building product pages.</li>
                         <li><strong>Get OpenRouter API key</strong><br>Sign up at openrouter.ai. Configure privacy settings: disable Moonshot AI as provider. Takes 5 minutes.</li>
                         <li><strong>Paste the updated Apps Script</strong><br>For email capture on product sites. Loki will provide the code — just paste it into Google Sheets.</li>
                         <li><strong>Review agent SOUL.md files</strong><br>Loki will draft each agent's SOUL.md. Read them. Make sure the voice and boundaries feel right.</li>
@@ -1994,16 +1358,14 @@
                 </div>
                 <div>
                     <div class="card" style="border-color: var(--accent-emerald);">
-                        <div class="card-icon emerald">
-                            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                        </div>
+                        <div class="card-icon emerald"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
                         <h3 style="color: var(--accent-emerald);">Once You Greenlight</h3>
                         <p>Loki handles everything else:</p>
                         <ul>
                             <li>Write all agent SOUL.md files</li>
                             <li>Configure OpenClaw sessions</li>
                             <li>Set up heartbeat crons</li>
-                            <li>Deploy monitoring</li>
+                            <li>Deploy monitoring + dashboard</li>
                             <li>Send daily standup reports</li>
                         </ul>
                         <p style="margin-top:12px;font-family:var(--font-mono);font-size:0.78rem;color:var(--text-muted);">Your time investment: ~30 minutes total.</p>
@@ -2012,8 +1374,8 @@
             </div>
         </section>
 
-        <!-- ======== SLIDE 18: Closing ======== -->
-        <section class="slide title-slide" data-slide="17">
+        <!-- ======== SLIDE 23: Closing ======== -->
+        <section class="slide title-slide" data-slide="22">
             <div class="grid-bg"></div>
             <div class="divider reveal" style="margin: 0 auto 32px;"></div>
             <div class="closing-quote reveal reveal-d1">
@@ -2022,81 +1384,56 @@
             </div>
             <div class="divider reveal reveal-d2" style="margin: 0 auto 32px;"></div>
             <p class="closing-meta reveal reveal-d3" style="margin-bottom: 8px;">MAMV Ventures &times; Loki</p>
-            <p class="reveal reveal-d4" style="color: var(--text-secondary); font-size: 1rem; font-weight: 400;">
-                The team is ready. Let's hire them.
-            </p>
+            <p class="reveal reveal-d4" style="color: var(--text-secondary); font-size: 1rem; font-weight: 400;">The team is ready. Let's hire them.</p>
         </section>
 
-    </div><!-- /slides-container -->
+    </div>
 
-    <!-- ============================================ -->
-    <!-- JavaScript — Navigation & Animations -->
-    <!-- ============================================ -->
     <script>
     (function() {
         'use strict';
-
         const slides = document.querySelectorAll('.slide');
         const totalSlides = slides.length;
         let currentIndex = 0;
         let isTransitioning = false;
 
-        // Build nav dots
         const navDotsContainer = document.getElementById('navDots');
         slides.forEach((_, i) => {
             const dot = document.createElement('button');
             dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
-            dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+            dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
             dot.addEventListener('click', () => goToSlide(i));
             navDotsContainer.appendChild(dot);
         });
 
-        // Update counter
         document.getElementById('totalSlides').textContent = String(totalSlides).padStart(2, '0');
-
-        // Initialize first slide
         slides[0].classList.add('active');
 
         function goToSlide(index) {
             if (index === currentIndex || isTransitioning || index < 0 || index >= totalSlides) return;
             isTransitioning = true;
-
             const direction = index > currentIndex ? 'next' : 'prev';
             const currentSlide = slides[currentIndex];
             const nextSlide = slides[index];
 
-            // Reset reveal animations on current slide
-            currentSlide.querySelectorAll('.reveal').forEach(el => {
-                el.style.transitionDelay = '0s';
-            });
-
-            // Remove active, add directional class
+            currentSlide.querySelectorAll('.reveal').forEach(el => { el.style.transitionDelay = '0s'; });
             currentSlide.classList.remove('active');
             currentSlide.classList.add(direction === 'next' ? 'prev' : '');
 
-            // Prep next slide entry direction
             if (direction === 'next') {
                 nextSlide.style.transform = 'translateX(60px)';
             } else {
                 nextSlide.style.transform = 'translateX(-60px)';
             }
             nextSlide.style.opacity = '0';
-
-            // Force reflow
             void nextSlide.offsetWidth;
 
-            // Reset reveal delays
-            nextSlide.querySelectorAll('.reveal').forEach(el => {
-                el.style.transitionDelay = '';
-            });
-
-            // Activate next
+            nextSlide.querySelectorAll('.reveal').forEach(el => { el.style.transitionDelay = ''; });
             nextSlide.style.transform = '';
             nextSlide.style.opacity = '';
             nextSlide.classList.remove('prev');
             nextSlide.classList.add('active');
 
-            // Cleanup previous
             setTimeout(() => {
                 currentSlide.classList.remove('prev');
                 currentSlide.style.transform = '';
@@ -2104,7 +1441,6 @@
                 isTransitioning = false;
             }, 700);
 
-            // Update state
             currentIndex = index;
             updateUI();
         }
@@ -2113,52 +1449,24 @@
         function prevSlide() { goToSlide(currentIndex - 1); }
 
         function updateUI() {
-            // Progress bar
             const progress = ((currentIndex + 1) / totalSlides) * 100;
             document.getElementById('progressBar').style.width = progress + '%';
-
-            // Counter
             document.getElementById('currentSlide').textContent = String(currentIndex + 1).padStart(2, '0');
-
-            // Nav dots
-            document.querySelectorAll('.nav-dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentIndex);
-            });
-
-            // Hide keyboard hint after first nav
-            if (currentIndex > 0) {
-                document.getElementById('kbHint').classList.add('hidden');
-            }
+            document.querySelectorAll('.nav-dot').forEach((dot, i) => { dot.classList.toggle('active', i === currentIndex); });
+            if (currentIndex > 0) document.getElementById('kbHint').classList.add('hidden');
         }
 
-        // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             switch(e.key) {
-                case 'ArrowRight':
-                case 'ArrowDown':
-                case ' ':
-                case 'PageDown':
-                    e.preventDefault();
-                    nextSlide();
-                    break;
-                case 'ArrowLeft':
-                case 'ArrowUp':
-                case 'PageUp':
-                    e.preventDefault();
-                    prevSlide();
-                    break;
-                case 'Home':
-                    e.preventDefault();
-                    goToSlide(0);
-                    break;
-                case 'End':
-                    e.preventDefault();
-                    goToSlide(totalSlides - 1);
-                    break;
+                case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown':
+                    e.preventDefault(); nextSlide(); break;
+                case 'ArrowLeft': case 'ArrowUp': case 'PageUp':
+                    e.preventDefault(); prevSlide(); break;
+                case 'Home': e.preventDefault(); goToSlide(0); break;
+                case 'End': e.preventDefault(); goToSlide(totalSlides - 1); break;
             }
         });
 
-        // Mouse wheel
         let wheelTimeout = null;
         document.addEventListener('wheel', (e) => {
             if (wheelTimeout) return;
@@ -2167,32 +1475,21 @@
             else if (e.deltaY < -30) prevSlide();
         }, { passive: true });
 
-        // Touch/swipe
-        let touchStartX = 0;
-        let touchStartY = 0;
-
+        let touchStartX = 0, touchStartY = 0;
         document.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
             touchStartY = e.touches[0].clientY;
         }, { passive: true });
-
         document.addEventListener('touchend', (e) => {
             const dx = e.changedTouches[0].clientX - touchStartX;
             const dy = e.changedTouches[0].clientY - touchStartY;
             if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
-                if (dx < 0) nextSlide();
-                else prevSlide();
+                if (dx < 0) nextSlide(); else prevSlide();
             }
         }, { passive: true });
 
-        // Initial UI
         updateUI();
-
-        // Auto-hide keyboard hint
-        setTimeout(() => {
-            document.getElementById('kbHint').classList.add('hidden');
-        }, 8000);
-
+        setTimeout(() => { document.getElementById('kbHint').classList.add('hidden'); }, 8000);
     })();
     </script>
 </body>
