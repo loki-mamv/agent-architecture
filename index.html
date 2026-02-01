@@ -1433,8 +1433,80 @@
             </div>
         </section>
 
+        <!-- ======== SLIDE 22: Agent QA & Testing ======== -->
+        <section class="slide" data-slide="22">
+            <div class="section-label reveal">22 / Quality Assurance</div>
+            <h2 class="slide-title reveal reveal-d1">Agent QA Checklist</h2>
+            <p class="slide-subtitle reveal reveal-d2">Before any agent goes live, it must pass every gate. No exceptions.</p>
+            <div class="content-grid sidebar-layout-r">
+                <div class="reveal reveal-d3">
+                    <div class="card" style="margin-bottom: 14px; border-left: 3px solid var(--accent-emerald);">
+                        <h3 style="display:flex;align-items:center;gap:8px;"><span style="font-size:1.2rem;">🟢</span> Gate 1 — Identity</h3>
+                        <ul>
+                            <li>SOUL.md written with role, tone, boundaries</li>
+                            <li>Agent responds in-character consistently</li>
+                            <li>Won't act outside its defined scope</li>
+                            <li>Knows when to escalate to Loki</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="margin-bottom: 14px; border-left: 3px solid var(--accent-blue);">
+                        <h3 style="display:flex;align-items:center;gap:8px;"><span style="font-size:1.2rem;">🔵</span> Gate 2 — Task Execution</h3>
+                        <ul>
+                            <li>Picks up assigned task from Lokiban API</li>
+                            <li>Updates status: Queued → Working → Done</li>
+                            <li>Produces correct output type (page, email, report)</li>
+                            <li>Writes output to correct location (file, repo, sheet)</li>
+                            <li>Completes within timeout (no infinite loops)</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="margin-bottom: 14px; border-left: 3px solid var(--accent-amber);">
+                        <h3 style="display:flex;align-items:center;gap:8px;"><span style="font-size:1.2rem;">🟡</span> Gate 3 — Communication</h3>
+                        <ul>
+                            <li>Reports completion back to Loki</li>
+                            <li>Logs activity to shared memory</li>
+                            <li>Handles errors gracefully (retries, then alerts)</li>
+                            <li>Doesn't message Mike directly (Loki only)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="reveal reveal-d4">
+                    <div class="card" style="margin-bottom: 14px; border-left: 3px solid var(--accent-purple);">
+                        <h3 style="display:flex;align-items:center;gap:8px;"><span style="font-size:1.2rem;">🟣</span> Gate 4 — Quality & Safety</h3>
+                        <ul>
+                            <li>Output reviewed by Loki before publishing</li>
+                            <li>No external actions without approval chain</li>
+                            <li>Token usage within expected range</li>
+                            <li>No hallucinated data or broken links</li>
+                            <li>Passes spot-check: 3 random outputs human-graded</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="margin-bottom: 14px; border-left: 3px solid var(--accent-rose);">
+                        <h3 style="display:flex;align-items:center;gap:8px;"><span style="font-size:1.2rem;">🔴</span> Gate 5 — Integration</h3>
+                        <ul>
+                            <li>Heartbeat loop working (spawn → execute → report)</li>
+                            <li>Shows correct status on Lokiban Agents page</li>
+                            <li>Task assignment from dashboard triggers execution</li>
+                            <li>Multiple agents can run concurrently without conflicts</li>
+                            <li>Failure of one agent doesn't cascade to others</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="background: var(--gradient-subtle); border: 1px solid var(--border-subtle);">
+                        <h3 style="font-size:0.88rem;margin-bottom:8px;">📋 Smoke Test Protocol</h3>
+                        <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;">
+                            <strong>1.</strong> Assign test task from Lokiban UI<br>
+                            <strong>2.</strong> Verify agent picks it up within 1 heartbeat<br>
+                            <strong>3.</strong> Confirm status updates in real-time<br>
+                            <strong>4.</strong> Check output file/location is correct<br>
+                            <strong>5.</strong> Loki reviews and approves/rejects<br>
+                            <strong>6.</strong> Verify dashboard reflects final state
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- ======== SLIDE 23: Closing ======== -->
-        <section class="slide title-slide" data-slide="22">
+        <section class="slide title-slide" data-slide="23">
             <div class="grid-bg"></div>
             <div class="divider reveal" style="margin: 0 auto 32px;"></div>
             <div class="closing-quote reveal reveal-d1">
@@ -1479,6 +1551,7 @@
             'The Flywheel',
             'Rollout Plan',
             'Analytics',
+            'Agent QA Checklist',
             'Closing'
         ];
 
