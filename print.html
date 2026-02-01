@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAMV Agent Architecture — Print Version</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #FAFAF8;
+            --bg-card: #FFFFFF;
+            --bg-elevated: #F0EFEB;
+            --border-subtle: #E5E2DC;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a5568;
+            --text-muted: #8892a4;
+            --accent-blue: #2b7de9;
+            --accent-cyan: #0d8aba;
+            --accent-indigo: #5b5fcf;
+            --accent-amber: #c67a08;
+            --accent-emerald: #0f8a5f;
+            --accent-rose: #c4163a;
+            --accent-purple: #7c3aed;
+            --gradient-main: linear-gradient(135deg, #2b7de9 0%, #5b5fcf 50%, #7c3aed 100%);
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        @page { size: 11in 8.5in landscape; margin: 0.5in; }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background: white;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        h1, h2, h3 { font-family: var(--font-display); font-weight: 700; }
+        
+        .gradient-text {
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slide {
+            width: 100%;
+            min-height: 7.5in;
+            padding: 40px 50px;
+            page-break-after: always;
+            page-break-inside: avoid;
+            background: var(--bg-deep);
+            position: relative;
+        }
+
+        .slide:last-child { page-break-after: avoid; }
+
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent-blue);
+            margin-bottom: 12px;
+        }
+
+        .slide-title { font-size: 32px; margin-bottom: 8px; }
+        .slide-subtitle { font-size: 16px; color: var(--text-secondary); margin-bottom: 24px; max-width: 600px; }
+
+        .title-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .title-main { font-size: 48px; margin-bottom: 8px; }
+        .title-sub { font-size: 20px; color: var(--text-secondary); margin-bottom: 24px; }
+        .title-meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.1em; }
+
+        .divider { width: 50px; height: 3px; background: var(--gradient-main); margin: 16px auto; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .card h3 { font-size: 14px; margin-bottom: 8px; }
+        .card p, .card li { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+        .card ul { list-style: none; padding-left: 0; }
+        .card ul li { padding: 4px 0; padding-left: 14px; position: relative; }
+        .card ul li::before { content: '•'; position: absolute; left: 0; color: var(--accent-blue); }
+
+        .card-icon {
+            width: 32px; height: 32px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 10px; font-size: 14px;
+        }
+
+        .feature-list { list-style: none; }
+        .feature-list li {
+            padding: 8px 0 8px 24px;
+            position: relative;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .feature-list li:last-child { border-bottom: none; }
+        .feature-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 12px;
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            border: 2px solid var(--accent-blue);
+        }
+        .feature-list li strong { color: var(--text-primary); }
+
+        .agent-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 16px;
+            border-top: 3px solid var(--accent-blue);
+        }
+
+        .agent-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .agent-avatar { width: 36px; height: 36px; border-radius: 50%; }
+        .agent-name { font-family: var(--font-display); font-size: 14px; font-weight: 700; }
+        .agent-codename { font-family: var(--font-mono); font-size: 9px; color: var(--accent-blue); }
+        .agent-role { font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; }
+        .agent-tag {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 9px;
+            padding: 2px 6px;
+            background: rgba(43,125,233,0.08);
+            color: var(--accent-blue);
+            border-radius: 3px;
+            margin-right: 4px;
+        }
+
+        .timeline { padding-left: 20px; border-left: 2px solid var(--border-subtle); }
+        .timeline-item { padding: 10px 0 10px 20px; position: relative; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -7px;
+            top: 14px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid var(--accent-blue);
+        }
+        .timeline-label { font-family: var(--font-mono); font-size: 10px; color: var(--accent-blue); margin-bottom: 4px; }
+        .timeline-text { font-size: 12px; color: var(--text-secondary); }
+        .timeline-text strong { color: var(--text-primary); }
+
+        .stats-row { display: flex; gap: 16px; margin-bottom: 20px; }
+        .stat-item { text-align: center; padding: 16px; flex: 1; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 8px; }
+        .stat-value { font-family: var(--font-display); font-size: 24px; font-weight: 700; }
+        .stat-label { font-family: var(--font-mono); font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+        .bar-chart { display: flex; flex-direction: column; gap: 10px; }
+        .bar-item { display: flex; align-items: center; gap: 10px; }
+        .bar-label { font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); min-width: 80px; text-align: right; }
+        .bar-track { flex: 1; height: 20px; background: var(--bg-elevated); border-radius: 4px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding: 0 8px; font-family: var(--font-mono); font-size: 10px; color: white; }
+        .bar-fill.blue { background: var(--accent-blue); }
+        .bar-fill.indigo { background: var(--accent-indigo); }
+        .bar-fill.amber { background: var(--accent-amber); }
+        .bar-fill.emerald { background: var(--accent-emerald); }
+        .bar-fill.rose { background: var(--accent-rose); }
+
+        .arch-diagram { text-align: center; padding: 16px 0; }
+        .arch-tier { display: flex; justify-content: center; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+        .arch-node { padding: 10px 20px; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--bg-card); min-width: 120px; }
+        .arch-node.primary { border-color: var(--accent-blue); }
+        .node-label { font-family: var(--font-display); font-size: 12px; font-weight: 700; }
+        .node-sub { font-family: var(--font-mono); font-size: 9px; color: var(--text-muted); }
+
+        .closing-quote { font-family: var(--font-display); font-size: 28px; line-height: 1.3; max-width: 600px; margin-bottom: 24px; }
+
+        .hl { color: var(--accent-blue); font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<div class="slide title-slide">
+    <div class="section-label">MAMV Ventures / Internal Strategy</div>
+    <h1 class="title-main"><span class="gradient-text">MAMV Agent</span><br>Architecture</h1>
+    <p class="title-sub">Building an AI Workforce</p>
+    <div class="divider"></div>
+    <p class="title-meta">Loki + Mike Maseda · MAMV Ventures · February 2026</p>
+    <div class="slide-number">1</div>
+</div>
+
+<!-- Slide 2: Vision -->
+<div class="slide">
+    <div class="section-label">01 / Vision</div>
+    <h2 class="slide-title">The Vision</h2>
+    <p class="slide-subtitle">An AI company within a company.</p>
+    <div class="grid-2">
+        <ul class="feature-list">
+            <li><strong>Mike + Loki at the top.</strong> Orchestrators and decision-makers.</li>
+            <li><strong>Specialized agents below.</strong> Each with their own identity, memory, and skills.</li>
+            <li><strong>Shared philosophy.</strong> Every agent inherits SOUL.md — our values, our voice.</li>
+            <li><strong>Scale without headcount.</strong> AI workforce that runs 24/7, compounds over time.</li>
+        </ul>
+        <div>
+            <div class="card" style="margin-bottom:12px;">
+                <h3>Not Automation. Infrastructure.</h3>
+                <p>This isn't about automating tasks. It's about building a team — agents that think, coordinate, and improve.</p>
+            </div>
+            <div class="card">
+                <h3>Day-One Hires</h3>
+                <p>Three agents launch first: Content, Outreach, and Builder. Each serves our product portfolio.</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">2</div>
+</div>
+
+<!-- Slide 3: Architecture -->
+<div class="slide">
+    <div class="section-label">02 / Architecture</div>
+    <h2 class="slide-title">Architecture Overview</h2>
+    <p class="slide-subtitle">Three tiers. Clean separation. Full visibility.</p>
+    <div class="arch-diagram">
+        <div class="arch-tier">
+            <div class="arch-node primary"><div class="node-label" style="color:var(--accent-amber);">Mike Maseda</div><div class="node-sub">Human CEO</div></div>
+            <div class="arch-node primary"><div class="node-label" style="color:var(--accent-blue);">Loki</div><div class="node-sub">AI COO / Claude Opus</div></div>
+        </div>
+        <div style="text-align:center;margin:8px 0;font-family:var(--font-mono);font-size:9px;color:var(--text-muted);">↓ SPECIALIZED AGENTS / KIMI 2.5 VIA OPENROUTER ↓</div>
+        <div class="arch-tier">
+            <div class="arch-node"><div class="node-label">Wordsmith</div><div class="node-sub">Content</div></div>
+            <div class="arch-node"><div class="node-label">Networker</div><div class="node-sub">Outreach</div></div>
+            <div class="arch-node"><div class="node-label">Architect</div><div class="node-sub">Builder</div></div>
+            <div class="arch-node"><div class="node-label">Beacon</div><div class="node-sub">Sales Intel</div></div>
+            <div class="arch-node"><div class="node-label">Dispatch</div><div class="node-sub">Ops</div></div>
+            <div class="arch-node"><div class="node-label">Analyst</div><div class="node-sub">Research</div></div>
+        </div>
+        <div style="text-align:center;margin:8px 0;font-family:var(--font-mono);font-size:9px;color:var(--text-muted);">↓ SHARED INFRASTRUCTURE ↓</div>
+        <div class="arch-tier">
+            <div class="arch-node" style="background:var(--bg-elevated);"><div class="node-label" style="color:var(--accent-emerald);">Kanban</div><div class="node-sub">Task Board</div></div>
+            <div class="arch-node" style="background:var(--bg-elevated);"><div class="node-label" style="color:var(--accent-emerald);">Memory</div><div class="node-sub">Shared Files</div></div>
+            <div class="arch-node" style="background:var(--bg-elevated);"><div class="node-label" style="color:var(--accent-emerald);">GitHub</div><div class="node-sub">Git Repos</div></div>
+            <div class="arch-node" style="background:var(--bg-elevated);"><div class="node-label" style="color:var(--accent-emerald);">OpenClaw</div><div class="node-sub">Platform</div></div>
+        </div>
+    </div>
+    <div class="slide-number">3</div>
+</div>
+
+<!-- Slide 4: Heartbeat -->
+<div class="slide">
+    <div class="section-label">03 / Heartbeat</div>
+    <h2 class="slide-title">The Heartbeat System</h2>
+    <p class="slide-subtitle">Agents wake, work, and sleep. Saves tokens. Creates natural interaction windows.</p>
+    <div class="grid-2">
+        <div>
+            <div class="card">
+                <h3>Staggered Schedule (Every 30 min)</h3>
+                <p style="font-family:var(--font-mono);font-size:11px;line-height:2;">
+                    :00 — Wordsmith (Content)<br>
+                    :05 — Networker (Outreach)<br>
+                    :10 — Architect (Builder)<br>
+                    :15 — Beacon (Sales Intel)<br>
+                    :20 — Dispatch (Ops)<br>
+                    :25 — Analyst (Research)
+                </p>
+            </div>
+        </div>
+        <div>
+            <div class="card" style="margin-bottom:12px;">
+                <h3>On Each Wake</h3>
+                <ul>
+                    <li>Check Kanban for assigned tasks</li>
+                    <li>Check mentions from other agents</li>
+                    <li>Read shared memory files</li>
+                    <li>Do work — or report HEARTBEAT_OK</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Why Staggered?</h3>
+                <p>Agent A writes output at :00. Agent B reads it at :05 and builds on it. Natural async collaboration.</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">4</div>
+</div>
+
+<!-- Slide 5: Communication -->
+<div class="slide">
+    <div class="section-label">04 / Coordination</div>
+    <h2 class="slide-title">Communication & Coordination</h2>
+    <p class="slide-subtitle">Shared infrastructure. No silos. Full transparency.</p>
+    <div class="grid-3">
+        <div class="card">
+            <h3>Shared Kanban</h3>
+            <p>All agents see the same task board. One source of truth.</p>
+        </div>
+        <div class="card">
+            <h3>Memory Files</h3>
+            <p>Agents read and write to shared workspace files. Context persists.</p>
+        </div>
+        <div class="card">
+            <h3>Direct Messaging</h3>
+            <p>sessions_send for agent-to-agent comms. Loki can message any agent.</p>
+        </div>
+    </div>
+    <div class="grid-2" style="margin-top:16px;">
+        <div class="card">
+            <h3>Daily Standup</h3>
+            <p>Loki compiles agent activity into daily summary. Sent to Mike each morning.</p>
+        </div>
+        <div class="card">
+            <h3>External Comms: Locked</h3>
+            <p>No agent can send emails, post on social, or message externally. Only Loki holds those keys.</p>
+        </div>
+    </div>
+    <div class="slide-number">5</div>
+</div>
+
+<!-- Slide 6: Security -->
+<div class="slide">
+    <div class="section-label">05 / Security</div>
+    <h2 class="slide-title">Locked Down by Design</h2>
+    <p class="slide-subtitle">Trust is earned, not assumed. Every agent operates within strict boundaries.</p>
+    <div class="grid-2">
+        <ul class="feature-list">
+            <li><strong>No external messaging.</strong> No email, no Slack, no iMessage, no Twitter.</li>
+            <li><strong>No external API keys.</strong> Agent workspaces don't contain credentials.</li>
+            <li><strong>Full audit trail.</strong> All actions logged to memory files.</li>
+            <li><strong>Kill switch.</strong> Loki can terminate any agent session instantly.</li>
+        </ul>
+        <div class="card">
+            <h3 style="color:var(--accent-rose);">Loki Monitors For</h3>
+            <ul>
+                <li>Repeated failures (stuck agents)</li>
+                <li>Unusual tool usage patterns</li>
+                <li>Context drift (off-task behavior)</li>
+                <li>Token burn rate spikes</li>
+                <li>Unusual file access patterns</li>
+            </ul>
+        </div>
+    </div>
+    <div class="slide-number">6</div>
+</div>
+
+<!-- Slide 7: Tech Stack -->
+<div class="slide">
+    <div class="section-label">06 / Stack</div>
+    <h2 class="slide-title">The Tech Stack</h2>
+    <p class="slide-subtitle">Open source platform. Best-in-class models. Cost-optimized hierarchy.</p>
+    <div class="grid-3">
+        <div class="card">
+            <h3>OpenClaw</h3>
+            <p>Open-source agent platform. Runs on your Mac Mini. Sessions, tools, heartbeats built in.</p>
+        </div>
+        <div class="card">
+            <h3>Claude Opus (Loki)</h3>
+            <p>Orchestrator model. Handles judgment calls, external comms, supervision.</p>
+        </div>
+        <div class="card">
+            <h3>Kimi K2.5 (Agents)</h3>
+            <p>Via OpenRouter. Capable model at fraction of Opus cost. Handles grunt work.</p>
+        </div>
+    </div>
+    <div class="grid-2" style="margin-top:16px;">
+        <div class="card">
+            <h3>Why OpenRouter?</h3>
+            <p>US-based proxy. Configure privacy to route through US/EU providers only. Data never touches Chinese servers.</p>
+        </div>
+        <div class="card">
+            <h3>Cost Logic</h3>
+            <p>Kimi 2.5 is significantly cheaper than Opus. Agents handle volume work. Loki handles judgment.</p>
+        </div>
+    </div>
+    <div class="slide-number">7</div>
+</div>
+
+<!-- Slide 8: Tier 1 Agents -->
+<div class="slide">
+    <div class="section-label">07 / Roster — Tier 1</div>
+    <h2 class="slide-title">Tier 1 — First Three Hires</h2>
+    <p class="slide-subtitle">Content, outreach, and product development across the full portfolio.</p>
+    <div class="grid-3">
+        <div class="agent-card">
+            <div class="agent-header">
+                <img class="agent-avatar" src="avatars/pixel.png" alt="Wordsmith">
+                <div><div class="agent-name">Content Agent</div><div class="agent-codename">WORDSMITH</div></div>
+            </div>
+            <div class="agent-role">pSEO pages, blog posts, LLM optimization, copywriting.</div>
+            <div><span class="agent-tag">SEO</span><span class="agent-tag">Content</span><span class="agent-tag">Keywords</span></div>
+        </div>
+        <div class="agent-card">
+            <div class="agent-header">
+                <img class="agent-avatar" src="avatars/forge.png" alt="Networker">
+                <div><div class="agent-name">Outreach Agent</div><div class="agent-codename">NETWORKER</div></div>
+            </div>
+            <div class="agent-role">Email sequences, social posting, lead nurture.</div>
+            <div><span class="agent-tag">Cold Email</span><span class="agent-tag">Drip</span><span class="agent-tag">Social</span></div>
+        </div>
+        <div class="agent-card">
+            <div class="agent-header">
+                <img class="agent-avatar" src="avatars/atlas.png" alt="Architect">
+                <div><div class="agent-name">Builder Agent</div><div class="agent-codename">ARCHITECT</div></div>
+            </div>
+            <div class="agent-role">Product features, template creation, site updates.</div>
+            <div><span class="agent-tag">HTML/CSS/JS</span><span class="agent-tag">Templates</span></div>
+        </div>
+    </div>
+    <div class="slide-number">8</div>
+</div>
+
+<!-- Slide 9: Tier 2 Agents -->
+<div class="slide">
+    <div class="section-label">08 / Roster — Tier 2</div>
+    <h2 class="slide-title">Tier 2 — GenHealth Support</h2>
+    <p class="slide-subtitle">Sales intelligence and operational support for the day job.</p>
+    <div class="grid-2">
+        <div class="agent-card">
+            <div class="agent-header">
+                <img class="agent-avatar" src="avatars/beacon.png" alt="Beacon">
+                <div><div class="agent-name">Sales Intel Agent</div><div class="agent-codename">BEACON</div></div>
+            </div>
+            <div class="agent-role">Deal research, competitor monitoring, conference prep, CRM updates.</div>
+            <div><span class="agent-tag">Research</span><span class="agent-tag">Competitive Intel</span><span class="agent-tag">CRM</span></div>
+        </div>
+        <div class="agent-card">
+            <div class="agent-header">
+                <img class="agent-avatar" src="avatars/radar.png" alt="Dispatch">
+                <div><div class="agent-name">Ops Agent</div><div class="agent-codename">DISPATCH</div></div>
+            </div>
+            <div class="agent-role">Email triage, calendar prep, meeting follow-ups, task grooming.</div>
+            <div><span class="agent-tag">Email</span><span class="agent-tag">Calendar</span><span class="agent-tag">Scheduling</span></div>
+        </div>
+    </div>
+    <div class="slide-number">9</div>
+</div>
+
+<!-- Slide 10: Tier 3 Agents -->
+<div class="slide">
+    <div class="section-label">09 / Roster — Tier 3</div>
+    <h2 class="slide-title">Tier 3 — Scaling Up</h2>
+    <p class="slide-subtitle">Deep research, analytics, and financial oversight.</p>
+    <div class="grid-3">
+        <div class="agent-card">
+            <div class="agent-header">
+                <img class="agent-avatar" src="avatars/cass.png" alt="Analyst">
+                <div><div class="agent-name">Research Agent</div><div class="agent-codename">ANALYST</div></div>
+            </div>
+            <div class="agent-role">Due diligence, market research, industry deep-dives.</div>
+            <div><span class="agent-tag">Due Diligence</span><span class="agent-tag">Research</span></div>
+        </div>
+        <div class="agent-card">
+            <div class="agent-header">
+                <div style="width:36px;height:36px;border-radius:50%;background:rgba(124,58,237,0.1);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--accent-purple);">📊</div>
+                <div><div class="agent-name">Analytics Agent</div><div class="agent-codename">ATLAS</div></div>
+            </div>
+            <div class="agent-role">Dashboard monitoring, ad-hoc queries, trend analysis.</div>
+            <div><span class="agent-tag">Analytics</span><span class="agent-tag">Reports</span></div>
+        </div>
+        <div class="agent-card">
+            <div class="agent-header">
+                <div style="width:36px;height:36px;border-radius:50%;background:rgba(198,122,8,0.1);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--accent-amber);">💰</div>
+                <div><div class="agent-name">Finance Agent</div><div class="agent-codename">LEDGER</div></div>
+            </div>
+            <div class="agent-role">Expense monitoring, invoice tracking, financial reporting.</div>
+            <div><span class="agent-tag">Expenses</span><span class="agent-tag">Budget</span></div>
+        </div>
+    </div>
+    <div class="slide-number">10</div>
+</div>
+
+<!-- Slide 11: Cost -->
+<div class="slide">
+    <div class="section-label">10 / Cost</div>
+    <h2 class="slide-title">What This Costs</h2>
+    <p class="slide-subtitle">Cheaper than a single hire. By a lot.</p>
+    <div class="grid-2">
+        <div>
+            <div class="bar-chart">
+                <div class="bar-item"><div class="bar-label">3 Agents</div><div class="bar-track"><div class="bar-fill blue" style="width:6%;">$150-300/mo</div></div></div>
+                <div class="bar-item"><div class="bar-label">5 Agents</div><div class="bar-track"><div class="bar-fill indigo" style="width:9%;">$300-450/mo</div></div></div>
+                <div class="bar-item"><div class="bar-label">7 Agents</div><div class="bar-track"><div class="bar-fill amber" style="width:12%;">$450-750/mo</div></div></div>
+                <div class="bar-item"><div class="bar-label" style="color:var(--accent-rose);">1 Human</div><div class="bar-track"><div class="bar-fill rose" style="width:100%;">$4,000-8,000/mo</div></div></div>
+            </div>
+            <div class="stats-row" style="margin-top:20px;">
+                <div class="stat-item"><div class="stat-value" style="color:var(--accent-blue);">48</div><div class="stat-label">Wakes/Day</div></div>
+                <div class="stat-item"><div class="stat-value" style="color:var(--accent-cyan);">~2K</div><div class="stat-label">Tokens/Wake</div></div>
+                <div class="stat-item"><div class="stat-value" style="color:var(--accent-emerald);">~96K</div><div class="stat-label">Tokens/Day</div></div>
+            </div>
+        </div>
+        <div>
+            <div class="card" style="margin-bottom:12px;">
+                <h3>The Math</h3>
+                <ul>
+                    <li>Loki (Opus): Already running. Orchestration + judgment.</li>
+                    <li>Each Kimi 2.5 agent: ~$1-3/day at 30-min heartbeats.</li>
+                    <li>Kimi 2.5 pricing via OpenRouter is very cheap.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3 style="color:var(--accent-emerald);">ROI</h3>
+                <p>If agents produce even 10% of a human's output, they're 10x cheaper. And they run 24/7.</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">11</div>
+</div>
+
+<!-- Slide 12: Rollout -->
+<div class="slide">
+    <div class="section-label">11 / Plan</div>
+    <h2 class="slide-title">Rollout Plan</h2>
+    <p class="slide-subtitle">Incremental. Prove it works at each step before adding complexity.</p>
+    <div class="grid-2">
+        <div class="timeline">
+            <div class="timeline-item"><div class="timeline-label">Week 1</div><div class="timeline-text"><strong>Set up OpenRouter + Kimi 2.5</strong><br>Deploy Content Agent (Wordsmith)</div></div>
+            <div class="timeline-item"><div class="timeline-label">Week 2</div><div class="timeline-text"><strong>Deploy Outreach Agent (Networker)</strong><br>Start email sequences</div></div>
+            <div class="timeline-item"><div class="timeline-label">Week 3</div><div class="timeline-text"><strong>Deploy Builder Agent (Architect)</strong><br>Build product features</div></div>
+            <div class="timeline-item"><div class="timeline-label">Week 4</div><div class="timeline-text"><strong>Review, tune, measure</strong><br>Add Beacon if working well</div></div>
+            <div class="timeline-item"><div class="timeline-label">Month 2</div><div class="timeline-text"><strong>Add Ops Agent (Dispatch)</strong><br>Build daily standup automation</div></div>
+        </div>
+        <div>
+            <div class="card" style="margin-bottom:12px;">
+                <h3>Principles</h3>
+                <ul>
+                    <li>Start small, prove value before scaling</li>
+                    <li>Each agent must justify its token cost</li>
+                    <li>Kill underperformers fast</li>
+                    <li>Double down on what works</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Key Risk</h3>
+                <p>Agent quality depends on prompt engineering. If output quality drops, the whole system produces noise. That's why Loki monitors everything.</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">12</div>
+</div>
+
+<!-- Slide 13: Analytics -->
+<div class="slide">
+    <div class="section-label">12 / Analytics</div>
+    <h2 class="slide-title">Built-In Analytics</h2>
+    <p class="slide-subtitle">Five core dashboards ship with the architecture. Atlas extends them.</p>
+    <div class="grid-2">
+        <div>
+            <ul class="feature-list">
+                <li><strong>Agent Health</strong> — Real-time status, heartbeats, uptime, current tasks</li>
+                <li><strong>Cost & Tokens</strong> — Daily/weekly spend, per-agent breakdown, anomaly alerts</li>
+                <li><strong>Output & Velocity</strong> — Tasks completed, duration, output by type</li>
+                <li><strong>Quality</strong> — Error rates, quality scores, drift detection</li>
+                <li><strong>Activity Timeline</strong> — Live feed of all agent actions</li>
+            </ul>
+        </div>
+        <div>
+            <div class="card" style="margin-bottom:12px;">
+                <h3>Atlas — Analytics Agent</h3>
+                <ul>
+                    <li>Ad-hoc queries ("How much did content cost?")</li>
+                    <li>Custom reports for board meetings</li>
+                    <li>Anomaly investigation when alerts fire</li>
+                    <li>Trend analysis humans would miss</li>
+                </ul>
+            </div>
+            <div class="card">
+                <p style="font-size:11px;color:var(--text-muted);">See interactive examples: analytics.html</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">13</div>
+</div>
+
+<!-- Slide 14: Closing -->
+<div class="slide title-slide">
+    <div class="divider"></div>
+    <div class="closing-quote">
+        <span class="gradient-text">We're not just using AI.</span><br>
+        We're building a company with it.
+    </div>
+    <div class="divider"></div>
+    <p class="title-meta" style="margin-bottom:8px;">MAMV Ventures × Loki</p>
+    <p style="color:var(--text-secondary);font-size:14px;">The team is ready. Let's hire them.</p>
+    <div class="slide-number">14</div>
+</div>
+
+</body>
+</html>

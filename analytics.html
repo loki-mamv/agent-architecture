@@ -600,6 +600,289 @@
             font-size: 0.9rem;
             color: var(--accent-rose);
         }
+
+        /* Task List & Interventions */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .task-item:hover {
+            background: var(--bg-card);
+            border-color: var(--border-accent);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .task-item.has-context {
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        .task-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .task-status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .task-status-dot.active {
+            background: var(--accent-emerald);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .task-status-dot.idle {
+            background: var(--accent-amber);
+        }
+
+        .task-info {
+            flex: 1;
+        }
+
+        .task-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .task-meta {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .context-badge {
+            font-size: 0.75rem;
+            color: var(--accent-blue);
+            margin-left: 8px;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+        }
+
+        .action-btn:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .action-btn.context {
+            background: rgba(43,125,233,0.08);
+            border-color: rgba(43,125,233,0.2);
+            color: var(--accent-blue);
+        }
+
+        .action-btn.context:hover {
+            background: rgba(43,125,233,0.15);
+        }
+
+        .action-btn.message {
+            background: rgba(124,58,237,0.08);
+            border-color: rgba(124,58,237,0.2);
+            color: var(--accent-purple);
+        }
+
+        .action-btn.message:hover {
+            background: rgba(124,58,237,0.15);
+        }
+
+        .action-btn.reassign {
+            background: rgba(198,122,8,0.08);
+            border-color: rgba(198,122,8,0.2);
+            color: var(--accent-amber);
+        }
+
+        .action-btn.reassign:hover {
+            background: rgba(198,122,8,0.15);
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .quick-action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quick-action-btn:hover {
+            background: var(--bg-card);
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 28px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--shadow-lg);
+            animation: modalIn 0.2s ease;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .modal-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .modal-field {
+            margin-bottom: 16px;
+        }
+
+        .modal-field label {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .modal-field textarea,
+        .modal-field input,
+        .modal-field select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            transition: border-color 0.2s;
+        }
+
+        .modal-field textarea:focus,
+        .modal-field input:focus,
+        .modal-field select:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .modal-field textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .modal-btn.secondary {
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+        }
+
+        .modal-btn.secondary:hover {
+            background: var(--border-subtle);
+        }
+
+        .modal-btn.primary {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .modal-btn.primary:hover {
+            background: #2065c7;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -618,6 +901,7 @@
         <button class="nav-tab" data-tab="cost">Cost & Tokens</button>
         <button class="nav-tab" data-tab="output">Output & Velocity</button>
         <button class="nav-tab" data-tab="quality">Quality</button>
+        <button class="nav-tab" data-tab="intervene" style="background:rgba(196,22,58,0.08);border-color:rgba(196,22,58,0.2);">⚡ Intervene</button>
         <button class="nav-tab" data-tab="timeline">Activity</button>
     </nav>
 
@@ -1109,6 +1393,150 @@
         </div>
     </section>
 
+    <!-- Dashboard 6: Interventions -->
+    <section class="dashboard" id="intervene">
+        <h2 class="dashboard-title">
+            <span class="icon" style="background:rgba(196,22,58,0.1);color:var(--accent-rose);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </span>
+            Task Interventions
+        </h2>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-label">Active Tasks</div>
+                <div class="stat-value" style="color:var(--accent-blue);">4</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Interventions Today</div>
+                <div class="stat-value">2</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Context Added</div>
+                <div class="stat-value" style="color:var(--accent-emerald);">5</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Priority Overrides</div>
+                <div class="stat-value" style="color:var(--accent-amber);">1</div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom:20px;">
+            <h3>Active Tasks — Click to Intervene</h3>
+            <div class="task-list">
+                <div class="task-item" onclick="openIntervention('task1')">
+                    <div class="task-main">
+                        <div class="task-status-dot active"></div>
+                        <div class="task-info">
+                            <div class="task-name">HireLoki email sequence draft</div>
+                            <div class="task-meta">Networker · Started 3.2h ago · P1</div>
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="action-btn context" onclick="event.stopPropagation(); openIntervention('task1')">+ Context</button>
+                        <button class="action-btn message" onclick="event.stopPropagation(); openMessage('Networker')">Message</button>
+                    </div>
+                </div>
+
+                <div class="task-item has-context" onclick="openIntervention('task2')">
+                    <div class="task-main">
+                        <div class="task-status-dot active"></div>
+                        <div class="task-info">
+                            <div class="task-name">DME acquisition market map <span class="context-badge">📝 1 note</span></div>
+                            <div class="task-meta">Analyst · Started 4.1h ago · P1</div>
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="action-btn context" onclick="event.stopPropagation(); openIntervention('task2')">+ Context</button>
+                        <button class="action-btn message" onclick="event.stopPropagation(); openMessage('Analyst')">Message</button>
+                    </div>
+                </div>
+
+                <div class="task-item" onclick="openIntervention('task3')">
+                    <div class="task-main">
+                        <div class="task-status-dot active"></div>
+                        <div class="task-info">
+                            <div class="task-name">pSEO pages for EmailKits (batch 2)</div>
+                            <div class="task-meta">Wordsmith · Started 0.5h ago · P2</div>
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="action-btn context" onclick="event.stopPropagation(); openIntervention('task3')">+ Context</button>
+                        <button class="action-btn message" onclick="event.stopPropagation(); openMessage('Wordsmith')">Message</button>
+                    </div>
+                </div>
+
+                <div class="task-item" onclick="openIntervention('task4')">
+                    <div class="task-main">
+                        <div class="task-status-dot idle"></div>
+                        <div class="task-info">
+                            <div class="task-name">Weekly expense report</div>
+                            <div class="task-meta">Ledger · Queued · P2 <span class="badge red" style="margin-left:8px;">Agent Offline</span></div>
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="action-btn reassign" onclick="event.stopPropagation(); openReassign('task4')">Reassign</button>
+                        <button class="action-btn context" onclick="event.stopPropagation(); openIntervention('task4')">+ Context</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>Recent Interventions</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-time">2h ago</div>
+                        <div class="timeline-dot" style="background:var(--accent-blue);"></div>
+                        <div class="timeline-content">
+                            <p><strong>Context added</strong> to "DME acquisition market map"</p>
+                            <p style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;">"Focus on Southeast region. Dad mentioned interest in FL/GA markets specifically."</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">Yesterday</div>
+                        <div class="timeline-dot" style="background:var(--accent-amber);"></div>
+                        <div class="timeline-content">
+                            <p><strong>Priority override</strong> on "Sedgwick research brief"</p>
+                            <p style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;">Bumped from P2 → P0. Call moved up.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">Yesterday</div>
+                        <div class="timeline-dot" style="background:var(--accent-purple);"></div>
+                        <div class="timeline-content">
+                            <p><strong>Direct message</strong> to Networker</p>
+                            <p style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;">"Tone down the urgency in email #3. We're not desperate."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Quick Actions</h3>
+                <div class="quick-actions">
+                    <button class="quick-action-btn" onclick="openNewTask()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        New Task
+                    </button>
+                    <button class="quick-action-btn" onclick="openBroadcast()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        Broadcast to All
+                    </button>
+                    <button class="quick-action-btn" onclick="openPauseAll()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                        Pause All Agents
+                    </button>
+                    <button class="quick-action-btn" onclick="openPriorityView()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        Reorder Priorities
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Dashboard 4: Quality -->
     <section class="dashboard" id="quality">
         <h2 class="dashboard-title">
@@ -1354,6 +1782,101 @@
         </div>
     </section>
 
+    <!-- Intervention Modal -->
+    <div class="modal-overlay" id="interventionModal">
+        <div class="modal">
+            <h3>Add Context</h3>
+            <p class="modal-subtitle" id="interventionTaskName">Task: HireLoki email sequence draft</p>
+            
+            <div class="modal-field">
+                <label>Context / Instructions</label>
+                <textarea placeholder="Add context, clarification, or specific instructions for the agent..."></textarea>
+            </div>
+            
+            <div class="modal-field">
+                <label>Priority Override</label>
+                <select>
+                    <option value="">No change</option>
+                    <option value="p0">P0 — Urgent (Today)</option>
+                    <option value="p1">P1 — This Week</option>
+                    <option value="p2">P2 — Backlog</option>
+                </select>
+            </div>
+            
+            <div class="modal-field">
+                <label>Notify Agent</label>
+                <select>
+                    <option value="next">On next heartbeat</option>
+                    <option value="immediate">Immediately (wake agent)</option>
+                    <option value="none">Don't notify</option>
+                </select>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeModal('interventionModal')">Cancel</button>
+                <button class="modal-btn primary" onclick="saveIntervention()">Save Context</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Modal -->
+    <div class="modal-overlay" id="messageModal">
+        <div class="modal">
+            <h3>Message Agent</h3>
+            <p class="modal-subtitle" id="messageAgentName">Direct message to: Networker</p>
+            
+            <div class="modal-field">
+                <label>Message</label>
+                <textarea placeholder="Type your message to the agent..."></textarea>
+            </div>
+            
+            <div class="modal-field">
+                <label>Delivery</label>
+                <select>
+                    <option value="next">On next heartbeat</option>
+                    <option value="immediate">Immediately (wake agent)</option>
+                </select>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeModal('messageModal')">Cancel</button>
+                <button class="modal-btn primary" onclick="sendMessage()">Send Message</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reassign Modal -->
+    <div class="modal-overlay" id="reassignModal">
+        <div class="modal">
+            <h3>Reassign Task</h3>
+            <p class="modal-subtitle" id="reassignTaskName">Task: Weekly expense report</p>
+            
+            <div class="modal-field">
+                <label>Reassign to</label>
+                <select>
+                    <option value="">Select agent...</option>
+                    <option value="wordsmith">Wordsmith (Content)</option>
+                    <option value="networker">Networker (Outreach)</option>
+                    <option value="architect">Architect (Builder)</option>
+                    <option value="beacon">Beacon (Sales Intel)</option>
+                    <option value="dispatch">Dispatch (Ops)</option>
+                    <option value="analyst">Analyst (Research)</option>
+                    <option value="loki">Loki (Orchestrator)</option>
+                </select>
+            </div>
+            
+            <div class="modal-field">
+                <label>Reason (optional)</label>
+                <textarea placeholder="Why is this being reassigned?"></textarea>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeModal('reassignModal')">Cancel</button>
+                <button class="modal-btn primary" onclick="reassignTask()">Reassign</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Tab switching
         const tabs = document.querySelectorAll('.nav-tab');
@@ -1373,6 +1896,87 @@
                     }
                 });
             });
+        });
+
+        // Modal functions
+        function openIntervention(taskId) {
+            const taskNames = {
+                'task1': 'HireLoki email sequence draft',
+                'task2': 'DME acquisition market map',
+                'task3': 'pSEO pages for EmailKits (batch 2)',
+                'task4': 'Weekly expense report'
+            };
+            document.getElementById('interventionTaskName').textContent = 'Task: ' + (taskNames[taskId] || taskId);
+            document.getElementById('interventionModal').classList.add('active');
+        }
+
+        function openMessage(agentName) {
+            document.getElementById('messageAgentName').textContent = 'Direct message to: ' + agentName;
+            document.getElementById('messageModal').classList.add('active');
+        }
+
+        function openReassign(taskId) {
+            const taskNames = {
+                'task1': 'HireLoki email sequence draft',
+                'task2': 'DME acquisition market map',
+                'task3': 'pSEO pages for EmailKits (batch 2)',
+                'task4': 'Weekly expense report'
+            };
+            document.getElementById('reassignTaskName').textContent = 'Task: ' + (taskNames[taskId] || taskId);
+            document.getElementById('reassignModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function saveIntervention() {
+            alert('Context saved! Agent will be notified on next heartbeat.');
+            closeModal('interventionModal');
+        }
+
+        function sendMessage() {
+            alert('Message sent! Agent will receive it on next heartbeat.');
+            closeModal('messageModal');
+        }
+
+        function reassignTask() {
+            alert('Task reassigned successfully!');
+            closeModal('reassignModal');
+        }
+
+        function openNewTask() {
+            alert('New Task modal would open here');
+        }
+
+        function openBroadcast() {
+            alert('Broadcast to All Agents modal would open here');
+        }
+
+        function openPauseAll() {
+            if (confirm('Pause all agent heartbeats? They will stop working until resumed.')) {
+                alert('All agents paused.');
+            }
+        }
+
+        function openPriorityView() {
+            alert('Priority reordering view would open here');
+        }
+
+        // Close modal on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                }
+            });
+        });
+
+        // Close modal on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+            }
         });
     </script>
 </body>
