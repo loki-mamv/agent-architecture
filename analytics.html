@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAMV Agent Analytics — Dashboard Examples</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #FAFAF8;
+            --bg-primary: #F5F4F0;
+            --bg-card: #FFFFFF;
+            --bg-elevated: #F0EFEB;
+            --border-subtle: #E5E2DC;
+            --border-accent: #D0CCC4;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a5568;
+            --text-muted: #8892a4;
+            --accent-blue: #2b7de9;
+            --accent-cyan: #0d8aba;
+            --accent-indigo: #5b5fcf;
+            --accent-amber: #c67a08;
+            --accent-emerald: #0f8a5f;
+            --accent-rose: #c4163a;
+            --accent-purple: #7c3aed;
+            --gradient-main: linear-gradient(135deg, #2b7de9 0%, #5b5fcf 50%, #7c3aed 100%);
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { font-size: 16px; background: var(--bg-deep); }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background: var(--bg-deep);
+            min-height: 100vh;
+            padding: 40px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .gradient-text {
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            background: var(--bg-card);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-tab:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .nav-tab.active {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: white;
+        }
+
+        .dashboard {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dashboard-title {
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dashboard-title .icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat-card .stat-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .stat-card .stat-value {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .stat-card .stat-change {
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+
+        .stat-card .stat-change.up { color: var(--accent-emerald); }
+        .stat-card .stat-change.down { color: var(--accent-rose); }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 1rem;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        }
+
+        /* Agent Cards */
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .agent-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .agent-card.status-active::before { background: var(--accent-emerald); }
+        .agent-card.status-idle::before { background: var(--accent-amber); }
+        .agent-card.status-error::before { background: var(--accent-rose); }
+
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .agent-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border-subtle);
+        }
+
+        .agent-name {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .agent-role {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--accent-blue);
+            letter-spacing: 0.05em;
+        }
+
+        .agent-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-dot.active { background: var(--accent-emerald); }
+        .status-dot.idle { background: var(--accent-amber); }
+        .status-dot.error { background: var(--accent-rose); }
+
+        .agent-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .agent-metric {
+            text-align: center;
+        }
+
+        .agent-metric .metric-value {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .agent-metric .metric-label {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        /* Bar Chart */
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bar-label {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            min-width: 100px;
+            text-align: right;
+        }
+
+        .bar-track {
+            flex: 1;
+            height: 28px;
+            background: var(--bg-elevated);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+            transition: width 0.8s ease;
+        }
+
+        .bar-fill.blue { background: var(--accent-blue); }
+        .bar-fill.indigo { background: var(--accent-indigo); }
+        .bar-fill.amber { background: var(--accent-amber); }
+        .bar-fill.emerald { background: var(--accent-emerald); }
+        .bar-fill.cyan { background: var(--accent-cyan); }
+        .bar-fill.purple { background: var(--accent-purple); }
+        .bar-fill.rose { background: var(--accent-rose); }
+
+        /* Line Chart (CSS-based visualization) */
+        .mini-chart {
+            height: 60px;
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            padding: 8px 0;
+        }
+
+        .mini-chart .bar {
+            flex: 1;
+            background: var(--accent-blue);
+            border-radius: 3px 3px 0 0;
+            min-height: 4px;
+            opacity: 0.7;
+        }
+
+        .mini-chart .bar:hover {
+            opacity: 1;
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-time {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            min-width: 60px;
+        }
+
+        .timeline-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-content strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .timeline-content p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Pie Chart (CSS) */
+        .pie-container {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .pie-chart {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--accent-blue) 0deg 126deg,
+                var(--accent-indigo) 126deg 198deg,
+                var(--accent-amber) 198deg 270deg,
+                var(--accent-emerald) 270deg 324deg,
+                var(--accent-purple) 324deg 360deg
+            );
+            position: relative;
+        }
+
+        .pie-chart::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: var(--bg-card);
+            border-radius: 50%;
+        }
+
+        .pie-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .pie-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .pie-legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .data-table th {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .data-table td {
+            font-size: 0.9rem;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .badge.green { background: rgba(15,138,95,0.1); color: var(--accent-emerald); }
+        .badge.amber { background: rgba(198,122,8,0.1); color: var(--accent-amber); }
+        .badge.red { background: rgba(196,22,58,0.1); color: var(--accent-rose); }
+        .badge.blue { background: rgba(43,125,233,0.1); color: var(--accent-blue); }
+
+        /* Progress Ring */
+        .progress-ring {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+
+        .progress-ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring circle {
+            fill: none;
+            stroke-width: 8;
+        }
+
+        .progress-ring .bg {
+            stroke: var(--bg-elevated);
+        }
+
+        .progress-ring .progress {
+            stroke: var(--accent-emerald);
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.6s ease;
+        }
+
+        .progress-ring .value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 24px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--accent-blue);
+        }
+
+        .alert-banner {
+            background: rgba(196,22,58,0.08);
+            border: 1px solid rgba(196,22,58,0.2);
+            border-radius: 8px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .alert-banner .alert-icon {
+            width: 20px;
+            height: 20px;
+            color: var(--accent-rose);
+        }
+
+        .alert-banner p {
+            font-size: 0.9rem;
+            color: var(--accent-rose);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to Presentation
+    </a>
+
+    <header class="page-header">
+        <h1><span class="gradient-text">Agent Analytics</span></h1>
+        <p>Dashboard examples for the MAMV Agent Architecture</p>
+    </header>
+
+    <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="health">Agent Health</button>
+        <button class="nav-tab" data-tab="cost">Cost & Tokens</button>
+        <button class="nav-tab" data-tab="output">Output & Velocity</button>
+        <button class="nav-tab" data-tab="quality">Quality</button>
+        <button class="nav-tab" data-tab="timeline">Activity</button>
+    </nav>
+
+    <!-- Dashboard 1: Agent Health -->
+    <section class="dashboard active" id="health">
+        <h2 class="dashboard-title">
+            <span class="icon" style="background:rgba(15,138,95,0.1);color:var(--accent-emerald);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </span>
+            Agent Health Overview
+        </h2>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-label">Agents Online</div>
+                <div class="stat-value" style="color:var(--accent-emerald);">6/7</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Uptime (24h)</div>
+                <div class="stat-value">98.7%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Heartbeats Today</div>
+                <div class="stat-value">289</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Errors (24h)</div>
+                <div class="stat-value" style="color:var(--accent-rose);">3</div>
+            </div>
+        </div>
+
+        <div class="alert-banner">
+            <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <p><strong>Ledger</strong> missed 2 heartbeats. Last seen 47m ago. Investigating...</p>
+        </div>
+
+        <div class="agent-grid">
+            <div class="agent-card status-active">
+                <div class="agent-header">
+                    <img class="agent-avatar" src="avatars/pixel.png" alt="Wordsmith">
+                    <div>
+                        <div class="agent-name">Wordsmith</div>
+                        <div class="agent-role">CONTENT</div>
+                    </div>
+                </div>
+                <div class="agent-status">
+                    <span class="status-dot active"></span>
+                    Active · Last heartbeat 4m ago
+                </div>
+                <div style="font-size:0.85rem;color:var(--text-secondary);">Working on: pSEO pages for EmailKits</div>
+                <div class="agent-metrics">
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-blue);">47</div>
+                        <div class="metric-label">Tasks</div>
+                    </div>
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-amber);">89K</div>
+                        <div class="metric-label">Tokens</div>
+                    </div>
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-emerald);">99%</div>
+                        <div class="metric-label">Uptime</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="agent-card status-active">
+                <div class="agent-header">
+                    <img class="agent-avatar" src="avatars/forge.png" alt="Networker">
+                    <div>
+                        <div class="agent-name">Networker</div>
+                        <div class="agent-role">OUTREACH</div>
+                    </div>
+                </div>
+                <div class="agent-status">
+                    <span class="status-dot active"></span>
+                    Active · Last heartbeat 9m ago
+                </div>
+                <div style="font-size:0.85rem;color:var(--text-secondary);">Working on: Email sequence for HireLoki</div>
+                <div class="agent-metrics">
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-blue);">31</div>
+                        <div class="metric-label">Tasks</div>
+                    </div>
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-amber);">62K</div>
+                        <div class="metric-label">Tokens</div>
+                    </div>
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-emerald);">98%</div>
+                        <div class="metric-label">Uptime</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="agent-card status-idle">
+                <div class="agent-header">
+                    <img class="agent-avatar" src="avatars/atlas.png" alt="Architect">
+                    <div>
+                        <div class="agent-name">Architect</div>
+                        <div class="agent-role">BUILDER</div>
+                    </div>
+                </div>
+                <div class="agent-status">
+                    <span class="status-dot idle"></span>
+                    Idle · Last heartbeat 12m ago
+                </div>
+                <div style="font-size:0.85rem;color:var(--text-secondary);">No current task · Awaiting assignment</div>
+                <div class="agent-metrics">
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-blue);">18</div>
+                        <div class="metric-label">Tasks</div>
+                    </div>
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-amber);">41K</div>
+                        <div class="metric-label">Tokens</div>
+                    </div>
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-emerald);">100%</div>
+                        <div class="metric-label">Uptime</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="agent-card status-active">
+                <div class="agent-header">
+                    <img class="agent-avatar" src="avatars/beacon.png" alt="Beacon">
+                    <div>
+                        <div class="agent-name">Beacon</div>
+                        <div class="agent-role">SALES INTEL</div>
+                    </div>
+                </div>
+                <div class="agent-status">
+                    <span class="status-dot active"></span>
+                    Active · Last heartbeat 2m ago
+                </div>
+                <div style="font-size:0.85rem;color:var(--text-secondary);">Working on: Sedgwick deal research</div>
+                <div class="agent-metrics">
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-blue);">24</div>
+                        <div class="metric-label">Tasks</div>
+                    </div>
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-amber);">78K</div>
+                        <div class="metric-label">Tokens</div>
+                    </div>
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-emerald);">99%</div>
+                        <div class="metric-label">Uptime</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="agent-card status-active">
+                <div class="agent-header">
+                    <img class="agent-avatar" src="avatars/radar.png" alt="Dispatch">
+                    <div>
+                        <div class="agent-name">Dispatch</div>
+                        <div class="agent-role">OPS</div>
+                    </div>
+                </div>
+                <div class="agent-status">
+                    <span class="status-dot active"></span>
+                    Active · Last heartbeat 7m ago
+                </div>
+                <div style="font-size:0.85rem;color:var(--text-secondary);">Working on: Calendar prep for Monday</div>
+                <div class="agent-metrics">
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-blue);">56</div>
+                        <div class="metric-label">Tasks</div>
+                    </div>
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-amber);">95K</div>
+                        <div class="metric-label">Tokens</div>
+                    </div>
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-emerald);">97%</div>
+                        <div class="metric-label">Uptime</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="agent-card status-active">
+                <div class="agent-header">
+                    <img class="agent-avatar" src="avatars/cass.png" alt="Analyst">
+                    <div>
+                        <div class="agent-name">Analyst</div>
+                        <div class="agent-role">RESEARCH</div>
+                    </div>
+                </div>
+                <div class="agent-status">
+                    <span class="status-dot active"></span>
+                    Active · Last heartbeat 5m ago
+                </div>
+                <div style="font-size:0.85rem;color:var(--text-secondary);">Working on: DME market analysis</div>
+                <div class="agent-metrics">
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-blue);">12</div>
+                        <div class="metric-label">Tasks</div>
+                    </div>
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-amber);">67K</div>
+                        <div class="metric-label">Tokens</div>
+                    </div>
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-emerald);">100%</div>
+                        <div class="metric-label">Uptime</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="agent-card status-error">
+                <div class="agent-header">
+                    <div style="width:44px;height:44px;border-radius:50%;background:rgba(198,122,8,0.1);display:flex;align-items:center;justify-content:center;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-amber)" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <div>
+                        <div class="agent-name">Ledger</div>
+                        <div class="agent-role">FINANCE</div>
+                    </div>
+                </div>
+                <div class="agent-status">
+                    <span class="status-dot error"></span>
+                    Error · Last heartbeat 47m ago
+                </div>
+                <div style="font-size:0.85rem;color:var(--accent-rose);">⚠️ Missed 2 heartbeats — investigating</div>
+                <div class="agent-metrics">
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-blue);">8</div>
+                        <div class="metric-label">Tasks</div>
+                    </div>
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-amber);">23K</div>
+                        <div class="metric-label">Tokens</div>
+                    </div>
+                    <div class="agent-metric">
+                        <div class="metric-value" style="color:var(--accent-rose);">87%</div>
+                        <div class="metric-label">Uptime</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard 2: Cost & Tokens -->
+    <section class="dashboard" id="cost">
+        <h2 class="dashboard-title">
+            <span class="icon" style="background:rgba(198,122,8,0.1);color:var(--accent-amber);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </span>
+            Cost & Token Analytics
+        </h2>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-label">Cost Today</div>
+                <div class="stat-value" style="color:var(--accent-amber);">$0.47</div>
+                <div class="stat-change up">↓ 12% vs avg</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Cost This Week</div>
+                <div class="stat-value">$3.21</div>
+                <div class="stat-change up">↓ 8% vs last week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Tokens Today</div>
+                <div class="stat-value">455K</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Avg Per Agent</div>
+                <div class="stat-value">65K</div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>Tokens by Agent (Today)</h3>
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <div class="bar-label">Dispatch</div>
+                        <div class="bar-track"><div class="bar-fill blue" style="width:85%;">95K</div></div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Wordsmith</div>
+                        <div class="bar-track"><div class="bar-fill indigo" style="width:80%;">89K</div></div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Beacon</div>
+                        <div class="bar-track"><div class="bar-fill cyan" style="width:70%;">78K</div></div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Analyst</div>
+                        <div class="bar-track"><div class="bar-fill emerald" style="width:60%;">67K</div></div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Networker</div>
+                        <div class="bar-track"><div class="bar-fill amber" style="width:55%;">62K</div></div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Architect</div>
+                        <div class="bar-track"><div class="bar-fill purple" style="width:37%;">41K</div></div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Ledger</div>
+                        <div class="bar-track"><div class="bar-fill rose" style="width:21%;">23K</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Daily Cost Trend (7 Days)</h3>
+                <div class="mini-chart">
+                    <div class="bar" style="height:45%;"></div>
+                    <div class="bar" style="height:62%;"></div>
+                    <div class="bar" style="height:55%;"></div>
+                    <div class="bar" style="height:78%;"></div>
+                    <div class="bar" style="height:65%;"></div>
+                    <div class="bar" style="height:52%;"></div>
+                    <div class="bar" style="height:40%;background:var(--accent-emerald);"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);margin-top:8px;">
+                    <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Today</span>
+                </div>
+                <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border-subtle);">
+                    <table class="data-table" style="font-size:0.85rem;">
+                        <tr><td>7-Day Total</td><td style="text-align:right;font-weight:600;">$3.21</td></tr>
+                        <tr><td>30-Day Projected</td><td style="text-align:right;font-weight:600;">$13.80</td></tr>
+                        <tr><td>Budget</td><td style="text-align:right;font-weight:600;">$50.00</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Cost Breakdown by Model</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Agents</th>
+                        <th>Tokens (7d)</th>
+                        <th>Cost (7d)</th>
+                        <th>Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Kimi K2.5</td>
+                        <td>6 agents</td>
+                        <td>2.8M</td>
+                        <td>$2.94</td>
+                        <td><span class="badge green">$1.05/M</span></td>
+                    </tr>
+                    <tr>
+                        <td>Claude Opus (Loki)</td>
+                        <td>1 agent</td>
+                        <td>180K</td>
+                        <td>$2.70</td>
+                        <td><span class="badge amber">$15/M</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Dashboard 3: Output & Velocity -->
+    <section class="dashboard" id="output">
+        <h2 class="dashboard-title">
+            <span class="icon" style="background:rgba(91,95,207,0.1);color:var(--accent-indigo);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </span>
+            Output & Velocity
+        </h2>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-label">Tasks Today</div>
+                <div class="stat-value" style="color:var(--accent-emerald);">12</div>
+                <div class="stat-change up">↑ 20% vs avg</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Tasks This Week</div>
+                <div class="stat-value">67</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Avg Duration</div>
+                <div class="stat-value">2.3h</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">In Progress</div>
+                <div class="stat-value" style="color:var(--accent-blue);">4</div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>Output by Agent (This Week)</h3>
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <div class="bar-label">Dispatch</div>
+                        <div class="bar-track"><div class="bar-fill blue" style="width:100%;">56 tasks</div></div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Wordsmith</div>
+                        <div class="bar-track"><div class="bar-fill indigo" style="width:84%;">47 tasks</div></div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Networker</div>
+                        <div class="bar-track"><div class="bar-fill cyan" style="width:55%;">31 tasks</div></div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Beacon</div>
+                        <div class="bar-track"><div class="bar-fill emerald" style="width:43%;">24 tasks</div></div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Architect</div>
+                        <div class="bar-track"><div class="bar-fill amber" style="width:32%;">18 tasks</div></div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Analyst</div>
+                        <div class="bar-track"><div class="bar-fill purple" style="width:21%;">12 tasks</div></div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Ledger</div>
+                        <div class="bar-track"><div class="bar-fill rose" style="width:14%;">8 tasks</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Output by Type</h3>
+                <div class="pie-container">
+                    <div class="pie-chart"></div>
+                    <div class="pie-legend">
+                        <div class="pie-legend-item"><div class="pie-legend-dot" style="background:var(--accent-blue);"></div>Content (35%)</div>
+                        <div class="pie-legend-item"><div class="pie-legend-dot" style="background:var(--accent-indigo);"></div>Ops Tasks (20%)</div>
+                        <div class="pie-legend-item"><div class="pie-legend-dot" style="background:var(--accent-amber);"></div>Outreach (20%)</div>
+                        <div class="pie-legend-item"><div class="pie-legend-dot" style="background:var(--accent-emerald);"></div>Research (15%)</div>
+                        <div class="pie-legend-item"><div class="pie-legend-dot" style="background:var(--accent-purple);"></div>Code (10%)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Recent Completions</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>Agent</th>
+                        <th>Duration</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Write 5 pSEO pages for EmailKits</td>
+                        <td>Wordsmith</td>
+                        <td>1.8h</td>
+                        <td><span class="badge green">Done</span></td>
+                    </tr>
+                    <tr>
+                        <td>Sedgwick company research brief</td>
+                        <td>Beacon</td>
+                        <td>2.1h</td>
+                        <td><span class="badge green">Done</span></td>
+                    </tr>
+                    <tr>
+                        <td>Monday calendar prep + meeting briefs</td>
+                        <td>Dispatch</td>
+                        <td>0.5h</td>
+                        <td><span class="badge green">Done</span></td>
+                    </tr>
+                    <tr>
+                        <td>HireLoki email sequence draft</td>
+                        <td>Networker</td>
+                        <td>3.2h</td>
+                        <td><span class="badge blue">In Progress</span></td>
+                    </tr>
+                    <tr>
+                        <td>DME acquisition market map</td>
+                        <td>Analyst</td>
+                        <td>4.1h</td>
+                        <td><span class="badge blue">In Progress</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Dashboard 4: Quality -->
+    <section class="dashboard" id="quality">
+        <h2 class="dashboard-title">
+            <span class="icon" style="background:rgba(124,58,237,0.1);color:var(--accent-purple);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </span>
+            Quality & Performance
+        </h2>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-label">Error Rate (7d)</div>
+                <div class="stat-value" style="color:var(--accent-emerald);">0.8%</div>
+                <div class="stat-change up">↓ from 1.2%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Avg Quality Score</div>
+                <div class="stat-value">8.4/10</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Review Queue</div>
+                <div class="stat-value" style="color:var(--accent-amber);">3</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Flags (7d)</div>
+                <div class="stat-value">2</div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>Agent Quality Scores</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Agent</th>
+                            <th>Quality</th>
+                            <th>Error Rate</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Wordsmith</td>
+                            <td><strong>9.1</strong>/10</td>
+                            <td>0.3%</td>
+                            <td><span class="badge green">Excellent</span></td>
+                        </tr>
+                        <tr>
+                            <td>Beacon</td>
+                            <td><strong>8.8</strong>/10</td>
+                            <td>0.5%</td>
+                            <td><span class="badge green">Good</span></td>
+                        </tr>
+                        <tr>
+                            <td>Dispatch</td>
+                            <td><strong>8.5</strong>/10</td>
+                            <td>0.7%</td>
+                            <td><span class="badge green">Good</span></td>
+                        </tr>
+                        <tr>
+                            <td>Analyst</td>
+                            <td><strong>8.3</strong>/10</td>
+                            <td>0.9%</td>
+                            <td><span class="badge green">Good</span></td>
+                        </tr>
+                        <tr>
+                            <td>Networker</td>
+                            <td><strong>8.0</strong>/10</td>
+                            <td>1.1%</td>
+                            <td><span class="badge amber">Monitor</span></td>
+                        </tr>
+                        <tr>
+                            <td>Architect</td>
+                            <td><strong>7.8</strong>/10</td>
+                            <td>1.4%</td>
+                            <td><span class="badge amber">Monitor</span></td>
+                        </tr>
+                        <tr>
+                            <td>Ledger</td>
+                            <td><strong>7.2</strong>/10</td>
+                            <td>2.3%</td>
+                            <td><span class="badge red">Review</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>Recent Quality Flags</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-time">2h ago</div>
+                        <div class="timeline-dot" style="background:var(--accent-amber);"></div>
+                        <div class="timeline-content">
+                            <p><strong>Networker</strong> — Email tone too aggressive. Loki flagged for review.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">Yesterday</div>
+                        <div class="timeline-dot" style="background:var(--accent-rose);"></div>
+                        <div class="timeline-content">
+                            <p><strong>Ledger</strong> — Repeated API failures. Token tracking drift detected.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">2 days</div>
+                        <div class="timeline-dot" style="background:var(--accent-emerald);"></div>
+                        <div class="timeline-content">
+                            <p><strong>Wordsmith</strong> — Quality excellent. Promoted to higher autonomy tier.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Model Version Tracking</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Agent</th>
+                        <th>Model</th>
+                        <th>Version</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Loki</td><td>Claude Opus 4</td><td>2025-04-14</td><td>Jan 28</td></tr>
+                    <tr><td>Wordsmith</td><td>Kimi K2.5</td><td>2025-01-20</td><td>Jan 30</td></tr>
+                    <tr><td>Networker</td><td>Kimi K2.5</td><td>2025-01-20</td><td>Jan 30</td></tr>
+                    <tr><td>Architect</td><td>Kimi K2.5</td><td>2025-01-20</td><td>Jan 30</td></tr>
+                    <tr><td>Beacon</td><td>Kimi K2.5</td><td>2025-01-20</td><td>Jan 30</td></tr>
+                    <tr><td>Dispatch</td><td>Kimi K2.5</td><td>2025-01-20</td><td>Jan 30</td></tr>
+                    <tr><td>Analyst</td><td>Kimi K2.5</td><td>2025-01-20</td><td>Jan 30</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Dashboard 5: Activity Timeline -->
+    <section class="dashboard" id="timeline">
+        <h2 class="dashboard-title">
+            <span class="icon" style="background:rgba(13,138,186,0.1);color:var(--accent-cyan);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </span>
+            Activity Timeline
+        </h2>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-label">Events Today</div>
+                <div class="stat-value">156</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Heartbeats</div>
+                <div class="stat-value" style="color:var(--accent-emerald);">289</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Tasks Started</div>
+                <div class="stat-value" style="color:var(--accent-blue);">18</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Files Written</div>
+                <div class="stat-value">47</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Live Activity Feed</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-time">9:25</div>
+                    <div class="timeline-dot" style="background:var(--accent-emerald);"></div>
+                    <div class="timeline-content">
+                        <p><strong>Wordsmith</strong> heartbeat — Active, working on pSEO pages</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">9:23</div>
+                    <div class="timeline-dot" style="background:var(--accent-blue);"></div>
+                    <div class="timeline-content">
+                        <p><strong>Beacon</strong> completed task — "Sedgwick company research brief"</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">9:20</div>
+                    <div class="timeline-dot" style="background:var(--accent-emerald);"></div>
+                    <div class="timeline-content">
+                        <p><strong>Dispatch</strong> heartbeat — Active, calendar prep</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">9:18</div>
+                    <div class="timeline-dot" style="background:var(--accent-indigo);"></div>
+                    <div class="timeline-content">
+                        <p><strong>Networker</strong> file written — <code>brain/outreach/hireloki-sequence-v2.md</code></p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">9:15</div>
+                    <div class="timeline-dot" style="background:var(--accent-emerald);"></div>
+                    <div class="timeline-content">
+                        <p><strong>Analyst</strong> heartbeat — Active, DME market research</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">9:10</div>
+                    <div class="timeline-dot" style="background:var(--accent-amber);"></div>
+                    <div class="timeline-content">
+                        <p><strong>Architect</strong> heartbeat — Idle, no tasks assigned</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">9:05</div>
+                    <div class="timeline-dot" style="background:var(--accent-blue);"></div>
+                    <div class="timeline-content">
+                        <p><strong>Wordsmith</strong> started task — "Write 5 pSEO pages for EmailKits"</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">9:00</div>
+                    <div class="timeline-dot" style="background:var(--accent-purple);"></div>
+                    <div class="timeline-content">
+                        <p><strong>Loki</strong> daily audit — All systems nominal, 6/7 agents online</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">8:38</div>
+                    <div class="timeline-dot" style="background:var(--accent-rose);"></div>
+                    <div class="timeline-content">
+                        <p><strong>Ledger</strong> alert — Missed heartbeat #2, investigating</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">8:30</div>
+                    <div class="timeline-dot" style="background:var(--accent-emerald);"></div>
+                    <div class="timeline-content">
+                        <p><strong>Beacon</strong> started task — "Sedgwick company research brief"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Tab switching
+        const tabs = document.querySelectorAll('.nav-tab');
+        const dashboards = document.querySelectorAll('.dashboard');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.tab;
+                
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                dashboards.forEach(d => {
+                    d.classList.remove('active');
+                    if (d.id === target) {
+                        d.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

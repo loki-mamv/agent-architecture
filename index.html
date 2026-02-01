@@ -1051,25 +1051,34 @@
             <div class="section-label reveal">13 / Roster</div>
             <h2 class="slide-title reveal reveal-d1">Tier 3 — Scaling Up</h2>
             <div class="tier-badge t3 reveal reveal-d1">Build Later</div>
-            <p class="slide-subtitle reveal reveal-d2">Deep research and financial oversight. Deploy when Tiers 1-2 are proven.</p>
-            <div class="content-grid two-col">
+            <p class="slide-subtitle reveal reveal-d2">Deep research, analytics, and financial oversight. Deploy when Tiers 1-2 are proven.</p>
+            <div class="content-grid three-col">
                 <div class="agent-card tier-3 reveal reveal-d3">
                     <div class="agent-header">
                         <img class="agent-avatar-img" src="avatars/cass.png" alt="Analyst">
                         <div><div class="agent-name">Research Agent</div><div class="agent-codename">ANALYST</div></div>
                     </div>
-                    <div class="agent-role">Due diligence for acquisitions, market research, industry deep-dives. Serves DME acquisitions and new venture evaluation.</div>
+                    <div class="agent-role">Due diligence for acquisitions, market research, industry deep-dives.</div>
                     <div style="margin: 12px 0;"><p style="font-size:0.82rem;color:var(--text-secondary);"><strong style="color:var(--text-primary);">Output:</strong> Research reports, investment memos, market maps</p></div>
-                    <div class="agent-meta"><span class="agent-tag">Due Diligence</span><span class="agent-tag">Market Research</span><span class="agent-tag">Analysis</span></div>
+                    <div class="agent-meta"><span class="agent-tag">Due Diligence</span><span class="agent-tag">Research</span></div>
                 </div>
                 <div class="agent-card tier-3 reveal reveal-d4">
+                    <div class="agent-header">
+                        <div class="agent-avatar" style="background:rgba(124,58,237,0.08);color:var(--accent-purple);"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></svg></div>
+                        <div><div class="agent-name">Analytics Agent</div><div class="agent-codename">ATLAS</div></div>
+                    </div>
+                    <div class="agent-role">Dashboard monitoring, ad-hoc queries, anomaly investigation, trend analysis.</div>
+                    <div style="margin: 12px 0;"><p style="font-size:0.82rem;color:var(--text-secondary);"><strong style="color:var(--text-primary);">Output:</strong> Custom reports, data insights, performance analysis</p></div>
+                    <div class="agent-meta"><span class="agent-tag">Analytics</span><span class="agent-tag">Reports</span></div>
+                </div>
+                <div class="agent-card tier-3 reveal reveal-d5">
                     <div class="agent-header">
                         <div class="agent-avatar" style="background:rgba(198,122,8,0.08);color:var(--accent-amber);"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
                         <div><div class="agent-name">Finance Agent</div><div class="agent-codename">LEDGER</div></div>
                     </div>
-                    <div class="agent-role">Expense monitoring, invoice tracking, financial reporting. Serves MAMV Ventures and GenHealth.</div>
-                    <div style="margin: 12px 0;"><p style="font-size:0.82rem;color:var(--text-secondary);"><strong style="color:var(--text-primary);">Output:</strong> Weekly spend reports, anomaly alerts, financial summaries</p></div>
-                    <div class="agent-meta"><span class="agent-tag">Expenses</span><span class="agent-tag">Invoices</span><span class="agent-tag">Budget</span><span class="agent-tag">Alerts</span></div>
+                    <div class="agent-role">Expense monitoring, invoice tracking, financial reporting.</div>
+                    <div style="margin: 12px 0;"><p style="font-size:0.82rem;color:var(--text-secondary);"><strong style="color:var(--text-primary);">Output:</strong> Spend reports, anomaly alerts, budgets</p></div>
+                    <div class="agent-meta"><span class="agent-tag">Expenses</span><span class="agent-tag">Budget</span></div>
                 </div>
             </div>
         </section>
@@ -1374,8 +1383,58 @@
             </div>
         </section>
 
-        <!-- ======== SLIDE 22: Closing ======== -->
-        <section class="slide title-slide" data-slide="21">
+        <!-- ======== SLIDE 22: Analytics ======== -->
+        <section class="slide" data-slide="21">
+            <div class="section-label reveal">21 / Analytics</div>
+            <h2 class="slide-title reveal reveal-d1">Built-In Analytics</h2>
+            <p class="slide-subtitle reveal reveal-d2">Five core dashboards ship with the architecture. Atlas (Analytics Agent) extends them.</p>
+            <div class="content-grid sidebar-layout-r">
+                <div class="reveal reveal-d3">
+                    <!-- Mini dashboard preview -->
+                    <div class="dash-preview" style="margin-bottom:16px;">
+                        <div class="dash-header">
+                            <div>
+                                <div style="font-family:var(--font-display);font-weight:700;font-size:0.9rem;">Agent Analytics</div>
+                                <div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-muted);">5 Core Dashboards</div>
+                            </div>
+                        </div>
+                        <div class="dash-mini-cards">
+                            <div class="dash-mini-card"><div class="mini-val" style="color:var(--accent-emerald);">6/7</div><div class="mini-label">Online</div></div>
+                            <div class="dash-mini-card"><div class="mini-val" style="color:var(--accent-blue);">67</div><div class="mini-label">Tasks</div></div>
+                            <div class="dash-mini-card"><div class="mini-val" style="color:var(--accent-amber);">$3.21</div><div class="mini-label">Week</div></div>
+                            <div class="dash-mini-card"><div class="mini-val" style="color:var(--accent-indigo);">8.4</div><div class="mini-label">Quality</div></div>
+                        </div>
+                    </div>
+                    <ul class="feature-list check-list">
+                        <li><strong>Agent Health</strong> — Real-time status, heartbeats, uptime, current tasks</li>
+                        <li><strong>Cost & Tokens</strong> — Daily/weekly spend, per-agent breakdown, anomaly alerts</li>
+                        <li><strong>Output & Velocity</strong> — Tasks completed, duration, output by type</li>
+                        <li><strong>Quality</strong> — Error rates, quality scores, drift detection, flags</li>
+                        <li><strong>Activity Timeline</strong> — Live feed of all agent actions and events</li>
+                    </ul>
+                </div>
+                <div class="reveal reveal-d4">
+                    <div class="card" style="margin-bottom: 16px;">
+                        <div class="card-icon purple"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></svg></div>
+                        <h3>Atlas — Analytics Agent</h3>
+                        <p>Tier 2/3 agent specialized in data analysis. Builds on core dashboards with:</p>
+                        <ul>
+                            <li>Ad-hoc queries ("How much did content cost this month?")</li>
+                            <li>Custom reports for board meetings</li>
+                            <li>Anomaly investigation when alerts fire</li>
+                            <li>Trend analysis humans would miss</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-left: 3px solid var(--accent-blue);">
+                        <p style="font-size:0.88rem;"><strong>See it live:</strong> <a href="analytics.html" style="color:var(--accent-blue);text-decoration:none;">View Analytics Examples →</a></p>
+                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;">Interactive dashboard mockups showing all 5 core views with sample data.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== SLIDE 23: Closing ======== -->
+        <section class="slide title-slide" data-slide="22">
             <div class="grid-bg"></div>
             <div class="divider reveal" style="margin: 0 auto 32px;"></div>
             <div class="closing-quote reveal reveal-d1">
@@ -1419,6 +1478,7 @@
             'Cost Projections',
             'The Flywheel',
             'Rollout Plan',
+            'Analytics',
             'Closing'
         ];
 
